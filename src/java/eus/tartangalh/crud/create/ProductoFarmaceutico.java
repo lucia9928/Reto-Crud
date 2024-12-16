@@ -8,6 +8,8 @@ package eus.tartangalh.crud.create;
 import java.io.Serializable;
 import java.time.LocalDate;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,14 +26,39 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ProductoFarmaceutico implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    /*
+    *Identificador del producto
+    */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    
+    private Long id;
+    
     private Integer idProducto;
+    /*
+    *Nombre del producto
+    */
     private String nombreProducto;
+     /*
+    *lote del producto
+    */
     private String loteProducto;
+    /*
+    *Fecha de caducidad del producto
+    */
     private LocalDate fechaCaducidad;
+    /*
+    *Descripcion del producto
+    */
     private String Description;
+    /*
+    *Categoria del producto
+    */
+    @Enumerated(EnumType.ORDINAL)
     private CategoriaProducto categoria;
+    /*
+    *Precio del producto
+    */
     private Float precio;
 
     public ProductoFarmaceutico() {
