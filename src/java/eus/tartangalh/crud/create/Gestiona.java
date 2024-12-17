@@ -6,10 +6,16 @@
 package eus.tartangalh.crud.create;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 
 /**
  *
@@ -19,22 +25,67 @@ import javax.persistence.Id;
 public class Gestiona implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @EmbeddedId
+    private GestionaId gestionaId;
 
-    public Long getId() {
-        return id;
+    @ManyToOne
+    @MapsId("dni")
+    @JoinColumn(name = "trabajador_dni")
+    private Trabajador trabajador;
+
+    @ManyToOne
+    @MapsId("idProducto")
+    @JoinColumn(name = "idProducto")
+    private ProductoFarmaceutico productoFarmaceutico;
+
+    private Integer cantidad;
+
+    public Gestiona(GestionaId gestionaId, Trabajador trabajador, ProductoFarmaceutico productoFarmaceutico, Integer cantidad) {
+        this.gestionaId = gestionaId;
+        this.trabajador = trabajador;
+        this.productoFarmaceutico = productoFarmaceutico;
+        this.cantidad = cantidad;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Gestiona() {
+    }
+
+    public GestionaId getGestionaId() {
+        return gestionaId;
+    }
+
+    public void setGestionaId(GestionaId gestionaId) {
+        this.gestionaId = gestionaId;
+    }
+
+    public Trabajador getTrabajador() {
+        return trabajador;
+    }
+
+    public void setTrabajador(Trabajador trabajador) {
+        this.trabajador = trabajador;
+    }
+
+    public ProductoFarmaceutico getProductoFarmaceutico() {
+        return productoFarmaceutico;
+    }
+
+    public void setProductoFarmaceutico(ProductoFarmaceutico productoFarmaceutico) {
+        this.productoFarmaceutico = productoFarmaceutico;
+    }
+
+    public Integer getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(Integer cantidad) {
+        this.cantidad = cantidad;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (gestionaId != null ? gestionaId.hashCode() : 0);
         return hash;
     }
 
@@ -45,7 +96,7 @@ public class Gestiona implements Serializable {
             return false;
         }
         Gestiona other = (Gestiona) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.gestionaId == null && other.gestionaId != null) || (this.gestionaId != null && !this.gestionaId.equals(other.gestionaId))) {
             return false;
         }
         return true;
@@ -53,7 +104,7 @@ public class Gestiona implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Gestiona[ id=" + id + " ]";
+        return "entity.Gestiona[ id=" + gestionaId + " ]";
     }
-    
+
 }

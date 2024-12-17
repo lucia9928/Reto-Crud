@@ -7,7 +7,7 @@ package eus.tartangalh.crud.create;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -37,10 +37,10 @@ public class Proveedor implements Serializable {
     private String ciudad;
     private LocalDate fechaContratacion;
     
-    @OneToMany(mappedBy = "proveedor", cascade = CascadeType.ALL)
-    private List<Proveedor> proveedor;
+    @OneToMany(mappedBy = "provedor", cascade = CascadeType.ALL)
+    private Set<ProductoFarmaceutico> productoFarmaceutico;
 
-    public Proveedor(Integer idProveedor, String cif, String nombreProveedor, String calle, Integer codPostal, String ciudad, LocalDate fechaContratacion) {
+    public Proveedor(Integer idProveedor, String cif, String nombreProveedor, String calle, Integer codPostal, String ciudad, LocalDate fechaContratacion, Set<ProductoFarmaceutico> productoFarmaceutico) {
         this.idProveedor = idProveedor;
         this.cif = cif;
         this.nombreProveedor = nombreProveedor;
@@ -48,7 +48,10 @@ public class Proveedor implements Serializable {
         this.codPostal = codPostal;
         this.ciudad = ciudad;
         this.fechaContratacion = fechaContratacion;
+        this.productoFarmaceutico = productoFarmaceutico;
     }
+
+  
 
     public Proveedor() {
     }
@@ -110,7 +113,18 @@ public class Proveedor implements Serializable {
     public void setFechaContratacion(LocalDate fechaContratacion) {
         this.fechaContratacion = fechaContratacion;
     }
-    
+
+    public Set<ProductoFarmaceutico> getProductoFarmaceutico() {
+        return productoFarmaceutico;
+    }
+
+    public void setProductoFarmaceutico(Set<ProductoFarmaceutico> productoFarmaceutico) {
+        this.productoFarmaceutico = productoFarmaceutico;
+    }
+
+   
+
+  
     
 
     @Override
