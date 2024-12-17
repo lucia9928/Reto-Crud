@@ -7,10 +7,13 @@ package eus.tartangalh.crud.create;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -26,13 +29,16 @@ public class Proveedor implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idProveedor;
+    private Integer idProveedor; 
     private String cif;
     private String nombreProveedor;
     private String calle;
     private Integer codPostal;
     private String ciudad;
     private LocalDate fechaContratacion;
+    
+    @OneToMany(mappedBy = "proveedor", cascade = CascadeType.ALL)
+    private List<Proveedor> proveedor;
 
     public Proveedor(Integer idProveedor, String cif, String nombreProveedor, String calle, Integer codPostal, String ciudad, LocalDate fechaContratacion) {
         this.idProveedor = idProveedor;
