@@ -7,7 +7,6 @@ package eus.tartangalh.crud.create;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;

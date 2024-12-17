@@ -7,6 +7,7 @@ package eus.tartangalh.crud.create;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -20,10 +21,18 @@ public class Cliente extends Usuario implements Serializable {
 
   private static final long serialVersionUID = 1L;
   private LocalDate fechaRegistro;
-  //private List<RecetaMedica>recetas;
+  private Set<RecetaMedica>recetas;
 
     public Cliente() {
         super();
+    }
+
+    public Set<RecetaMedica> getRecetas() {
+        return recetas;
+    }
+
+    public void setRecetas(Set<RecetaMedica> recetas) {
+        this.recetas = recetas;
     }
 
     public Cliente(LocalDate fechaRegistro) {
