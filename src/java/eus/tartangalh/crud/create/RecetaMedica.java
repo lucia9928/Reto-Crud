@@ -7,6 +7,7 @@ package eus.tartangalh.crud.create;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -31,13 +32,12 @@ public class RecetaMedica implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer idReceta;
-    //private List<ProductoFarmaceutico>listaProductos;
     private LocalDate fechaReceta;
     private String descripcion;
     private Integer cantidad;
-   //@ManyToMany(fetch = FetchType.EAGER)
-    //@JoinTable(name="Producto_Farmaceutico", schema="farmaciabd", joinColumns= @JoinColumn(name="producto_idProducto", referencedColumnName="idProducto"), inverseJoinColumns=@JoinColumn(name="producto_idPrdocuto", referencedColumnName="idProducto"))
-   //private Set<ProductoFarmaceutico>productos;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name="Producto_Farmaceutico", schema="farmaciabd", joinColumns= @JoinColumn(name="producto_idProducto", referencedColumnName="idProducto"), inverseJoinColumns=@JoinColumn(name="producto_idPrdocuto", referencedColumnName="idProducto"))
+    private List<ProductoFarmaceutico>listaProductos;
     public RecetaMedica() {
         
     }
@@ -47,6 +47,14 @@ public class RecetaMedica implements Serializable {
         this.fechaReceta = fechaReceta;
         this.descripcion = descripcion;
         this.cantidad = cantidad;
+    }
+
+    public <ProductoFarmaceutico> getListaProductos() {
+        return listaProductos;
+    }
+
+    public void setListaProductos(<ProductoFarmaceutico> listaProductos) {
+        this.listaProductos = listaProductos;
     }
 
     private static final long serialVersionUID = 1L;
