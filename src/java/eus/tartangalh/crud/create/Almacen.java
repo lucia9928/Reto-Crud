@@ -7,12 +7,17 @@ package eus.tartangalh.crud.create;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
+import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -31,6 +36,8 @@ public class Almacen implements Serializable {
     private String ciudad;
     private Integer metrosCuadrados;
     private LocalDate fechaAdquisicion;
+    @OneToMany(cascade=ALL, mappedBy="almacen")
+    private List<ProductoFarmaceutico> producto;
 
     public Almacen(Integer idAlmacen, String pais, String ciudad, Integer metrosCuadrados, LocalDate fechaAdquisicion) {
         this.idAlmacen = idAlmacen;
@@ -42,6 +49,17 @@ public class Almacen implements Serializable {
     
     public Almacen() {
     }
+
+    @XmlTransient    
+    public List<ProductoFarmaceutico> getProducto() {
+        return producto;
+    }
+
+    public void setProducto(List<ProductoFarmaceutico> producto) {
+        this.producto = producto;
+    }
+    
+    
     
     public Integer getIdAlmacen() {
         return idAlmacen;
