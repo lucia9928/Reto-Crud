@@ -37,7 +37,7 @@ public class RecetaMedica implements Serializable {
     private Integer cantidad;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name="Producto_Farmaceutico", schema="farmaciabd", joinColumns= @JoinColumn(name="producto_idProducto", referencedColumnName="idProducto"), inverseJoinColumns=@JoinColumn(name="producto_idPrdocuto", referencedColumnName="idProducto"))
-    private List<ProductoFarmaceutico>listaProductos;
+    private Set<ProductoFarmaceutico>listaProductos;
     public RecetaMedica() {
         
     }
