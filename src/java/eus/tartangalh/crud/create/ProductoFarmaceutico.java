@@ -7,12 +7,18 @@ package eus.tartangalh.crud.create;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.CascadeType.MERGE;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import static javax.persistence.FetchType.EAGER;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -31,9 +37,6 @@ public class ProductoFarmaceutico implements Serializable {
     */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    
-    private Long id;
-    
     private Integer idProducto;
     /*
     *Nombre del producto
@@ -59,8 +62,27 @@ public class ProductoFarmaceutico implements Serializable {
     /*
     *Precio del producto
     */
+   
     private Float precio;
-
+    @ManyToOne
+    private Almacen almacen;
+    /*
+    *Referencia a gestiona
+    */
+    @OneToMany(cascade=ALL, mappedBy="ProductoFarmaceutico")
+    private Gestiona gestiona;
+    /*
+    *Referencia a receta
+    */    
+    @ManyToMany(mappedBy="productos")
+    private Set<RecetaMedica> receta;
+    /*
+    *Referencia a proveedor
+    */     
+    @ManyToOne
+    private Proveedor provedor;
+    
+    
     public ProductoFarmaceutico() {
     }
 
