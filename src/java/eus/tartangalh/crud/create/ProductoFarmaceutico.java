@@ -7,6 +7,7 @@ package eus.tartangalh.crud.create;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Set;
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.CascadeType.MERGE;
 import javax.persistence.Entity;
@@ -24,7 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author 2dam
+ * @author oscar
  */
 @Entity
 @Table(name="Producto_Farmaceutico", schema="farmaciabd")
@@ -62,25 +63,25 @@ public class ProductoFarmaceutico implements Serializable {
     /*
     *Precio del producto
     */
-   
+    
     private Float precio;
     @ManyToOne
     private Almacen almacen;
     /*
     *Referencia a gestiona
     */
-    @OneToMany(cascade=ALL, mappedBy="ProductoFarmaceutico")
+    @OneToMany(cascade=ALL, mappedBy="Producto_Farmaceutico")
     private Gestiona gestiona;
     /*
     *Referencia a receta
     */    
-    @ManyToMany(mappedBy="productos")
-    private Set<RecetaMedica> receta;
+    @ManyToMany(mappedBy="listaProductos")
+    private RecetaMedica receta;
     /*
     *Referencia a proveedor
     */     
     @ManyToOne
-    private Proveedor provedor;
+    private Proveedor proveedor;
     
     
     public ProductoFarmaceutico() {

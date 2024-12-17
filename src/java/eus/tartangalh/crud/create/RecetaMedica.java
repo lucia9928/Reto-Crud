@@ -49,11 +49,11 @@ public class RecetaMedica implements Serializable {
         this.cantidad = cantidad;
     }
 
-    public <ProductoFarmaceutico> getListaProductos() {
+    public Set<ProductoFarmaceutico> getListaProductos() {
         return listaProductos;
     }
 
-    public void setListaProductos(<ProductoFarmaceutico> listaProductos) {
+    public void setListaProductos(Set<ProductoFarmaceutico> listaProductos) {
         this.listaProductos = listaProductos;
     }
 
