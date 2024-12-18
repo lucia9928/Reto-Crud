@@ -8,8 +8,9 @@ package eus.tartangalh.crud.create;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Set;
-import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -22,6 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name="Cliente", schema="farmaciabd")
 @XmlRootElement
+
 public class Cliente extends Usuario implements Serializable {
 
   private static final long serialVersionUID = 1L;

@@ -21,21 +21,22 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author melany
  */
 @Entity
-@Table(name="Trabajador", schema="farmaciabd")
+@Table(name = "Trabajador", schema = "farmaciabd")
 @XmlRootElement
 public class Trabajador extends Usuario implements Serializable {
 
-  private static final long serialVersionUID = 1L;
-  private LocalDate fechaContratacion;
-  @Enumerated(EnumType.STRING)
-  private TipoCargo tipoCargo;
-  @OneToMany( mappedBy ="trabajador")
-   private Set<Gestiona>gestionaProducto;
+    private static final long serialVersionUID = 1L;
+    private LocalDate fechaContratacion;
+    @Enumerated(EnumType.STRING)
+    private TipoCargo tipoCargo;
+    @OneToMany(mappedBy = "trabajador")
+    private Set<Gestiona> gestionaProducto;
+
     public Trabajador(LocalDate fechaContratacion, TipoCargo tipoCargo) {
         this.fechaContratacion = fechaContratacion;
         this.tipoCargo = tipoCargo;
     }
-  
+
     public Trabajador() {
         super();
     }
@@ -56,7 +57,6 @@ public class Trabajador extends Usuario implements Serializable {
         this.tipoCargo = tipoCargo;
     }
 
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -66,7 +66,7 @@ public class Trabajador extends Usuario implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-      super.equals(object);
+        super.equals(object);
         return true;
     }
 
@@ -74,5 +74,5 @@ public class Trabajador extends Usuario implements Serializable {
     public String toString() {
         return "eus.tartangalh.crud.create.Trabajador[ id=" + super.getDni() + " ]";
     }
-    
+
 }
