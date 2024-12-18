@@ -8,11 +8,13 @@ package eus.tartangalh.crud.create;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Set;
+import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -20,14 +22,15 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="Trabajador", schema="farmaciabd")
+@XmlRootElement
 public class Trabajador extends Usuario implements Serializable {
 
   private static final long serialVersionUID = 1L;
   private LocalDate fechaContratacion;
   @Enumerated(EnumType.STRING)
   private TipoCargo tipoCargo;
-  //@OneToMany(cascade=All, mappedBy ="trabajador")
-//private Set<Gestiona>gestionaProducto;
+  @OneToMany( mappedBy ="trabajador")
+   private Set<Gestiona>gestionaProducto;
     public Trabajador(LocalDate fechaContratacion, TipoCargo tipoCargo) {
         this.fechaContratacion = fechaContratacion;
         this.tipoCargo = tipoCargo;

@@ -16,12 +16,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author 2dam
  */
 @Entity
+@XmlRootElement
 public class Gestiona implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -30,13 +32,12 @@ public class Gestiona implements Serializable {
 
     @ManyToOne
     @MapsId("dni")
-    @JoinColumn(name = "trabajador_dni")
     private Trabajador trabajador;
 
     @ManyToOne
     @MapsId("idProducto")
-    @JoinColumn(name = "idProducto")
     private ProductoFarmaceutico productoFarmaceutico;
+    private LocalDate fechaCompra;
 
     private Integer cantidad;
 
@@ -48,6 +49,14 @@ public class Gestiona implements Serializable {
     }
 
     public Gestiona() {
+    }
+
+    public LocalDate getFechaCompra() {
+        return fechaCompra;
+    }
+
+    public void setFechaCompra(LocalDate fechaCompra) {
+        this.fechaCompra = fechaCompra;
     }
 
     public GestionaId getGestionaId() {

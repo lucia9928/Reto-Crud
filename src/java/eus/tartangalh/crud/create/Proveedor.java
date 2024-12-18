@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -37,7 +38,7 @@ public class Proveedor implements Serializable {
     private String ciudad;
     private LocalDate fechaContratacion;
     
-    @OneToMany(mappedBy = "provedor", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "provedor")
     private Set<ProductoFarmaceutico> productoFarmaceutico;
 
     public Proveedor(Integer idProveedor, String cif, String nombreProveedor, String calle, Integer codPostal, String ciudad, LocalDate fechaContratacion, Set<ProductoFarmaceutico> productoFarmaceutico) {
@@ -114,6 +115,7 @@ public class Proveedor implements Serializable {
         this.fechaContratacion = fechaContratacion;
     }
 
+    @XmlTransient
     public Set<ProductoFarmaceutico> getProductoFarmaceutico() {
         return productoFarmaceutico;
     }

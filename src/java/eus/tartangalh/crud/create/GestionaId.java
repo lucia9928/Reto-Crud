@@ -6,22 +6,22 @@
 package eus.tartangalh.crud.create;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import javax.persistence.Embeddable;
 
 /**
  *
  * @author 2dam
  */
+@Embeddable
 public class GestionaId implements Serializable{
     
     private String dni;
     private Integer idProducto;
-    private LocalDate fechaCompra;
 
-    public GestionaId(String dni, Integer idProducto, LocalDate fechaCompra) {
+    public GestionaId(String dni, Integer idProducto) {
         this.dni = dni;
         this.idProducto = idProducto;
-        this.fechaCompra = fechaCompra;
+     
     }
 
     public GestionaId() {
@@ -43,15 +43,5 @@ public class GestionaId implements Serializable{
         this.idProducto = idProducto;
     }
 
-    public LocalDate getFechaCompra() {
-        return fechaCompra;
-    }
-
-    public void setFechaCompra(LocalDate fechaCompra) {
-        this.fechaCompra = fechaCompra;
-    }
-    
-    
-    
     
 }

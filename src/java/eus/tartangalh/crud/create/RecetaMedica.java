@@ -16,8 +16,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -26,17 +28,18 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "Receta_Medica", schema="farmaciabd")
 @XmlRootElement
-
 public class RecetaMedica implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer idReceta;
+    @ManyToOne
+   private Cliente cliente;
     private LocalDate fechaReceta;
     private String descripcion;
     private Integer cantidad;
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name="Producto_Farmaceutico", schema="farmaciabd", joinColumns= @JoinColumn(name="producto_idProducto", referencedColumnName="idProducto"), inverseJoinColumns=@JoinColumn(name="producto_idProducto", referencedColumnName="idProducto"))
-    private Set<ProductoFarmaceutico>listaProductos;
+    @JoinTable(name="Producto_Farmaceutico", schema="farmaciabd")
+    private Set<ProductoFarmaceutico>productos;
 
     
     public RecetaMedica() {
@@ -52,12 +55,13 @@ public class RecetaMedica implements Serializable {
 
 
     private static final long serialVersionUID = 1L;
-  public Set<ProductoFarmaceutico> getListaProductos() {
-        return listaProductos;
+    @XmlTransient
+  public Set<ProductoFarmaceutico> getProductos() {
+        return productos;
     }
 
-    public void setListaProductos(Set<ProductoFarmaceutico> listaProductos) {
-        this.listaProductos = listaProductos;
+    public void setListaProductos(Set<ProductoFarmaceutico> productos) {
+        this.productos = productos;
     }
     public LocalDate getFechaReceta() {
         return fechaReceta;
