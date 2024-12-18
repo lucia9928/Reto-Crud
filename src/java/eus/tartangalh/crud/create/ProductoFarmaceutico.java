@@ -68,8 +68,8 @@ public class ProductoFarmaceutico implements Serializable {
     /*
     *Referencia a gestiona
     */
-    @OneToMany(cascade=ALL, mappedBy="ProductoFarmaceutico")
-    private Gestiona gestiona;
+    @OneToMany(mappedBy="productoFarmaceutico")
+    private Set<Gestiona> gestiona;
     /*
     *Referencia a receta
     */    
