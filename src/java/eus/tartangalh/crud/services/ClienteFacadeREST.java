@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package service;
+package eus.tartangalh.crud.services;
 
 import eus.tartangalh.crud.create.Cliente;
 import java.util.List;

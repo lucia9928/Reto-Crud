@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package service;
+package eus.tartangalh.crud.services;
 
-import eus.tartangalh.crud.create.RecetaMedica;
+import eus.tartangalh.crud.create.ProductoFarmaceutico;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -25,27 +25,27 @@ import javax.ws.rs.core.MediaType;
  * @author 2dam
  */
 @Stateless
-@Path("eus.tartangalh.crud.create.recetamedica")
-public class RecetaMedicaFacadeREST extends AbstractFacade<RecetaMedica> {
+@Path("eus.tartangalh.crud.create.productofarmaceutico")
+public class ProductoFarmaceuticoFacadeREST extends AbstractFacade<ProductoFarmaceutico> {
 
     @PersistenceContext(unitName = "CRUDWebApplicationPU")
     private EntityManager em;
 
-    public RecetaMedicaFacadeREST() {
-        super(RecetaMedica.class);
+    public ProductoFarmaceuticoFacadeREST() {
+        super(ProductoFarmaceutico.class);
     }
 
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(RecetaMedica entity) {
+    public void create(ProductoFarmaceutico entity) {
         super.create(entity);
     }
 
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Integer id, RecetaMedica entity) {
+    public void edit(@PathParam("id") Integer id, ProductoFarmaceutico entity) {
         super.edit(entity);
     }
 
@@ -58,21 +58,21 @@ public class RecetaMedicaFacadeREST extends AbstractFacade<RecetaMedica> {
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public RecetaMedica find(@PathParam("id") Integer id) {
+    public ProductoFarmaceutico find(@PathParam("id") Integer id) {
         return super.find(id);
     }
 
     @GET
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<RecetaMedica> findAll() {
+    public List<ProductoFarmaceutico> findAll() {
         return super.findAll();
     }
 
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<RecetaMedica> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
+    public List<ProductoFarmaceutico> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
     }
 
