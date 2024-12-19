@@ -17,6 +17,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -27,6 +28,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name="Producto_Farmaceutico", schema="farmaciabd")
+@NamedQuery(name="findAllProducts",
+            query="SELECT a FROM Producto_Farmaceutico a ORDER BY a.idProducto DESC")
 @XmlRootElement
 public class ProductoFarmaceutico implements Serializable {
 
@@ -61,7 +64,7 @@ public class ProductoFarmaceutico implements Serializable {
     /*
     *Precio del producto
     */
-   
+    
     private Float precio;
     @ManyToOne
     private Almacen almacen;
