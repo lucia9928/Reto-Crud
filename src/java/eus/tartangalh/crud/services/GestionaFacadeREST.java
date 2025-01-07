@@ -24,7 +24,7 @@ import javax.ws.rs.core.PathSegment;
 
 /**
  *
- * @author 2dam
+ * @author markel
  */
 @Stateless
 @Path("eus.tartangalh.crud.create.gestiona")

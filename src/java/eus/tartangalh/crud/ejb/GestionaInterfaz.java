@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package eus.tartangalh.crud.services;
+package eus.tartangalh.crud.ejb;
 
 /**
  *
- * @author 2dam
+ * @author markel
  */
 public interface GestionaInterfaz {
     
