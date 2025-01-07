@@ -5,8 +5,10 @@
  */
 package eus.tartangalh.crud.services;
 
+import eus.tartangalh.crud.ejb.ProveedorInterfaz;
 import eus.tartangalh.crud.create.Proveedor;
 import java.util.List;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -14,6 +16,7 @@ import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -23,7 +26,7 @@ import javax.ws.rs.core.MediaType;
 
 /**
  *
- * @author 2dam
+ * @author markel
  */
 @Path("eus.tartangalh.crud.create.proveedor")
 public class ProveedorFacadeREST {
@@ -34,11 +37,13 @@ public class ProveedorFacadeREST {
     public ProveedorFacadeREST() {
 
     }
+    private Logger LOGGER = Logger.getLogger(ProveedorFacadeREST.class.getName());
 
     @POST
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 
-    public void create(Proveedor entity) {
+    public void crear(Proveedor proveedor) {
+       ejb.crearProveedor(proveedor);
 
     }
 

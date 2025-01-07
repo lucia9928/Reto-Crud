@@ -5,13 +5,12 @@
  */
 package eus.tartangalh.crud.ejb;
 
-import eus.tartangalh.crud.services.GestionaInterfaz;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author 2dam
+ * @author markel
  */
 public class EJBGestiona implements GestionaInterfaz {
 
