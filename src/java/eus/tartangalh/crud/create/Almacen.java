@@ -15,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -26,6 +27,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name="Almacen", schema="farmaciabd")
+@NamedQuery(name="encontrarAlmacenes",
+            query="SELECT c FROM Almacen c"
+)
 @XmlRootElement
 public class Almacen implements Serializable {
 
