@@ -14,7 +14,7 @@ import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author 2dam
+ * @author melany
  */
 @Stateless
 public class EJBTrabajador implements TrabajadorInterface{

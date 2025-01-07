@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  *
- * @author 2dam
+ * @author melany
  */
 public interface ClienteInterface {
      public void crearCliente (Cliente  account);

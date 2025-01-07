@@ -25,7 +25,8 @@ import javax.ws.rs.core.MediaType;
 
 /**
  *
- * @author 2dam
+ * @author Melany
+ *
  */
 @Path("eus.tartangalh.crud.create.recetamedica")
 public class RecetaMedicaFacadeREST {
