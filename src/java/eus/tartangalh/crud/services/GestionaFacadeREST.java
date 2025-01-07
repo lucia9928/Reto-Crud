@@ -28,10 +28,7 @@ import javax.ws.rs.core.PathSegment;
  */
 @Stateless
 @Path("eus.tartangalh.crud.create.gestiona")
-public class GestionaFacadeREST extends AbstractFacade<Gestiona> {
-
-    @PersistenceContext(unitName = "CRUDWebApplicationPU")
-    private EntityManager em;
+public class GestionaFacadeREST {
 
     private GestionaId getPrimaryKey(PathSegment pathSegment) {
         /*
@@ -55,28 +52,24 @@ public class GestionaFacadeREST extends AbstractFacade<Gestiona> {
     }
 
     public GestionaFacadeREST() {
-        super(Gestiona.class);
+
     }
 
     @POST
-    @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(Gestiona entity) {
-        super.create(entity);
     }
 
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void edit(@PathParam("id") PathSegment id, Gestiona entity) {
-        super.edit(entity);
     }
 
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") PathSegment id) {
         eus.tartangalh.crud.create.GestionaId key = getPrimaryKey(id);
-        super.remove(super.find(key));
     }
 
     @GET
@@ -84,33 +77,20 @@ public class GestionaFacadeREST extends AbstractFacade<Gestiona> {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Gestiona find(@PathParam("id") PathSegment id) {
         eus.tartangalh.crud.create.GestionaId key = getPrimaryKey(id);
-        return super.find(key);
+        return null;
     }
 
     @GET
-    @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Gestiona> findAll() {
-        return super.findAll();
+        return null;
     }
 
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Gestiona> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return super.findRange(new int[]{from, to});
+        return null;
     }
 
-    @GET
-    @Path("count")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String countREST() {
-        return String.valueOf(super.count());
-    }
-
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
-    }
-    
 }
