@@ -7,6 +7,7 @@ package eus.tartangalh.crud.services;
 
 import eus.tartangalh.crud.create.Proveedor;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -24,68 +25,65 @@ import javax.ws.rs.core.MediaType;
  *
  * @author 2dam
  */
-@Stateless
 @Path("eus.tartangalh.crud.create.proveedor")
-public class ProveedorFacadeREST extends AbstractFacade<Proveedor> {
+public class ProveedorFacadeREST {
 
-    @PersistenceContext(unitName = "CRUDWebApplicationPU")
-    private EntityManager em;
+    @EJB
+    private ProveedorInterfaz ejb;
 
     public ProveedorFacadeREST() {
-        super(Proveedor.class);
+
     }
 
     @POST
-    @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+
     public void create(Proveedor entity) {
-        super.create(entity);
+
     }
 
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void edit(@PathParam("id") Integer id, Proveedor entity) {
-        super.edit(entity);
+
     }
 
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
-        super.remove(super.find(id));
+
     }
 
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Proveedor find(@PathParam("id") Integer id) {
-        return super.find(id);
+        return null;
+
     }
 
     @GET
-    @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Proveedor> findAll() {
-        return super.findAll();
+        return null;
+
     }
 
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Proveedor> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return super.findRange(new int[]{from, to});
+        return null;
+
     }
 
     @GET
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
     public String countREST() {
-        return String.valueOf(super.count());
+        return null;
+
     }
 
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
-    }
-    
 }

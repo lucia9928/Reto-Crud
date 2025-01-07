@@ -26,66 +26,57 @@ import javax.ws.rs.core.MediaType;
  */
 @Stateless
 @Path("eus.tartangalh.crud.create.trabajador")
-public class TrabajadorFacadeREST extends AbstractFacade<Trabajador> {
+public class TrabajadorFacadeREST {
 
     @PersistenceContext(unitName = "CRUDWebApplicationPU")
     private EntityManager em;
 
-    public TrabajadorFacadeREST() {
-        super(Trabajador.class);
-    }
 
     @POST
-    @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(Trabajador entity) {
-        super.create(entity);
+       
     }
 
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void edit(@PathParam("id") String id, Trabajador entity) {
-        super.edit(entity);
+      
     }
 
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") String id) {
-        super.remove(super.find(id));
+      
     }
 
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Trabajador find(@PathParam("id") String id) {
-        return super.find(id);
+        return null;
     }
 
     @GET
-    @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Trabajador> findAll() {
-        return super.findAll();
+    public List<Trabajador> encontrarTodosl() {
+        return null;
     }
 
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Trabajador> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return super.findRange(new int[]{from, to});
+    public List<Trabajador> encontrarTrabajadorId(@PathParam("from") Integer from, @PathParam("to") Integer to) {
+       
+        return null;
     }
 
     @GET
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
     public String countREST() {
-        return String.valueOf(super.count());
-    }
-
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
+        return null;
     }
     
 }

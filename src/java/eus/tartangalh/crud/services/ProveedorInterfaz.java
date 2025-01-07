@@ -3,7 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-/*
-This is the package info
-*/
-package eus.tartangalh.crud.ejb;
+package eus.tartangalh.crud.services;
+
+/**
+ *
+ * @author 2dam
+ */
+public interface ProveedorInterfaz {
+    
+}
