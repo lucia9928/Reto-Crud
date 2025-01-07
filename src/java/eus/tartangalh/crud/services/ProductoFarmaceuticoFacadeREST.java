@@ -8,6 +8,7 @@ package eus.tartangalh.crud.services;
 import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 import eus.tartangalh.crud.create.ProductoFarmaceutico;
 import eus.tartangalh.crud.ejb.EJBProductoFarmaceutico;
+import excepciones.ActualizarException;
 import excepciones.BorrarException;
 import excepciones.CrearException;
 import excepciones.LeerException;
@@ -65,7 +66,7 @@ public class ProductoFarmaceuticoFacadeREST {
             LOGGER.log(Level.INFO, "Actualizando producto {0}",
                     producto.getId());
             ejb.actualizarProducto(producto);
-        } catch (Exception e) {
+        } catch (ActualizarException e) {
             LOGGER.severe(e.getMessage());
             throw new InternalServerErrorException(e.getMessage());
         }
