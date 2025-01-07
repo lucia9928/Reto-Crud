@@ -23,21 +23,21 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author 2dam
  */
 @Entity
-@Table(name="Proveedor", schema = "farmaciabd")
+@Table(name = "Proveedor", schema = "farmaciabd")
 @XmlRootElement
 public class Proveedor implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idProveedor; 
+    private Integer idProveedor;
     private String cif;
     private String nombreProveedor;
     private String calle;
     private Integer codPostal;
     private String ciudad;
     private LocalDate fechaContratacion;
-    
+
     @OneToMany(mappedBy = "provedor")
     private Set<ProductoFarmaceutico> productoFarmaceutico;
 
@@ -52,12 +52,8 @@ public class Proveedor implements Serializable {
         this.productoFarmaceutico = productoFarmaceutico;
     }
 
-  
-
     public Proveedor() {
     }
-    
-    
 
     public Integer getIdProveedor() {
         return idProveedor;
@@ -124,11 +120,6 @@ public class Proveedor implements Serializable {
         this.productoFarmaceutico = productoFarmaceutico;
     }
 
-   
-
-  
-    
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -153,5 +144,5 @@ public class Proveedor implements Serializable {
     public String toString() {
         return "eus.tartangalh.crud.create.Proveedor[ id=" + idProveedor + " ]";
     }
-    
+
 }
