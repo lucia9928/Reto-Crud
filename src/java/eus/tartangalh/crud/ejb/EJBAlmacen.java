@@ -6,7 +6,9 @@
 package eus.tartangalh.crud.ejb;
 
 import eus.tartangalh.crud.create.Almacen;
+import eus.tartangalh.crud.create.RecetaMedica;
 import eus.tartangalh.crud.ejb.AlmacenInterface;
+import excepciones.LeerException;
 import java.io.Serializable;
 import javax.ejb.CreateException;
 import javax.ejb.Stateless;
@@ -71,6 +73,17 @@ public class EJBAlmacen implements AlmacenInterface {
         } catch (Exception e) {
             // Manejar la excepción según sea necesario.
         }
+    }
+
+    @Override
+    public Almacen findCustomer(Long id) throws LeerException {
+        Almacen almacen;
+        try {
+            almacen = em.find(Almacen.class, id);
+        } catch (Exception e) {
+            throw new LeerException(e.getMessage());
+        }
+        return almacen;
     }
 
 }
