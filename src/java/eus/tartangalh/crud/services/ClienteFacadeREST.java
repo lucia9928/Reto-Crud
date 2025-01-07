@@ -7,7 +7,10 @@ package eus.tartangalh.crud.services;
 
 import eus.tartangalh.crud.create.Cliente;
 import eus.tartangalh.crud.ejb.ClienteInterface;
+import excepciones.CrearException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 
 import javax.persistence.EntityManager;
@@ -15,6 +18,7 @@ import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -30,13 +34,19 @@ import javax.ws.rs.core.MediaType;
 public class ClienteFacadeREST {
 @EJB
     private ClienteInterface ejb;
-    @PersistenceContext(unitName = "CRUDWebApplicationPU")
-    private EntityManager em;
-
+        @PersistenceContext(unitName = "CRUDWebApplicationPU")
+       private Logger LOGGER=Logger.getLogger(ClienteFacadeREST.class.getName());
+        
     @POST
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Cliente entity) {
-       
+    public void crearCliente(Cliente cliente) {
+       try {
+         LOGGER.log(Level.INFO,"creando receta {0}", cliente.getDni());
+        ejb.crearCliente(cliente);
+        } catch (CrearException ex){
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());        
+        }
     }
 
     @PUT
