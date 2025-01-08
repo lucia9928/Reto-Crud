@@ -71,7 +71,8 @@ public class EJBRecetaMedica implements RecetaMedicaInterface{
             em.flush();
         }catch(Exception e){
             throw new ActualizarException(e.getMessage());
-        }    }
+        } 
+    }
 
  
     

@@ -42,7 +42,7 @@ public class ClienteFacadeREST {
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void crearCliente(Cliente cliente) {
        try {
-         LOGGER.log(Level.INFO,"creando receta {0}", cliente.getDni());
+         LOGGER.log(Level.INFO,"creando cliente {0}", cliente.getDni());
         ejb.crearCliente(cliente);
         } catch (CrearException ex){
             LOGGER.severe(ex.getMessage());
@@ -55,7 +55,7 @@ public class ClienteFacadeREST {
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void modificarCliente(@PathParam("id") String id, Cliente cliente) {
 try {
-            LOGGER.log(Level.INFO,"Updating account {0}",cliente.getDni());
+            LOGGER.log(Level.INFO,"Modificando el cliente{0}",cliente.getDni());
             ejb.modificarCliente(cliente);
         } catch (ActualizarException ex) {
             LOGGER.severe(ex.getMessage());
@@ -80,7 +80,7 @@ try {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Cliente encontrarPorId(@PathParam("id") String id) {
    try {
-            LOGGER.log(Level.INFO,"Leer las recetas por id {0}",id);
+            LOGGER.log(Level.INFO,"Leer los clientes por id {0}",id);
             return ejb.encontrarClienteId(id);
         } catch (LeerException ex) {
             LOGGER.severe(ex.getMessage());
@@ -94,7 +94,7 @@ try {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Cliente> encontrarTodosLosClientes() {
           try {
-            LOGGER.log(Level.INFO,"Reading data for all accounts");
+            LOGGER.log(Level.INFO,"Buscar todos los clientes");
             return ejb.encontrarTodosCliente();
         } catch (LeerException ex) {
             LOGGER.severe(ex.getMessage());

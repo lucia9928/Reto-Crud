@@ -15,6 +15,7 @@ import java.util.List;
 /**
  *
  * @author melany
+ * 
  */
 public interface RecetaMedicaInterface {
     public void crearRecetaMedica (RecetaMedica  receta)throws CrearException;
