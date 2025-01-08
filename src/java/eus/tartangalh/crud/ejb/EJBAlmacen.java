@@ -1,22 +1,29 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Para cambiar esta cabecera de licencia, elige "Propiedades del proyecto".
+ * Para cambiar este archivo de plantilla, selecciona "Herramientas | Plantillas"
+ * y abre la plantilla en el editor.
  */
 package eus.tartangalh.crud.ejb;
 
 import eus.tartangalh.crud.create.Almacen;
 import eus.tartangalh.crud.create.RecetaMedica;
 import eus.tartangalh.crud.ejb.AlmacenInterface;
+import excepciones.ActualizarException;
+import excepciones.BorrarException;
+import excepciones.CrearException;
 import excepciones.LeerException;
 import java.io.Serializable;
+import java.util.List;
+import java.util.Set;
 import javax.ejb.CreateException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- *
+ * Clase Stateless para la gestión de la entidad Almacen en el sistema.
+ * Proporciona métodos para crear, actualizar, eliminar y buscar registros de almacenes.
+ * 
  * @author Andoni
  */
 @Stateless
@@ -26,64 +33,76 @@ public class EJBAlmacen implements AlmacenInterface {
     private EntityManager em;
 
     /**
-     * Este método crea un nuevo almacén en el sistema.
+     * Crea un nuevo almacén en el sistema.
      *
-     * @param almacen El objeto de la entidad Almacen que contiene los datos del
-     * nuevo almacén.
-     * @throws CreateException Lanzada cuando ocurre un error o excepción
-     * durante la creación.
+     * @param almacen El objeto de la entidad Almacen que contiene los datos del nuevo almacén.
+     * @throws CrearException Lanzada cuando ocurre un error durante la creación.
      */
-    public void crearAlmacen(Almacen almacen) {
+    public void crearAlmacen(Almacen almacen) throws CrearException {
         try {
             em.persist(almacen);
         } catch (Exception e) {
-            // Manejar la excepción según sea necesario.
+            throw new CrearException("Error al crear el almacén: " + e.getMessage());
         }
     }
 
     /**
-     * Este método actualiza los datos de un almacén existente en el sistema.
+     * Actualiza los datos de un almacén existente.
      *
-     * @param almacen El objeto de la entidad Almacen que contiene los datos
-     * modificados del almacén.
-     * @throws UpdateException Lanzada cuando ocurre un error o excepción
-     * durante la actualización.
+     * @param almacen El objeto de la entidad Almacen que contiene los datos modificados.
+     * @throws ActualizarException Lanzada cuando ocurre un error durante la actualización.
      */
-    public void actualizarAlmacen(Almacen almacen) {
+    public void actualizarAlmacen(Almacen almacen) throws ActualizarException {
         try {
             if (!em.contains(almacen)) {
                 em.merge(almacen);
             }
             em.flush();
         } catch (Exception e) {
-            // Manejar la excepción según sea necesario.
+            throw new ActualizarException("Error al actualizar el almacén: " + e.getMessage());
         }
     }
 
     /**
-     * Este método elimina un almacén del sistema.
+     * Elimina un almacén del sistema.
      *
      * @param almacen El objeto de la entidad Almacen que se desea eliminar.
-     * @throws DeleteException Lanzada cuando ocurre un error o excepción
-     * durante la eliminación.
+     * @throws BorrarException Lanzada cuando ocurre un error durante la eliminación.
      */
-    public void borrarAlmacen(Almacen almacen) {
+    public void borrarAlmacen(Almacen almacen) throws BorrarException {
         try {
             em.remove(em.merge(almacen));
         } catch (Exception e) {
-            // Manejar la excepción según sea necesario.
+            throw new BorrarException("Error al borrar el almacén: " + e.getMessage());
         }
     }
 
-    @Override
-    public Almacen findCustomer(Long id) throws LeerException {
-        Almacen almacen;
+    /**
+     * Encuentra un almacén por su ID.
+     *
+     * @param id El ID del almacén a buscar.
+     * @return El objeto Almacen encontrado.
+     * @throws LeerException Lanzada cuando ocurre un error durante la búsqueda.
+     */
+    public Almacen encontrarAlmacen(Long id) throws LeerException {
         try {
-            almacen = em.find(Almacen.class, id);
+            return em.find(Almacen.class, id);
         } catch (Exception e) {
-            throw new LeerException(e.getMessage());
+            throw new LeerException("Error al leer el almacén: " + e.getMessage());
         }
-        return almacen;
     }
 
+    /**
+     * Encuentra todos los almacenes registrados en el sistema.
+     *
+     * @return Una lista de objetos Almacen.
+     * @throws LeerException Lanzada cuando ocurre un error durante la búsqueda.
+     */
+    public List<Almacen> encontrarTodosAlmacenes() throws LeerException {
+        try {
+            return em.createNamedQuery("encontrarTodosAlmacenes", Almacen.class).getResultList();
+        } catch (Exception e) {
+            throw new LeerException("Error al leer todos los almacenes: " + e.getMessage());
+        }
+    }
 }

@@ -11,6 +11,7 @@ import excepciones.ActualizarException;
 import excepciones.BorrarException;
 import excepciones.CrearException;
 import excepciones.LeerException;
+import java.util.Set;
 
 /**
  *
@@ -23,20 +24,19 @@ public interface AlmacenInterface {
      *
      * @param almacen El objeto de la entidad Almacen que contiene los datos del
      * nuevo almacén.
-     * @throws CrearException Lanzada cuando ocurre un error o excepción
-     * durante la creación.
+     * @throws CrearException Lanzada cuando ocurre un error o excepción durante
+     * la creación.
      */
     public void crearAlmacen(Almacen almacen) throws CrearException;
-    
+
     /**
      * Este método lee un almacén del sistema.
      *
      * @param id El objeto de la entidad Almacen que se desea leer.
-     * @throws LeerException Lanzada cuando ocurre un error o excepción
-     * durante la lectura.
+     * @throws LeerException Lanzada cuando ocurre un error o excepción durante
+     * la lectura.
      */
-    
-    public Almacen findCustomer(Long id) throws LeerException;
+    public Almacen encontrarAlmacen(Long id) throws LeerException;
 
     /**
      * Este método actualiza los datos de un almacén existente en el sistema.
@@ -46,7 +46,6 @@ public interface AlmacenInterface {
      * @throws ActualizarException Lanzada cuando ocurre un error o excepción
      * durante la actualización.
      */
- 
     public void actualizarAlmacen(Almacen almacen) throws ActualizarException;
 
     /**
