@@ -1,91 +1,132 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Servicio RESTful para la gestión de almacenes.
+ * Este servicio permite realizar operaciones CRUD sobre entidades de tipo Almacen
+ * mediante métodos HTTP como POST, PUT, GET y DELETE.
  */
 package eus.tartangalh.crud.services;
 
 import eus.tartangalh.crud.create.Almacen;
+import eus.tartangalh.crud.ejb.EJBAlmacen;
+import excepciones.ActualizarException;
+import excepciones.BorrarException;
+import excepciones.CrearException;
+import excepciones.LeerException;
 import java.util.List;
-import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.ejb.EJB;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 /**
+ * Servicio REST para gestionar entidades de tipo Almacen. Proporciona endpoints
+ * para crear, actualizar, eliminar y consultar almacenes.
  *
- * @author 2dam
+ * Autor: Javier Martín Uría
  */
-@Stateless
-@Path("eus.tartangalh.crud.create.almacen")
-public class AlmacenFacadeREST extends AbstractFacade<Almacen> {
+@Path("account")
+public class AlmacenFacadeREST {
 
-    @PersistenceContext(unitName = "CRUDWebApplicationPU")
-    private EntityManager em;
+    /**
+     * Objeto EJB que implementa la lógica de negocio relacionada con Almacen.
+     */
+    @EJB
+    private EJBAlmacen ejb;
 
-    public AlmacenFacadeREST() {
-        super(Almacen.class);
-    }
+    /**
+     * Logger para registrar información y errores de la clase.
+     */
+    private Logger LOGGER = Logger.getLogger(AlmacenFacadeREST.class.getName());
 
+    /**
+     * Método POST para crear un nuevo almacén. Llama al método de negocio
+     * "crearAlmacen" del EJB.
+     *
+     * @param almacen Objeto Almacen que contiene los datos a crear.
+     */
     @POST
-    @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Almacen entity) {
-        super.create(entity);
+    public void crearAlmacen(Almacen almacen) {
+        try {
+            LOGGER.log(Level.INFO, "Creando almacén {0}", almacen.getIdAlmacen());
+            ejb.crearAlmacen(almacen);
+        } catch (CrearException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
     }
 
+    /**
+     * Método PUT para actualizar un almacén existente. Llama al método de
+     * negocio "actualizarAlmacen" del EJB.
+     *
+     * @param almacen Objeto Almacen con los datos actualizados.
+     */
     @PUT
-    @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Integer id, Almacen entity) {
-        super.edit(entity);
+    public void actualizarAlmacen(Almacen almacen) {
+        try {
+            LOGGER.log(Level.INFO, "Actualizando almacén {0}", almacen.getIdAlmacen());
+            ejb.actualizarAlmacen(almacen);
+        } catch (ActualizarException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
     }
 
+    /**
+     * Método DELETE para eliminar un almacén. Llama al método de negocio
+     * "borrarAlmacen" del EJB.
+     *
+     * @param id Identificador del almacén a eliminar.
+     */
     @DELETE
     @Path("{id}")
-    public void remove(@PathParam("id") Integer id) {
-        super.remove(super.find(id));
+    public void borrarAlmacen(@PathParam("id") Long id) {
+        try {
+            LOGGER.log(Level.INFO, "Eliminando almacén {0}", id);
+            ejb.borrarAlmacen(ejb.encontrarAlmacen(id));
+        } catch (LeerException | BorrarException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
     }
 
+    /**
+     * Método GET para consultar un almacén por su identificador. Llama al
+     * método de negocio "encontrarAlmacen" del EJB.
+     *
+     * @param id Identificador del almacén a consultar.
+     * @return Objeto Almacen correspondiente al identificador proporcionado.
+     */
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Almacen find(@PathParam("id") Integer id) {
-        return super.find(id);
+    public Almacen encontrar(@PathParam("id") Long id) {
+        try {
+            LOGGER.log(Level.INFO, "Leyendo datos del almacén {0}", id);
+            return ejb.encontrarAlmacen(id);
+        } catch (LeerException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
     }
 
+    /**
+     * Método GET para consultar todos los almacenes. Llama al método de negocio
+     * "encontrarTodosAlmacenes" del EJB.
+     *
+     * @return Lista de objetos Almacen.
+     */
     @GET
-    @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Almacen> findAll() {
-        return super.findAll();
+        try {
+            LOGGER.log(Level.INFO, "Leyendo datos de todos los almacenes");
+            return ejb.encontrarTodosAlmacenes();
+        } catch (LeerException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
     }
-
-    @GET
-    @Path("{from}/{to}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Almacen> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return super.findRange(new int[]{from, to});
-    }
-
-    @GET
-    @Path("count")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String countREST() {
-        return String.valueOf(super.count());
-    }
-
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
-    }
-    
 }

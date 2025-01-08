@@ -64,8 +64,6 @@ public class Almacen implements Serializable {
         this.producto = producto;
     }
     
-    
-    
     public Integer getIdAlmacen() {
         return idAlmacen;
     }
