@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -38,7 +39,7 @@ public class Proveedor implements Serializable {
     private String ciudad;
     private LocalDate fechaContratacion;
 
-    @OneToMany(mappedBy = "provedor")
+    @OneToMany(mappedBy = "proveedor")
     private Set<ProductoFarmaceutico> productoFarmaceutico;
 
     public Proveedor(Integer idProveedor, String cif, String nombreProveedor, String calle, Integer codPostal, String ciudad, LocalDate fechaContratacion, Set<ProductoFarmaceutico> productoFarmaceutico) {

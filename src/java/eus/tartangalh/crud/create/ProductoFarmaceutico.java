@@ -79,7 +79,7 @@ public class ProductoFarmaceutico implements Serializable {
     *Referencia a proveedor
     */     
     @ManyToOne
-    private Proveedor provedor;
+    private Proveedor proveedor;
     
     
     public ProductoFarmaceutico() {

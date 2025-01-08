@@ -7,7 +7,9 @@ package eus.tartangalh.crud.services;
 
 import eus.tartangalh.crud.create.Gestiona;
 import eus.tartangalh.crud.create.GestionaId;
+import eus.tartangalh.crud.ejb.GestionaInterfaz;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -29,6 +31,9 @@ import javax.ws.rs.core.PathSegment;
 @Stateless
 @Path("eus.tartangalh.crud.create.gestiona")
 public class GestionaFacadeREST {
+
+    @EJB
+    private GestionaInterfaz ejb;
 
     private GestionaId getPrimaryKey(PathSegment pathSegment) {
         /*
@@ -57,19 +62,15 @@ public class GestionaFacadeREST {
 
     @POST
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Gestiona entity) {
+    public void crearGestiona(Gestiona gestiona) {
+        ejb.crearGestion(gestiona);
     }
 
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") PathSegment id, Gestiona entity) {
-    }
-
-    @DELETE
-    @Path("{id}")
-    public void remove(@PathParam("id") PathSegment id) {
-        eus.tartangalh.crud.create.GestionaId key = getPrimaryKey(id);
+    public void actualizarGestiona(@PathParam("id") PathSegment id, Gestiona gestiona) {
+        ejb.actualizarGestiona(gestiona);
     }
 
     @GET
@@ -78,6 +79,12 @@ public class GestionaFacadeREST {
     public Gestiona find(@PathParam("id") PathSegment id) {
         eus.tartangalh.crud.create.GestionaId key = getPrimaryKey(id);
         return null;
+    }
+
+    @DELETE
+    @Path("{id}")
+    public void remove(@PathParam("id") PathSegment id) {
+        eus.tartangalh.crud.create.GestionaId key = getPrimaryKey(id);
     }
 
     @GET

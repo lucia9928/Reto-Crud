@@ -5,10 +5,16 @@
  */
 package eus.tartangalh.crud.ejb;
 
+import eus.tartangalh.crud.create.Gestiona;
+
 /**
  *
  * @author markel
  */
 public interface GestionaInterfaz {
+
+    public void crearGestion(Gestiona gestiona);
+
+    public void actualizarGestiona(Gestiona gestiona);
     
 }

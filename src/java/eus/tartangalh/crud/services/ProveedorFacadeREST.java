@@ -41,37 +41,35 @@ public class ProveedorFacadeREST {
 
     @POST
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-
-    public void crear(Proveedor proveedor) {
-       ejb.crearProveedor(proveedor);
-
+    public void crearProveedor(Proveedor proveedor) {
+        ejb.crearProveedor(proveedor);
     }
 
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Integer id, Proveedor entity) {
-
+    public void actualizarProveedor(@PathParam("id") Integer id, Proveedor proveedor) {
+        ejb.actualizarProveedor(id, proveedor);
     }
 
     @DELETE
     @Path("{id}")
-    public void remove(@PathParam("id") Integer id) {
-
+    public void borrarProveedor(@PathParam("id") Integer id) {
+        ejb.borrarProveedor(id);
     }
 
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Proveedor find(@PathParam("id") Integer id) {
-        return null;
+    public Proveedor mostrarProveedor(@PathParam("id") Integer id) {
+        return ejb.encontrarProveedor(id);
 
     }
 
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Proveedor> findAll() {
-        return null;
+    public List<Proveedor> mostrarTodosProveedores() {
+        return ejb.mostrarTodosProveedores();
 
     }
 

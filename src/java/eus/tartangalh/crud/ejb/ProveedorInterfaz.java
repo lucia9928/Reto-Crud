@@ -6,6 +6,7 @@
 package eus.tartangalh.crud.ejb;
 
 import eus.tartangalh.crud.create.Proveedor;
+import java.util.List;
 
 /**
  *
@@ -14,5 +15,13 @@ import eus.tartangalh.crud.create.Proveedor;
 public interface ProveedorInterfaz {
 
     public void crearProveedor(Proveedor proveedor);
+
+    public Proveedor encontrarProveedor(Integer id);
+
+    public void borrarProveedor(Integer id);
+
+    public void actualizarProveedor(Integer id, Proveedor proveedor);
+
+    public List<Proveedor> mostrarTodosProveedores();
     
 }

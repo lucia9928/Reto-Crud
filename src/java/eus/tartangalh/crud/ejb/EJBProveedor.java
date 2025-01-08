@@ -6,6 +6,8 @@
 package eus.tartangalh.crud.ejb;
 
 import eus.tartangalh.crud.create.Proveedor;
+import java.util.List;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -13,6 +15,7 @@ import javax.persistence.PersistenceContext;
  *
  * @author markel
  */
+@Stateless
 public class EJBProveedor implements ProveedorInterfaz {
 
     @PersistenceContext(unitName = "CRUDWebApplicationPU")
@@ -22,6 +25,25 @@ public class EJBProveedor implements ProveedorInterfaz {
     public void crearProveedor(Proveedor proveedor) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
+    @Override
+    public Proveedor encontrarProveedor(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void borrarProveedor(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void actualizarProveedor(Integer id, Proveedor proveedor) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Proveedor> mostrarTodosProveedores() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
 }
