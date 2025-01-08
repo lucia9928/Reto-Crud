@@ -23,87 +23,107 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
+ * Entidad JPA que representa un producto farmacéutico.
+ * Define las propiedades, relaciones y consultas asociadas a los productos farmacéuticos.
+ * 
  * @author 2dam
  */
 @Entity
-@Table(name="Producto_Farmaceutico", schema="farmaciabd")
+@Table(name = "Producto_Farmaceutico", schema = "farmaciabd")
 @NamedQueries({
     @NamedQuery(
-        name="buscarTodosLosProductos",
-        query="SELECT a FROM ProductoFarmaceutico a ORDER BY a.idProducto DESC"
+        name = "buscarTodosLosProductos",
+        query = "SELECT a FROM ProductoFarmaceutico a ORDER BY a.idProducto DESC"
     ),
     @NamedQuery(
-        name="buscarProductosPorCategoria",
-        query="SELECT a FROM ProductoFarmaceutico a WHERE a.categoria = :categoria"
+        name = "buscarProductosPorCategoria",
+        query = "SELECT a FROM ProductoFarmaceutico a WHERE a.categoria = :categoria"
     ),
     @NamedQuery(
-        name="buscarProductoPorNombre",
-        query="SELECT a FROM ProductoFarmaceutico a WHERE a.nombreProducto = :nombre"
+        name = "buscarProductoPorNombre",
+        query = "SELECT a FROM ProductoFarmaceutico a WHERE a.nombreProducto = :nombre"
     ),
     @NamedQuery(
-        name="buscarProductosPorFechaCaducidad",
-        query="SELECT a FROM ProductoFarmaceutico a WHERE a.fechaCaducidad < :fechaLimite ORDER BY a.fechaCaducidad ASC"
+        name = "buscarProductosPorFechaCaducidad",
+        query = "SELECT a FROM ProductoFarmaceutico a WHERE a.fechaCaducidad < :fechaLimite ORDER BY a.fechaCaducidad ASC"
     )
 })
 @XmlRootElement
 public class ProductoFarmaceutico implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
     /*
-    *Identificador del producto
-    */
+     * Identificador único del producto.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer idProducto;
+
     /*
-    *Nombre del producto
-    */
+     * Nombre del producto farmacéutico.
+     */
     private String nombreProducto;
-     /*
-    *lote del producto
-    */
+
+    /*
+     * Lote al que pertenece el producto.
+     */
     private String loteProducto;
+
     /*
-    *Fecha de caducidad del producto
-    */
+     * Fecha de caducidad del producto.
+     */
     private LocalDate fechaCaducidad;
+
     /*
-    *Descripcion del producto
-    */
+     * Descripción del producto.
+     */
     private String Description;
+
     /*
-    *Categoria del producto
-    */
+     * Categoría del producto farmacéutico (enum).
+     */
     @Enumerated(EnumType.ORDINAL)
     private CategoriaProducto categoria;
+
     /*
-    *Precio del producto
-    */
-    
+     * Precio del producto.
+     */
     private Float precio;
+
+    /*
+     * Relación con el almacén al que pertenece el producto.
+     */
     @ManyToOne
     private Almacen almacen;
+
     /*
-    *Referencia a gestiona
-    */
-    @OneToMany(mappedBy="productoFarmaceutico")
+     * Relación con las entidades de gestión del producto.
+     */
+    @OneToMany(mappedBy = "productoFarmaceutico")
     private Set<Gestiona> gestiona;
+
     /*
-    *Referencia a receta
-    */    
-    @ManyToMany(mappedBy="productos")
+     * Relación con las recetas médicas que incluyen el producto.
+     */
+    @ManyToMany(mappedBy = "productos")
     private Set<RecetaMedica> receta;
+
     /*
-    *Referencia a proveedor
-    */     
+     * Relación con el proveedor del producto.
+     */
     @ManyToOne
-    private Proveedor provedor;
-    
-    
+    private Proveedor proveedor;
+
+    /*
+     * Constructor vacío.
+     */
     public ProductoFarmaceutico() {
     }
 
+    /*
+     * Constructor con parámetros para inicializar las propiedades del producto.
+     */
     public ProductoFarmaceutico(Integer idProducto, String nombreProducto, String loteProducto, LocalDate fechaCaducidad, String Description, CategoriaProducto categoria, Float precio) {
         this.idProducto = idProducto;
         this.nombreProducto = nombreProducto;
@@ -114,6 +134,9 @@ public class ProductoFarmaceutico implements Serializable {
         this.precio = precio;
     }
 
+    /*
+     * Métodos getter y setter para las propiedades.
+     */
     public Integer getIdProducto() {
         return idProducto;
     }
@@ -169,16 +192,10 @@ public class ProductoFarmaceutico implements Serializable {
     public void setPrecio(Float precio) {
         this.precio = precio;
     }
-    
-    
-    public Integer getId() {
-        return idProducto;
-    }
 
-    public void setId(Integer id) {
-        this.idProducto = idProducto;
-    }
-
+    /*
+     * Métodos de utilidad para comparar objetos y convertirlos a String.
+     */
     @Override
     public int hashCode() {
         int hash = 0;
@@ -188,20 +205,15 @@ public class ProductoFarmaceutico implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof ProductoFarmaceutico)) {
             return false;
         }
         ProductoFarmaceutico other = (ProductoFarmaceutico) object;
-        if ((this.idProducto == null && other.idProducto != null) || (this.idProducto != null && !this.idProducto.equals(other.idProducto))) {
-            return false;
-        }
-        return true;
+        return (this.idProducto != null || other.idProducto == null) && (this.idProducto == null || this.idProducto.equals(other.idProducto));
     }
 
     @Override
     public String toString() {
         return "eus.tartangalh.crud.create.ProductoFarmaceutico[ id=" + idProducto + " ]";
     }
-    
 }
