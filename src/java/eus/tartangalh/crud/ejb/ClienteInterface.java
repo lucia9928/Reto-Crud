@@ -6,6 +6,10 @@
 package eus.tartangalh.crud.ejb;
 
 import eus.tartangalh.crud.create.Cliente;
+import excepciones.ActualizarException;
+import excepciones.BorrarException;
+import excepciones.CrearException;
+import excepciones.LeerException;
 import java.util.List;
 
 /**
@@ -13,9 +17,9 @@ import java.util.List;
  * @author melany
  */
 public interface ClienteInterface {
-     public void crearCliente (Cliente  account);
-         public List<Cliente> encontrarTodosCliente();
-       public Cliente encontrarClienteId(Long id) ;
-           public void eliminarCliente(Cliente cliente);
-     public void modificarCliente(Cliente cliente);
+     public void crearCliente (Cliente  account) throws CrearException;
+         public List<Cliente> encontrarTodosCliente()throws LeerException;
+       public Cliente encontrarClienteId(String id) throws LeerException;
+           public void eliminarCliente(Cliente cliente)throws BorrarException;
+     public void modificarCliente(Cliente cliente)throws ActualizarException;
 }
