@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 
 /**
  *
@@ -23,6 +24,7 @@ public class Usuario implements Serializable {
     private String nombre;
     private String apellido;
     private String email;
+    @Transient
     private String contrasena;
     private LocalDate fechaNacimiento;
     private String calle;
