@@ -15,8 +15,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
-
-import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -31,7 +29,7 @@ import javax.ws.rs.core.MediaType;
 
 /**
  *
- * @author 2dam
+ * @author Melany
  */
 @Path("eus.tartangalh.crud.create.cliente")
 public class ClienteFacadeREST {
@@ -69,7 +67,7 @@ try {
     @Path("{id}")
     public void eliminarCliente(@PathParam("id") String id) {
  try {
-            LOGGER.log(Level.INFO,"Elimianddo Receta {0}",id);
+            LOGGER.log(Level.INFO,"Elimianddo cliente {0}",id);
             ejb.eliminarCliente(ejb.encontrarClienteId(id));
         } catch (LeerException|BorrarException ex) {
             LOGGER.severe(ex.getMessage());
