@@ -34,7 +34,7 @@ public class EJBTrabajador implements TrabajadorInterface{
     }
 
     @Override
-    public List<Trabajador> encontraTrabajador() throws LeerException {
+    public List<Trabajador> encontraTodosLosTrabajadores() throws LeerException {
  List<Trabajador> trabajadores;
         try{
             trabajadores=em.createNamedQuery("encontrarTodasLasRecetas").getResultList();
