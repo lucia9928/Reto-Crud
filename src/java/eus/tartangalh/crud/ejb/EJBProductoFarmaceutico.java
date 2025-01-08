@@ -12,6 +12,7 @@ import excepciones.CrearException;
 import excepciones.LeerException;
 import java.time.LocalDate;
 import java.util.List;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -19,6 +20,7 @@ import javax.persistence.PersistenceContext;
  *
  * @author 2dam
  */
+@Stateless
 public class EJBProductoFarmaceutico implements ProductoFarmaceuticoInterface {
 
     /**
@@ -29,8 +31,10 @@ public class EJBProductoFarmaceutico implements ProductoFarmaceuticoInterface {
 
     /**
      * Crea un nuevo ProductoFarmaceutico en la base de datos.
+     *
      * @param producto El objeto ProductoFarmaceutico que se desea crear.
-     * @throws CrearException Lanzada si ocurre un error durante la operación de persistencia.
+     * @throws CrearException Lanzada si ocurre un error durante la operación de
+     * persistencia.
      */
     @Override
     public void crearProducto(ProductoFarmaceutico producto) throws CrearException {
@@ -43,8 +47,11 @@ public class EJBProductoFarmaceutico implements ProductoFarmaceuticoInterface {
 
     /**
      * Actualiza los datos de un ProductoFarmaceutico en la base de datos.
-     * @param producto El objeto ProductoFarmaceutico que contiene los datos actualizados.
-     * @throws ActualizarException Lanzada si ocurre un error durante la operación de actualización.
+     *
+     * @param producto El objeto ProductoFarmaceutico que contiene los datos
+     * actualizados.
+     * @throws ActualizarException Lanzada si ocurre un error durante la
+     * operación de actualización.
      */
     @Override
     public void actualizarProducto(ProductoFarmaceutico producto) throws ActualizarException {
@@ -60,8 +67,10 @@ public class EJBProductoFarmaceutico implements ProductoFarmaceuticoInterface {
 
     /**
      * Elimina un ProductoFarmaceutico de la base de datos.
+     *
      * @param producto El objeto ProductoFarmaceutico que se desea eliminar.
-     * @throws BorrarException Lanzada si ocurre un error durante la operación de eliminación.
+     * @throws BorrarException Lanzada si ocurre un error durante la operación
+     * de eliminación.
      */
     @Override
     public void borrarProducto(ProductoFarmaceutico producto) throws BorrarException {
@@ -74,9 +83,11 @@ public class EJBProductoFarmaceutico implements ProductoFarmaceuticoInterface {
 
     /**
      * Busca un ProductoFarmaceutico en la base de datos utilizando su ID.
+     *
      * @param id El ID del producto a buscar.
      * @return El objeto ProductoFarmaceutico encontrado.
-     * @throws LeerException Lanzada si ocurre un error durante la operación de búsqueda.
+     * @throws LeerException Lanzada si ocurre un error durante la operación de
+     * búsqueda.
      */
     @Override
     public ProductoFarmaceutico encontrarProductoFarmaceutico(Integer id) throws LeerException {
@@ -91,8 +102,10 @@ public class EJBProductoFarmaceutico implements ProductoFarmaceuticoInterface {
 
     /**
      * Recupera todos los ProductoFarmaceutico de la base de datos.
+     *
      * @return Una lista con todos los productos.
-     * @throws LeerException Lanzada si ocurre un error durante la operación de búsqueda.
+     * @throws LeerException Lanzada si ocurre un error durante la operación de
+     * búsqueda.
      */
     @Override
     public List<ProductoFarmaceutico> encontrarTodosProductoFarmaceuticos() throws LeerException {
@@ -106,10 +119,13 @@ public class EJBProductoFarmaceutico implements ProductoFarmaceuticoInterface {
     }
 
     /**
-     * Recupera todos los ProductoFarmaceutico cuya fecha de caducidad es anterior a una fecha límite.
+     * Recupera todos los ProductoFarmaceutico cuya fecha de caducidad es
+     * anterior a una fecha límite.
+     *
      * @param fechaLimite La fecha límite para filtrar los productos.
      * @return Una lista de productos que cumplen con el criterio.
-     * @throws LeerException Lanzada si ocurre un error durante la operación de búsqueda.
+     * @throws LeerException Lanzada si ocurre un error durante la operación de
+     * búsqueda.
      */
     @Override
     public List<ProductoFarmaceutico> encontrarProductosFarmaceuticosFechaCaducidad(LocalDate fechaLimite) throws LeerException {
@@ -123,10 +139,13 @@ public class EJBProductoFarmaceutico implements ProductoFarmaceuticoInterface {
     }
 
     /**
-     * Recupera todos los ProductoFarmaceutico que coinciden con un nombre específico.
+     * Recupera todos los ProductoFarmaceutico que coinciden con un nombre
+     * específico.
+     *
      * @param nombre El nombre del producto a buscar.
      * @return Una lista de productos que coinciden con el nombre.
-     * @throws LeerException Lanzada si ocurre un error durante la operación de búsqueda.
+     * @throws LeerException Lanzada si ocurre un error durante la operación de
+     * búsqueda.
      */
     @Override
     public List<ProductoFarmaceutico> encontrarProductoPorNombre(String nombre) throws LeerException {
