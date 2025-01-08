@@ -73,7 +73,7 @@ public class RecetaMedicaFacadeREST {
 
     @DELETE
     @Path("{id}")
-    public void remove(@PathParam("id") Integer id) {
+    public void eliminarRecetamedica(@PathParam("id") Integer id) {
      try {
             LOGGER.log(Level.INFO,"Elimianddo Receta {0}",id);
             ejb.eliminarRecetaMedica(ejb.encontrarRecetasPorId(id));

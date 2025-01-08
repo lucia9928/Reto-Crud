@@ -6,7 +6,6 @@
 package eus.tartangalh.crud.ejb;
 
 import eus.tartangalh.crud.create.Cliente;
-import eus.tartangalh.crud.create.RecetaMedica;
 import excepciones.ActualizarException;
 import excepciones.BorrarException;
 import excepciones.CrearException;
@@ -46,7 +45,7 @@ public class EJBCliente implements ClienteInterface{
         return clientes;    }
 
     @Override
-    public Cliente encontrarClienteId(Long id) throws LeerException {
+    public Cliente encontrarClienteId(String id) throws LeerException {
   Cliente cliente;
         try{
             cliente=em.find(Cliente.class, id);
@@ -62,7 +61,7 @@ public class EJBCliente implements ClienteInterface{
             em.remove(em.merge(cliente));
         }catch(Exception e){
             throw new BorrarException(e.getMessage());
-        } throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
     }
 
     @Override
@@ -73,6 +72,7 @@ try{
             em.flush();
         }catch(Exception e){
             throw new ActualizarException(e.getMessage());
-        }    }
+        }   
+    }
   
 }
