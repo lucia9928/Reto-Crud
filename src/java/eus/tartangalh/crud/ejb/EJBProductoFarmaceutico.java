@@ -12,6 +12,7 @@ import excepciones.CrearException;
 import excepciones.LeerException;
 import java.time.LocalDate;
 import java.util.List;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -19,6 +20,7 @@ import javax.persistence.PersistenceContext;
  *
  * @author 2dam
  */
+@Stateless
 public class EJBProductoFarmaceutico implements ProductoFarmaceuticoInterface {
 
     /**

@@ -38,7 +38,7 @@ public class Proveedor implements Serializable {
     private String ciudad;
     private LocalDate fechaContratacion;
 
-    @OneToMany(mappedBy = "provedor")
+    @OneToMany(mappedBy = "proveedor")
     private Set<ProductoFarmaceutico> productoFarmaceutico;
 
     public Proveedor(Integer idProveedor, String cif, String nombreProveedor, String calle, Integer codPostal, String ciudad, LocalDate fechaContratacion, Set<ProductoFarmaceutico> productoFarmaceutico) {
