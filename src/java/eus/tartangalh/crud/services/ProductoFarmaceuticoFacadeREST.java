@@ -5,7 +5,7 @@
  */
 package eus.tartangalh.crud.services;
 import eus.tartangalh.crud.create.ProductoFarmaceutico;
-import eus.tartangalh.crud.ejb.EJBProductoFarmaceutico;
+import eus.tartangalh.crud.ejb.ProductoFarmaceuticoInterface;
 import excepciones.ActualizarException;
 import excepciones.BorrarException;
 import excepciones.CrearException;
@@ -41,7 +41,7 @@ public class ProductoFarmaceuticoFacadeREST {
      * Objeto EJB para la lógica de negocio de los productos farmacéuticos.
      */
     @EJB
-    private EJBProductoFarmaceutico ejb;
+    private ProductoFarmaceuticoInterface ejb;
 
     /**
      * Logger para registrar mensajes y errores de la clase.
