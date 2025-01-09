@@ -6,7 +6,8 @@
 package eus.tartangalh.crud.ejb;
 
 import eus.tartangalh.crud.create.Proveedor;
-import java.time.LocalDate;
+import excepciones.BorrarException;
+import excepciones.CrearException;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -23,8 +24,13 @@ public class EJBProveedor implements ProveedorInterfaz {
     private EntityManager em;
 
     @Override
-    public void crearProveedor(Proveedor proveedor) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void crearProveedor(Proveedor proveedor) throws CrearException {
+        try {
+            em.persist(proveedor);
+        } catch (Exception e) {
+            throw new CrearException(e.getMessage());
+        }
+
     }
 
     @Override
@@ -33,8 +39,13 @@ public class EJBProveedor implements ProveedorInterfaz {
     }
 
     @Override
-    public void borrarProveedor(Integer id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void borrarProveedor(Proveedor proveedor)throws BorrarException {
+        try {
+            em.remove(em.merge(proveedor));
+        } catch (Exception e) {
+            throw new BorrarException(e.getMessage());
+        }
+
     }
 
     @Override

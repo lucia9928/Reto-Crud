@@ -7,6 +7,8 @@ package eus.tartangalh.crud.services;
 
 import eus.tartangalh.crud.ejb.ProveedorInterfaz;
 import eus.tartangalh.crud.create.Proveedor;
+import excepciones.BorrarException;
+import excepciones.CrearException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.logging.Logger;
@@ -41,8 +43,9 @@ public class ProveedorFacadeREST {
     private Logger LOGGER = Logger.getLogger(ProveedorFacadeREST.class.getName());
 
     @POST
+    @Path("{proveedor}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void crearProveedor(Proveedor proveedor) {
+    public void crearProveedor(@PathParam("proveedor") Proveedor proveedor) throws CrearException {
         ejb.crearProveedor(proveedor);
     }
 
@@ -55,8 +58,8 @@ public class ProveedorFacadeREST {
 
     @DELETE
     @Path("{id}")
-    public void borrarProveedor(@PathParam("id") Integer id) {
-        ejb.borrarProveedor(id);
+    public void borrarProveedor(@PathParam("proveedor") Proveedor proveedor) throws BorrarException {
+        ejb.borrarProveedor(proveedor);
     }
 
     @GET
