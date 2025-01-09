@@ -4,15 +4,22 @@
  * and open the template in the editor.
  */
 package eus.tartangalh.crud.services;
-
 import eus.tartangalh.crud.create.ProductoFarmaceutico;
+import eus.tartangalh.crud.ejb.ProductoFarmaceuticoInterface;
+import excepciones.ActualizarException;
+import excepciones.BorrarException;
+import excepciones.CrearException;
+import excepciones.LeerException;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -21,71 +28,142 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
- *
- * @author 2dam
+ * Clase REST para gestionar las operaciones relacionadas con productos farmacéuticos.
+ * Proporciona métodos para crear, actualizar, eliminar y buscar productos.
+ * 
+ * @author oscar
  */
 @Stateless
 @Path("eus.tartangalh.crud.create.productofarmaceutico")
-public class ProductoFarmaceuticoFacadeREST extends AbstractFacade<ProductoFarmaceutico> {
+public class ProductoFarmaceuticoFacadeREST {
 
-    @PersistenceContext(unitName = "CRUDWebApplicationPU")
-    private EntityManager em;
+    /**
+     * Objeto EJB para la lógica de negocio de los productos farmacéuticos.
+     */
+    @EJB
+    private ProductoFarmaceuticoInterface ejb;
 
-    public ProductoFarmaceuticoFacadeREST() {
-        super(ProductoFarmaceutico.class);
-    }
+    /**
+     * Logger para registrar mensajes y errores de la clase.
+     */
+    private Logger LOGGER = Logger.getLogger(ProductoFarmaceuticoFacadeREST.class.getName());
 
+    /**
+     * Método para crear un producto farmacéutico.
+     * @param productoFarmaceutico Objeto con los datos del producto a crear.
+     */
     @POST
-    @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(ProductoFarmaceutico entity) {
-        super.create(entity);
+    public void crearProducto(ProductoFarmaceutico productoFarmaceutico) {
+        try {
+            LOGGER.log(Level.INFO, "Creando producto farmacéutico {0}", productoFarmaceutico.getIdProducto());
+            ejb.crearProducto(productoFarmaceutico);
+        } catch (CrearException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
     }
 
+    /**
+     * Método para actualizar un producto farmacéutico existente.
+     * @param producto Objeto con los datos actualizados del producto.
+     */
     @PUT
-    @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Integer id, ProductoFarmaceutico entity) {
-        super.edit(entity);
+    public void actualizarProducto(ProductoFarmaceutico producto) {
+        try {
+            LOGGER.log(Level.INFO, "Actualizando producto {0}", producto.getIdProducto());
+            ejb.actualizarProducto(producto);
+        } catch (ActualizarException e) {
+            LOGGER.severe(e.getMessage());
+            throw new InternalServerErrorException(e.getMessage());
+        }
     }
 
+    /**
+     * Método para eliminar un producto farmacéutico por su ID.
+     * @param id Identificador del producto a eliminar.
+     */
     @DELETE
     @Path("{id}")
-    public void remove(@PathParam("id") Integer id) {
-        super.remove(super.find(id));
+    public void borrarProducto(@PathParam("id") Integer id) {
+        try {
+            LOGGER.log(Level.INFO, "Borrando producto {0}", id);
+            ejb.borrarProducto(ejb.encontrarProductoFarmaceutico(id));
+        } catch (LeerException | BorrarException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
     }
 
+    /**
+     * Método para encontrar un producto farmacéutico por su ID.
+     * @param id Identificador del producto a buscar.
+     * @return Producto farmacéutico encontrado.
+     */
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public ProductoFarmaceutico find(@PathParam("id") Integer id) {
-        return super.find(id);
+    public ProductoFarmaceutico encontrarProducto(@PathParam("id") Integer id) {
+        try {
+            LOGGER.log(Level.INFO, "Buscando producto {0}", id);
+            return ejb.encontrarProductoFarmaceutico(id);
+        } catch (LeerException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
     }
 
+    /**
+     * Método para obtener todos los productos farmacéuticos.
+     * @return Lista de todos los productos farmacéuticos.
+     */
     @GET
-    @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<ProductoFarmaceutico> findAll() {
-        return super.findAll();
+    public List<ProductoFarmaceutico> encontrarTodos() {
+        try {
+            LOGGER.log(Level.INFO, "Buscando todos los productos");
+            return ejb.encontrarTodosProductoFarmaceuticos();
+        } catch (LeerException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
     }
 
+    /**
+     * Método para buscar productos farmacéuticos con fecha de caducidad anterior a una fecha dada.
+     * @param fechaLimite Fecha límite en formato String.
+     * @return Lista de productos farmacéuticos que cumplen el criterio.
+     */
     @GET
-    @Path("{from}/{to}")
+    @Path("caducidad/{fechaLimite}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<ProductoFarmaceutico> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return super.findRange(new int[]{from, to});
+    public List<ProductoFarmaceutico> encontrarPorFechaCaducidad(@PathParam("fechaLimite") String fechaLimite) {
+        try {
+            LocalDate fecha = LocalDate.parse(fechaLimite);
+            LOGGER.log(Level.INFO, "Buscando productos con fecha de caducidad anterior a {0}", fecha);
+            return ejb.encontrarProductosFarmaceuticosFechaCaducidad(fecha);
+        } catch (LeerException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
     }
 
+    /**
+     * Método para buscar productos farmacéuticos por su nombre.
+     * @param nombre Nombre del producto.
+     * @return Lista de productos farmacéuticos que coinciden con el nombre.
+     */
     @GET
-    @Path("count")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String countREST() {
-        return String.valueOf(super.count());
+    @Path("nombre/{nombre}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<ProductoFarmaceutico> encontrarPorNombre(@PathParam("nombre") String nombre) {
+        try {
+            LOGGER.log(Level.INFO, "Buscando productos con nombre {0}", nombre);
+            return ejb.encontrarProductoPorNombre(nombre);
+        } catch (LeerException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
     }
-
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
-    }
-    
 }

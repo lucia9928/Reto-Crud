@@ -6,6 +6,7 @@
 package eus.tartangalh.crud.ejb;
 
 import eus.tartangalh.crud.create.Proveedor;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -20,8 +21,10 @@ public interface ProveedorInterfaz {
 
     public void borrarProveedor(Integer id);
 
-    public void actualizarProveedor(Integer id, Proveedor proveedor);
+    public void actualizarProveedor(Proveedor proveedor);
 
     public List<Proveedor> mostrarTodosProveedores();
+
+    public List<Proveedor> mostrarsProveedoresFecha(String fecha);
     
 }

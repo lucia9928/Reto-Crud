@@ -7,6 +7,7 @@ package eus.tartangalh.crud.services;
 
 import eus.tartangalh.crud.ejb.ProveedorInterfaz;
 import eus.tartangalh.crud.create.Proveedor;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -46,10 +47,10 @@ public class ProveedorFacadeREST {
     }
 
     @PUT
-    @Path("{id}")
+    @Path("{proveedor}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void actualizarProveedor(@PathParam("id") Integer id, Proveedor proveedor) {
-        ejb.actualizarProveedor(id, proveedor);
+    public void actualizarProveedor(@PathParam("proveedor") Proveedor proveedor) {
+        ejb.actualizarProveedor(proveedor);
     }
 
     @DELETE
@@ -74,18 +75,10 @@ public class ProveedorFacadeREST {
     }
 
     @GET
-    @Path("{from}/{to}")
+    @Path("mostrarsProveedoresFecha/{fecha}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Proveedor> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return null;
-
-    }
-
-    @GET
-    @Path("count")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String countREST() {
-        return null;
+    public List<Proveedor> mostrarsProveedoresFecha(@PathParam("fecha") String fecha) {
+        return ejb.mostrarsProveedoresFecha(fecha);
 
     }
 
