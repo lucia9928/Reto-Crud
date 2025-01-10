@@ -7,19 +7,15 @@ package eus.tartangalh.crud.services;
 
 import eus.tartangalh.crud.ejb.ProveedorInterfaz;
 import eus.tartangalh.crud.create.Proveedor;
+import excepciones.ActualizarException;
 import excepciones.BorrarException;
 import excepciones.CrearException;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
-import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -52,7 +48,7 @@ public class ProveedorFacadeREST {
     @PUT
     @Path("{proveedor}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void actualizarProveedor(@PathParam("proveedor") Proveedor proveedor) {
+    public void actualizarProveedor(@PathParam("proveedor") Proveedor proveedor) throws ActualizarException{
         ejb.actualizarProveedor(proveedor);
     }
 

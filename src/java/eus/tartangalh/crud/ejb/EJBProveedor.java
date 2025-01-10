@@ -6,6 +6,7 @@
 package eus.tartangalh.crud.ejb;
 
 import eus.tartangalh.crud.create.Proveedor;
+import excepciones.ActualizarException;
 import excepciones.BorrarException;
 import excepciones.CrearException;
 import java.util.List;
@@ -39,7 +40,7 @@ public class EJBProveedor implements ProveedorInterfaz {
     }
 
     @Override
-    public void borrarProveedor(Proveedor proveedor)throws BorrarException {
+    public void borrarProveedor(Proveedor proveedor) throws BorrarException {
         try {
             em.remove(em.merge(proveedor));
         } catch (Exception e) {
@@ -49,8 +50,15 @@ public class EJBProveedor implements ProveedorInterfaz {
     }
 
     @Override
-    public void actualizarProveedor(Proveedor proveedor) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void actualizarProveedor(Proveedor proveedor) throws ActualizarException {
+        try {
+            if (!em.contains(proveedor)) {
+                em.merge(proveedor);
+            }
+            em.flush();
+        } catch (Exception e) {
+            throw new ActualizarException(e.getMessage());
+        }
     }
 
     @Override

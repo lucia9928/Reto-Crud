@@ -6,6 +6,7 @@
 package eus.tartangalh.crud.ejb;
 
 import eus.tartangalh.crud.create.Proveedor;
+import excepciones.ActualizarException;
 import excepciones.BorrarException;
 import excepciones.CrearException;
 import java.util.List;
@@ -18,11 +19,11 @@ public interface ProveedorInterfaz {
 
     public void crearProveedor(Proveedor proveedor) throws CrearException;
 
-    public Proveedor encontrarProveedor(Integer id);
+    public Proveedor encontrarProveedor(Integer id) ;
 
     public void borrarProveedor(Proveedor proveedor) throws BorrarException;
 
-    public void actualizarProveedor(Proveedor proveedor);
+    public void actualizarProveedor(Proveedor proveedor) throws ActualizarException;
 
     public List<Proveedor> mostrarTodosProveedores();
 
