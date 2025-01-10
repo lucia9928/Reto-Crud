@@ -17,6 +17,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -27,6 +29,12 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "Receta_Medica", schema="farmaciabd")
+@NamedQueries({
+    @NamedQuery(
+        name = "encontrarTodasLasRecetas",
+        query = "SELECT a FROM RecetaMedica a ORDER BY a.idReceta DESC"
+    )
+})
 @XmlRootElement
 public class RecetaMedica implements Serializable {
     @Id
