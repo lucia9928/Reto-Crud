@@ -7,16 +7,17 @@ package eus.tartangalh.crud.create;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -27,6 +28,11 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "Receta_Medica", schema="farmaciabd")
+
+       @NamedQuery(
+               name="encontrarTodasLasRecetas", 
+               query= "SELECT * FROM RecetaMedica "
+       )
 @XmlRootElement
 public class RecetaMedica implements Serializable {
     @Id
@@ -39,7 +45,7 @@ public class RecetaMedica implements Serializable {
     private Integer cantidad;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name="Producto_Receta", schema="farmaciabd")
-    private Set<ProductoFarmaceutico>productos;
+    private List<ProductoFarmaceutico>productos;
 
     
     public RecetaMedica() {
@@ -56,11 +62,11 @@ public class RecetaMedica implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @XmlTransient
-  public Set<ProductoFarmaceutico> getProductos() {
+  public List<ProductoFarmaceutico> getProductos() {
         return productos;
     }
 
-    public void setListaProductos(Set<ProductoFarmaceutico> productos) {
+    public void setListaProductos(List<ProductoFarmaceutico> productos) {
         this.productos = productos;
     }
     public LocalDate getFechaReceta() {
