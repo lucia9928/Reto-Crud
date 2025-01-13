@@ -9,6 +9,7 @@ import eus.tartangalh.crud.create.Proveedor;
 import excepciones.ActualizarException;
 import excepciones.BorrarException;
 import excepciones.CrearException;
+import excepciones.LeerException;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -35,8 +36,16 @@ public class EJBProveedor implements ProveedorInterfaz {
     }
 
     @Override
-    public Proveedor encontrarProveedor(Integer id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Proveedor encontrarProveedor(Integer id) throws LeerException {
+        Proveedor proveedor;
+        try {
+            proveedor = em.find(Proveedor.class,
+                    id);
+        } catch (Exception e) {
+            throw new LeerException(e.getMessage());
+        }
+        return proveedor;
+
     }
 
     @Override
@@ -62,13 +71,32 @@ public class EJBProveedor implements ProveedorInterfaz {
     }
 
     @Override
-    public List<Proveedor> mostrarTodosProveedores() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<Proveedor> mostrarTodosProveedores() throws LeerException {
+        
+        
+         List<Proveedor> proveedores;
+        try {
+            //CAMBIAR LA QUERY
+            proveedores
+                    = em.createNamedQuery("viewAllAccounts").getResultList();
+        } catch (Exception e) {
+            throw new LeerException(e.getMessage());
+        }
+        return proveedores;
     }
 
     @Override
-    public List<Proveedor> mostrarsProveedoresFecha(String fecha) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<Proveedor> mostrarsProveedoresFecha(String fecha) throws LeerException {
+        List<Proveedor> proveedores;
+        try {
+            //CAMBIAR LA QUERY
+            proveedores
+                    = em.createNamedQuery("viewAllAccounts").getResultList();
+        } catch (Exception e) {
+            throw new LeerException(e.getMessage());
+        }
+        return proveedores; 
+        
     }
 
 }

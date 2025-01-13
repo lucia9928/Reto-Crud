@@ -9,6 +9,7 @@ import eus.tartangalh.crud.create.Proveedor;
 import excepciones.ActualizarException;
 import excepciones.BorrarException;
 import excepciones.CrearException;
+import excepciones.LeerException;
 import java.util.List;
 
 /**
@@ -19,14 +20,14 @@ public interface ProveedorInterfaz {
 
     public void crearProveedor(Proveedor proveedor) throws CrearException;
 
-    public Proveedor encontrarProveedor(Integer id) ;
+    public Proveedor encontrarProveedor(Integer id) throws LeerException ;
 
     public void borrarProveedor(Proveedor proveedor) throws BorrarException;
 
     public void actualizarProveedor(Proveedor proveedor) throws ActualizarException;
 
-    public List<Proveedor> mostrarTodosProveedores();
+    public List<Proveedor> mostrarTodosProveedores() throws LeerException;
 
-    public List<Proveedor> mostrarsProveedoresFecha(String fecha);
+    public List<Proveedor> mostrarsProveedoresFecha(String fecha) throws LeerException;
     
 }
