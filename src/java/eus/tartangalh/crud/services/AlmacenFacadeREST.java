@@ -24,7 +24,7 @@ import javax.ws.rs.core.MediaType;
  *
  * Autor: Javier Martín Uría
  */
-@Path("account")
+@Path("eus.tartangalh.crud.create.almacen")
 public class AlmacenFacadeREST {
 
     /**
