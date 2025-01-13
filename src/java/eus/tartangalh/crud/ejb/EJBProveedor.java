@@ -10,6 +10,9 @@ import excepciones.ActualizarException;
 import excepciones.BorrarException;
 import excepciones.CrearException;
 import excepciones.LeerException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -78,7 +81,7 @@ public class EJBProveedor implements ProveedorInterfaz {
         try {
             //CAMBIAR LA QUERY
             proveedores
-                    = em.createNamedQuery("viewAllAccounts").getResultList();
+                    = em.createNamedQuery("buscarTodosLosProveedores").getResultList();
         } catch (Exception e) {
             throw new LeerException(e.getMessage());
         }
@@ -89,7 +92,8 @@ public class EJBProveedor implements ProveedorInterfaz {
     public List<Proveedor> mostrarsProveedoresFecha(String fecha) throws LeerException {
         List<Proveedor> proveedores;
         try {
-            //CAMBIAR LA QUERY
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = formatter.parse(fecha);
             proveedores
                     = em.createNamedQuery("viewAllAccounts").getResultList();
         } catch (Exception e) {

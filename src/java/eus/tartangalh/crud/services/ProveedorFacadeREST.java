@@ -11,6 +11,7 @@ import excepciones.ActualizarException;
 import excepciones.BorrarException;
 import excepciones.CrearException;
 import excepciones.LeerException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -88,21 +89,27 @@ public class ProveedorFacadeREST {
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Proveedor mostrarProveedor(@PathParam("id") Integer id) throws LeerException {
-         try {
-            LOGGER.log(Level.INFO, "Actualizando producto {0}", id);
+        try {
+            LOGGER.log(Level.INFO, "Buscando proveedor {0}", id);
             return ejb.encontrarProveedor(id);
         } catch (LeerException e) {
             LOGGER.severe(e.getMessage());
             throw new InternalServerErrorException(e.getMessage());
         }
-        
 
     }
 
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Proveedor> mostrarTodosProveedores() throws LeerException {
-        return ejb.mostrarTodosProveedores();
+
+        try {
+            LOGGER.log(Level.INFO, "Buscando todos los proveedores");
+            return ejb.mostrarTodosProveedores();
+        } catch (LeerException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
 
     }
 
@@ -110,7 +117,16 @@ public class ProveedorFacadeREST {
     @Path("mostrarsProveedoresFecha/{fecha}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Proveedor> mostrarsProveedoresFecha(@PathParam("fecha") String fecha) throws LeerException {
-        return ejb.mostrarsProveedoresFecha(fecha);
+        
+        try {
+            LOGGER.log(Level.INFO, "Buscando todos los proveedores");
+            return ejb.mostrarsProveedoresFecha(fecha);
+        } catch (LeerException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+        
+        
 
     }
 
