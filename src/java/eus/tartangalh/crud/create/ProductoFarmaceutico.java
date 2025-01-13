@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Entidad JPA que representa un producto farmacéutico.
  * Define las propiedades, relaciones y consultas asociadas a los productos farmacéuticos.
  * 
- * @author 2dam
+ * @author Oscar
  */
 @Entity
 @Table(name = "Producto_Farmaceutico", schema = "farmaciabd")
