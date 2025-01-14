@@ -33,6 +33,7 @@ public class EJBAlmacen implements AlmacenInterface {
      * @param almacen El objeto de la entidad Almacen que contiene los datos del nuevo almacén.
      * @throws CrearException Lanzada cuando ocurre un error durante la creación.
      */
+    @Override
     public void crearAlmacen(Almacen almacen) throws CrearException {
         try {
             em.persist(almacen);
@@ -47,6 +48,7 @@ public class EJBAlmacen implements AlmacenInterface {
      * @param almacen El objeto de la entidad Almacen que contiene los datos modificados.
      * @throws ActualizarException Lanzada cuando ocurre un error durante la actualización.
      */
+    @Override
     public void actualizarAlmacen(Almacen almacen) throws ActualizarException {
         try {
             if (!em.contains(almacen)) {
@@ -64,6 +66,7 @@ public class EJBAlmacen implements AlmacenInterface {
      * @param almacen El objeto de la entidad Almacen que se desea eliminar.
      * @throws BorrarException Lanzada cuando ocurre un error durante la eliminación.
      */
+    @Override
     public void borrarAlmacen(Almacen almacen) throws BorrarException {
         try {
             em.remove(em.merge(almacen));
@@ -79,6 +82,7 @@ public class EJBAlmacen implements AlmacenInterface {
      * @return El objeto Almacen encontrado.
      * @throws LeerException Lanzada cuando ocurre un error durante la búsqueda.
      */
+    @Override
     public Almacen encontrarAlmacen(Long id) throws LeerException {
         try {
             return em.find(Almacen.class, id);
@@ -93,6 +97,7 @@ public class EJBAlmacen implements AlmacenInterface {
      * @return Una lista de objetos Almacen.
      * @throws LeerException Lanzada cuando ocurre un error durante la búsqueda.
      */
+    @Override
     public List<Almacen> encontrarTodosAlmacenes() throws LeerException {
         try {
             return em.createNamedQuery("encontrarTodosAlmacenes", Almacen.class).getResultList();
