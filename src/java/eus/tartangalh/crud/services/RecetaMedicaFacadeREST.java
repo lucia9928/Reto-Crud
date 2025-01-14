@@ -31,7 +31,7 @@ import javax.ws.rs.core.MediaType;
  *
  * @author Melany
  */
-    @Path("eus.tartangalh.crud.create.recetamedica")
+    @Path("Receta_Medica")
     public class RecetaMedicaFacadeREST {
     @EJB
     private RecetaMedicaInterface ejb;
@@ -44,6 +44,7 @@ import javax.ws.rs.core.MediaType;
      * @param receta
      */
     @POST
+    @Path ("Crear_Receta")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void crearRecetaMedica(RecetaMedica receta) {
          try {
@@ -56,7 +57,7 @@ import javax.ws.rs.core.MediaType;
     }
      
     @PUT
-    @Path("{id}")
+    @Path("{Modificar}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
      public void modificarRecetaMedica(RecetaMedica receta) {
         try {
@@ -69,7 +70,7 @@ import javax.ws.rs.core.MediaType;
     }
 
     @DELETE
-    @Path("{id}")
+        @Path("{Eliminar}")
     public void eliminarRecetamedica(@PathParam("id") Integer id) {
      try {
             LOGGER.log(Level.INFO,"Elimianddo Receta {0}",id);
@@ -81,7 +82,7 @@ import javax.ws.rs.core.MediaType;
     }
 
     @GET
-    @Path("{id}")
+    @Path("{Encontrar}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public RecetaMedica encontrarRecetaPorId(@PathParam("id") Integer id) {
      try {
