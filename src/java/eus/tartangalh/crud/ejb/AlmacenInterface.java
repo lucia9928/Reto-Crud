@@ -37,7 +37,7 @@ public interface AlmacenInterface {
      * @throws LeerException Lanzada cuando ocurre un error o excepción durante
      * la lectura.
      */
-    public Almacen encontrarAlmacen(Long id) throws LeerException;
+    public Almacen encontrarAlmacen(Integer id) throws LeerException;
 
     /**
      * Este método actualiza los datos de un almacén existente en el sistema.
