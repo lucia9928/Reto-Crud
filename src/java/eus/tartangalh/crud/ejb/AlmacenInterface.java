@@ -6,17 +6,18 @@
 package eus.tartangalh.crud.ejb;
 
 import eus.tartangalh.crud.create.Almacen;
-import eus.tartangalh.crud.create.RecetaMedica;
 import excepciones.ActualizarException;
 import excepciones.BorrarException;
 import excepciones.CrearException;
 import excepciones.LeerException;
-import java.util.Set;
+import java.util.List;
+import javax.ejb.Local;
 
 /**
  *
  * @author Andoni
  */
+@Local
 public interface AlmacenInterface {
 
     /**
@@ -56,4 +57,6 @@ public interface AlmacenInterface {
      * durante la eliminación.
      */
     public void borrarAlmacen(Almacen almacen) throws BorrarException;
+
+    public List<Almacen> encontrarTodosAlmacenes() throws LeerException;
 }

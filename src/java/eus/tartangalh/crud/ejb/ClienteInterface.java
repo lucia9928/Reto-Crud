@@ -11,15 +11,17 @@ import excepciones.BorrarException;
 import excepciones.CrearException;
 import excepciones.LeerException;
 import java.util.List;
+import javax.ejb.Local;
 
 /**
  *
  * @author melany
  */
+@Local
 public interface ClienteInterface {
      public void crearCliente (Cliente  account) throws CrearException;
-         public List<Cliente> encontrarTodosCliente()throws LeerException;
-       public Cliente encontrarClienteId(String id) throws LeerException;
-           public void eliminarCliente(Cliente cliente)throws BorrarException;
+     public List<Cliente> encontrarTodosCliente()throws LeerException;
+     public Cliente encontrarClienteId(String id) throws LeerException;
+     public void eliminarCliente(Cliente cliente)throws BorrarException;
      public void modificarCliente(Cliente cliente)throws ActualizarException;
 }

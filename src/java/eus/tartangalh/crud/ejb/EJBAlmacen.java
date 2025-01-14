@@ -6,16 +6,12 @@
 package eus.tartangalh.crud.ejb;
 
 import eus.tartangalh.crud.create.Almacen;
-import eus.tartangalh.crud.create.RecetaMedica;
 import eus.tartangalh.crud.ejb.AlmacenInterface;
 import excepciones.ActualizarException;
 import excepciones.BorrarException;
 import excepciones.CrearException;
 import excepciones.LeerException;
-import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
-import javax.ejb.CreateException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
