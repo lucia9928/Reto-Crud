@@ -7,12 +7,13 @@ package eus.tartangalh.crud.create;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Set;
-import javax.persistence.CascadeType;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -24,6 +25,12 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "Proveedor", schema = "farmaciabd")
+@NamedQueries({
+    @NamedQuery(
+            name = "buscarTodosLosProveedores",
+            query = "SELECT a FROM ProductoFarmaceutico a ORDER BY a.idProducto DESC"
+    ),
+})
 @XmlRootElement
 public class Proveedor implements Serializable {
 
@@ -39,9 +46,9 @@ public class Proveedor implements Serializable {
     private LocalDate fechaContratacion;
 
     @OneToMany(mappedBy = "proveedor")
-    private Set<ProductoFarmaceutico> productoFarmaceutico;
+    private List<ProductoFarmaceutico> productoFarmaceutico;
 
-    public Proveedor(Integer idProveedor, String cif, String nombreProveedor, String calle, Integer codPostal, String ciudad, LocalDate fechaContratacion, Set<ProductoFarmaceutico> productoFarmaceutico) {
+    public Proveedor(Integer idProveedor, String cif, String nombreProveedor, String calle, Integer codPostal, String ciudad, LocalDate fechaContratacion, List<ProductoFarmaceutico> productoFarmaceutico) {
         this.idProveedor = idProveedor;
         this.cif = cif;
         this.nombreProveedor = nombreProveedor;
@@ -112,11 +119,11 @@ public class Proveedor implements Serializable {
     }
 
     @XmlTransient
-    public Set<ProductoFarmaceutico> getProductoFarmaceutico() {
+    public List<ProductoFarmaceutico> getProductoFarmaceutico() {
         return productoFarmaceutico;
     }
 
-    public void setProductoFarmaceutico(Set<ProductoFarmaceutico> productoFarmaceutico) {
+    public void setProductoFarmaceutico(List<ProductoFarmaceutico> productoFarmaceutico) {
         this.productoFarmaceutico = productoFarmaceutico;
     }
 

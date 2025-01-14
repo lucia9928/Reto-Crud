@@ -6,6 +6,7 @@
 package eus.tartangalh.crud.services;
 
 import eus.tartangalh.crud.create.Almacen;
+import eus.tartangalh.crud.ejb.AlmacenInterface;
 import eus.tartangalh.crud.ejb.EJBAlmacen;
 import excepciones.ActualizarException;
 import excepciones.BorrarException;
@@ -31,7 +32,7 @@ public class AlmacenFacadeREST {
      * Objeto EJB que implementa la lógica de negocio relacionada con Almacen.
      */
     @EJB
-    private EJBAlmacen ejb;
+    private AlmacenInterface ejb;
 
     /**
      * Logger para registrar información y errores de la clase.

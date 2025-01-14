@@ -20,25 +20,26 @@ import javax.persistence.PersistenceContext;
  * @author melany
  */
 @Stateless
-public class EJBTrabajador implements TrabajadorInterface{
+public class EJBTrabajador implements TrabajadorInterface {
+
     @PersistenceContext(unitName = "CRUDWebApplicationPU")
     private EntityManager em;
 
     @Override
     public void crearTrabajador(Trabajador trabajador) throws CrearException {
- try{
+        try {
             em.persist(trabajador);
-        }catch(Exception e){
+        } catch (Exception e) {
             throw new CrearException(e.getMessage());
-        }     
+        }
     }
 
     @Override
     public List<Trabajador> encontraTodosLosTrabajadores() throws LeerException {
- List<Trabajador> trabajadores;
-        try{
-            trabajadores=em.createNamedQuery("encontrarTodasLasRecetas").getResultList();
-        }catch(Exception e){
+        List<Trabajador> trabajadores;
+        try {
+            trabajadores = em.createNamedQuery("encontrarTodasLasRecetas").getResultList();
+        } catch (Exception e) {
             throw new LeerException(e.getMessage());
         }
         return trabajadores;
@@ -46,32 +47,34 @@ public class EJBTrabajador implements TrabajadorInterface{
 
     @Override
     public Trabajador encontrarTrabajdorId(String id) throws LeerException {
-  Trabajador trabajador;
-        try{
-            trabajador=em.find(Trabajador.class, id);
-        }catch(Exception e){
+        Trabajador trabajador;
+        try {
+            trabajador = em.find(Trabajador.class, id);
+        } catch (Exception e) {
             throw new LeerException(e.getMessage());
         }
-        return trabajador;    }
+        return trabajador;
+    }
 
     @Override
     public void eliminarTrabajador(Trabajador trabajador) throws BorrarException {
-  try{
+        try {
             em.remove(em.merge(trabajador));
-        }catch(Exception e){
+        } catch (Exception e) {
             throw new BorrarException(e.getMessage());
-        }    }
+        }
+    }
 
     @Override
     public void modificarTrabajador(Trabajador trabajador) throws ActualizarException {
-        try{
-            if(!em.contains(trabajador))
+        try {
+            if (!em.contains(trabajador)) {
                 em.merge(trabajador);
+            }
             em.flush();
-        }catch(Exception e){
+        } catch (Exception e) {
             throw new ActualizarException(e.getMessage());
-        }   
+        }
     }
-  
-    
+
 }

@@ -7,7 +7,7 @@ package eus.tartangalh.crud.create;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -101,13 +101,13 @@ public class ProductoFarmaceutico implements Serializable {
      * Relación con las entidades de gestión del producto.
      */
     @OneToMany(mappedBy = "productoFarmaceutico")
-    private Set<Gestiona> gestiona;
+    private List<Gestiona> gestiona;
 
     /*
      * Relación con las recetas médicas que incluyen el producto.
      */
     @ManyToMany(mappedBy = "productos")
-    private Set<RecetaMedica> receta;
+    private List<RecetaMedica> receta;
 
     /*
      * Relación con el proveedor del producto.
