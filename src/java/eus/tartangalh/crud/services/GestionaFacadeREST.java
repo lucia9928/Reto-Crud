@@ -7,13 +7,17 @@ package eus.tartangalh.crud.services;
 
 import eus.tartangalh.crud.create.Gestiona;
 import eus.tartangalh.crud.create.GestionaId;
+import eus.tartangalh.crud.ejb.GestionaInterfaz;
+import excepciones.CrearException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -29,6 +33,9 @@ import javax.ws.rs.core.PathSegment;
 @Stateless
 @Path("eus.tartangalh.crud.create.gestiona")
 public class GestionaFacadeREST {
+
+    @EJB
+    private GestionaInterfaz ejb;
 
     private GestionaId getPrimaryKey(PathSegment pathSegment) {
         /*
@@ -54,22 +61,34 @@ public class GestionaFacadeREST {
     public GestionaFacadeREST() {
 
     }
+    
+    private Logger LOGGER = Logger.getLogger(ProveedorFacadeREST.class.getName());
 
     @POST
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Gestiona entity) {
+    public void crearGestiona(Gestiona gestiona) throws CrearException {
+        try {
+            LOGGER.log(Level.INFO, "Creando producto farmacéutico {0}", gestiona.getGestionaId());
+            ejb.crearGestion(gestiona);
+        } catch (CrearException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+        
     }
 
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") PathSegment id, Gestiona entity) {
-    }
-
-    @DELETE
-    @Path("{id}")
-    public void remove(@PathParam("id") PathSegment id) {
-        eus.tartangalh.crud.create.GestionaId key = getPrimaryKey(id);
+    public void actualizarGestiona(@PathParam("id") PathSegment id, Gestiona gestiona) {
+        try {
+            LOGGER.log(Level.INFO, "Creando producto farmacéutico {0}", gestiona.getGestionaId());
+            ejb.actualizarGestiona(gestiona);
+        } catch (CrearException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+        
     }
 
     @GET
@@ -78,6 +97,12 @@ public class GestionaFacadeREST {
     public Gestiona find(@PathParam("id") PathSegment id) {
         eus.tartangalh.crud.create.GestionaId key = getPrimaryKey(id);
         return null;
+    }
+
+    @DELETE
+    @Path("{id}")
+    public void remove(@PathParam("id") PathSegment id) {
+        eus.tartangalh.crud.create.GestionaId key = getPrimaryKey(id);
     }
 
     @GET

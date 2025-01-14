@@ -18,8 +18,8 @@ import java.util.List;
  */
 public interface ClienteInterface {
      public void crearCliente (Cliente  account) throws CrearException;
-         public List<Cliente> encontrarTodosCliente()throws LeerException;
-       public Cliente encontrarClienteId(String id) throws LeerException;
-           public void eliminarCliente(Cliente cliente)throws BorrarException;
+     public List<Cliente> encontrarTodosCliente()throws LeerException;
+     public Cliente encontrarClienteId(String id) throws LeerException;
+      public void eliminarCliente(Cliente cliente)throws BorrarException;
      public void modificarCliente(Cliente cliente)throws ActualizarException;
 }

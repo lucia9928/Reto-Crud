@@ -35,8 +35,7 @@ import javax.ws.rs.core.MediaType;
 public class ClienteFacadeREST {
 @EJB
     private ClienteInterface ejb;
-        @PersistenceContext(unitName = "CRUDWebApplicationPU")
-       private Logger LOGGER=Logger.getLogger(ClienteFacadeREST.class.getName());
+    private Logger LOGGER=Logger.getLogger(ClienteFacadeREST.class.getName());
         
     @POST
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})

@@ -64,8 +64,8 @@ public class Almacen implements Serializable {
     private String ciudad;
     private Integer metrosCuadrados;
     private LocalDate fechaAdquisicion;
-    @OneToMany(mappedBy = "almacen")
-    private List<ProductoFarmaceutico> producto;
+    @OneToMany(mappedBy="almacen")
+    private  List<ProductoFarmaceutico> producto;
 
     public Almacen(Integer idAlmacen, String pais, String ciudad, Integer metrosCuadrados, LocalDate fechaAdquisicion) {
         this.idAlmacen = idAlmacen;
@@ -78,7 +78,7 @@ public class Almacen implements Serializable {
     public Almacen() {
     }
 
-    @XmlTransient
+    @XmlTransient  
     public List<ProductoFarmaceutico> getProducto() {
         return producto;
     }
