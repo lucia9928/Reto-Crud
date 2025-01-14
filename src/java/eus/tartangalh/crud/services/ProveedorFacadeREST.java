@@ -11,7 +11,6 @@ import excepciones.ActualizarException;
 import excepciones.BorrarException;
 import excepciones.CrearException;
 import excepciones.LeerException;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -117,7 +116,7 @@ public class ProveedorFacadeREST {
     @Path("mostrarsProveedoresFecha/{fecha}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Proveedor> mostrarsProveedoresFecha(@PathParam("fecha") String fecha) throws LeerException {
-        
+
         try {
             LOGGER.log(Level.INFO, "Buscando todos los proveedores");
             return ejb.mostrarsProveedoresFecha(fecha);
@@ -125,8 +124,6 @@ public class ProveedorFacadeREST {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
         }
-        
-        
 
     }
 

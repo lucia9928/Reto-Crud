@@ -6,6 +6,7 @@
 package eus.tartangalh.crud.ejb;
 
 import eus.tartangalh.crud.create.Gestiona;
+import excepciones.CrearException;
 
 /**
  *
@@ -13,8 +14,8 @@ import eus.tartangalh.crud.create.Gestiona;
  */
 public interface GestionaInterfaz {
 
-    public void crearGestion(Gestiona gestiona);
+    public void crearGestion(Gestiona gestiona) throws CrearException;
 
-    public void actualizarGestiona(Gestiona gestiona);
+    public void actualizarGestiona(Gestiona gestiona) throws CrearException;
     
 }

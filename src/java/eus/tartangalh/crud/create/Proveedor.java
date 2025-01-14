@@ -30,12 +30,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(
             name = "buscarTodosLosProveedores",
             query = "SELECT a FROM ProductoFarmaceutico a ORDER BY a.idProducto DESC"
-    )
-    ,
-    @NamedQuery(
-            name = "buscarProductosPorCategoria",
-            query = "SELECT a FROM ProductoFarmaceutico a WHERE a.categoria = :categoria"
-    ),})
+    ),
+})
 @XmlRootElement
 public class Proveedor implements Serializable {
 

@@ -79,7 +79,6 @@ public class EJBProveedor implements ProveedorInterfaz {
         
          List<Proveedor> proveedores;
         try {
-            //CAMBIAR LA QUERY
             proveedores
                     = em.createNamedQuery("buscarTodosLosProveedores").getResultList();
         } catch (Exception e) {

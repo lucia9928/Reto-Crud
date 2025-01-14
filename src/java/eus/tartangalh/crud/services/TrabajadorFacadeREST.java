@@ -37,6 +37,12 @@ public class TrabajadorFacadeREST {
 
     @PersistenceContext(unitName = "CRUDWebApplicationPU")
     private TrabajadorInterface ejb;
+
+    public TrabajadorFacadeREST() {
+    }
+    
+    
+    
     private Logger LOGGER=Logger.getLogger(TrabajadorFacadeREST.class.getName());
 
     @POST
