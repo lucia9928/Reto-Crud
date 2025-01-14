@@ -13,6 +13,7 @@ import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -102,13 +103,13 @@ public class ProductoFarmaceutico implements Serializable {
     /*
      * Relación con las entidades de gestión del producto.
      */
-    @OneToMany(mappedBy = "productoFarmaceutico")
+    @OneToMany(mappedBy = "productoFarmaceutico", fetch = FetchType.EAGER)
     private List<Gestiona> gestiona;
 
     /*
      * Relación con las recetas médicas que incluyen el producto.
      */
-    @ManyToMany(mappedBy = "productos")
+    @ManyToMany(mappedBy = "productos", fetch = FetchType.EAGER)
     private List<RecetaMedica> receta;
 
     /*
