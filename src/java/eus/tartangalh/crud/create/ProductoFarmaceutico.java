@@ -8,6 +8,7 @@ package eus.tartangalh.crud.create;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -26,7 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Entidad JPA que representa un producto farmacéutico.
  * Define las propiedades, relaciones y consultas asociadas a los productos farmacéuticos.
  * 
- * @author 2dam
+ * @author Oscar
  */
 @Entity
 @Table(name = "Producto_Farmaceutico", schema = "farmaciabd")

@@ -9,10 +9,13 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
+import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -21,13 +24,35 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author 2dam
+ * @author Andoni
  */
 @Entity
-@Table(name="Almacen", schema="farmaciabd")
-@NamedQuery(name="encontrarTodosAlmacenes",
-            query="SELECT c FROM Almacen c"
-)
+@Table(name = "Almacen", schema = "farmaciabd")
+@NamedQueries({
+    // Leer todos los almacenes
+    @NamedQuery(
+            name = "encontrarAlmacenes",
+            query = "SELECT c FROM Almacen c"
+    )
+    ,
+    // Leer almacén por ID
+    @NamedQuery(
+            name = "encontrarAlmacenPorId",
+            query = "SELECT c FROM Almacen c WHERE c.idAlmacen = :id"
+    )
+    ,
+    // Actualizar la ciudad de un almacén por ID
+    @NamedQuery(
+            name = "actualizarCiudadAlmacen",
+            query = "UPDATE Almacen c SET c.ciudad = :ciudad WHERE c.idAlmacen = :id"
+    )
+    ,
+    // Eliminar almacén por ID
+    @NamedQuery(
+            name = "eliminarAlmacen",
+            query = "DELETE FROM Almacen c WHERE c.idAlmacen = :id"
+    )
+})
 @XmlRootElement
 public class Almacen implements Serializable {
 
@@ -39,8 +64,8 @@ public class Almacen implements Serializable {
     private String ciudad;
     private Integer metrosCuadrados;
     private LocalDate fechaAdquisicion;
-    @OneToMany(mappedBy="almacen")
-    private  List<ProductoFarmaceutico> producto;
+    @OneToMany(mappedBy = "almacen")
+    private List<ProductoFarmaceutico> producto;
 
     public Almacen(Integer idAlmacen, String pais, String ciudad, Integer metrosCuadrados, LocalDate fechaAdquisicion) {
         this.idAlmacen = idAlmacen;
@@ -49,11 +74,11 @@ public class Almacen implements Serializable {
         this.metrosCuadrados = metrosCuadrados;
         this.fechaAdquisicion = fechaAdquisicion;
     }
-    
+
     public Almacen() {
     }
 
-    @XmlTransient    
+    @XmlTransient
     public List<ProductoFarmaceutico> getProducto() {
         return producto;
     }
@@ -61,7 +86,7 @@ public class Almacen implements Serializable {
     public void setProducto(List<ProductoFarmaceutico> producto) {
         this.producto = producto;
     }
-    
+
     public Integer getIdAlmacen() {
         return idAlmacen;
     }
