@@ -14,6 +14,7 @@ import excepciones.LeerException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
@@ -34,8 +35,7 @@ import javax.ws.rs.core.MediaType;
 @Stateless
 @Path("eus.tartangalh.crud.create.trabajador")
 public class TrabajadorFacadeREST {
-
-    @PersistenceContext(unitName = "CRUDWebApplicationPU")
+@EJB
     private TrabajadorInterface ejb;
 
     public TrabajadorFacadeREST() {

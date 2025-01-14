@@ -31,16 +31,14 @@ import javax.ws.rs.core.MediaType;
  *
  * @author Melany
  */
-@Path("eus.tartangalh.crud.create.recetamedica")
-public class RecetaMedicaFacadeREST {
- @PersistenceContext(unitName = "CRUDWebApplicationPU")
- @EJB
+    @Path("eus.tartangalh.crud.create.recetamedica")
+    public class RecetaMedicaFacadeREST {
+    @EJB
     private RecetaMedicaInterface ejb;
- /**
+     /**
      * Logger for this class.
      */
     private Logger LOGGER=Logger.getLogger(RecetaMedicaFacadeREST.class.getName());
-   
     /**
      *
      * @param receta
@@ -56,8 +54,7 @@ public class RecetaMedicaFacadeREST {
             throw new InternalServerErrorException(ex.getMessage());        
         }
     }
-
-    
+     
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})

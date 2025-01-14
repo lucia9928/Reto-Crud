@@ -6,6 +6,7 @@
 package eus.tartangalh.crud.services;
 
 import eus.tartangalh.crud.create.Almacen;
+import eus.tartangalh.crud.ejb.AlmacenInterface;
 import eus.tartangalh.crud.ejb.EJBAlmacen;
 import excepciones.ActualizarException;
 import excepciones.BorrarException;
@@ -24,14 +25,14 @@ import javax.ws.rs.core.MediaType;
  *
  * Autor: Javier Martín Uría
  */
-@Path("account")
+@Path("eus.tartangalh.crud.create.almacen")
 public class AlmacenFacadeREST {
 
     /**
      * Objeto EJB que implementa la lógica de negocio relacionada con Almacen.
      */
     @EJB
-    private EJBAlmacen ejb;
+    private AlmacenInterface ejb;
 
     /**
      * Logger para registrar información y errores de la clase.

@@ -7,11 +7,13 @@ package eus.tartangalh.crud.ejb;
 
 import eus.tartangalh.crud.create.Gestiona;
 import excepciones.CrearException;
+import javax.ejb.Local;
 
 /**
  *
  * @author markel
  */
+@Local
 public interface GestionaInterfaz {
 
     public void crearGestion(Gestiona gestiona) throws CrearException;

@@ -11,11 +11,13 @@ import excepciones.BorrarException;
 import excepciones.CrearException;
 import excepciones.LeerException;
 import java.util.List;
+import javax.ejb.Local;
 
 /**
  *
  * @author markel
  */
+@Local
 public interface ProveedorInterfaz {
 
     public void crearProveedor(Proveedor proveedor) throws CrearException;
