@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(
             name = "buscarTodasLasGestiones",
-            query = "SELECT ges FROM Gestiona ges"
+            query = "SELECT G FROM Gestiona G"
     ),})
 
 @XmlRootElement

@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(
             name = "buscarTodosLosProveedores",
-            query = "SELECT pr FROM Proveedor pr ORDER BY pr.idProveedor DESC"
+            query = "SELECT P.cif FROM Proveedor P"
     ),
 })
 @XmlRootElement
@@ -43,19 +43,19 @@ public class Proveedor implements Serializable {
     private String calle;
     private Integer codPostal;
     private String ciudad;
-    private LocalDate fechaContratacion;
+    //private LocalDate fechaContratacion;
 
     @OneToMany(mappedBy = "proveedor")
     private List<ProductoFarmaceutico> productoFarmaceutico;
 
-    public Proveedor(Integer idProveedor, String cif, String nombreProveedor, String calle, Integer codPostal, String ciudad, LocalDate fechaContratacion, List<ProductoFarmaceutico> productoFarmaceutico) {
+    public Proveedor(Integer idProveedor, String cif, String nombreProveedor, String calle, Integer codPostal, String ciudad, /*LocalDate fechaContratacion, */List<ProductoFarmaceutico> productoFarmaceutico) {
         this.idProveedor = idProveedor;
         this.cif = cif;
         this.nombreProveedor = nombreProveedor;
         this.calle = calle;
         this.codPostal = codPostal;
         this.ciudad = ciudad;
-        this.fechaContratacion = fechaContratacion;
+        //this.fechaContratacion = fechaContratacion;
         this.productoFarmaceutico = productoFarmaceutico;
     }
 
@@ -110,13 +110,13 @@ public class Proveedor implements Serializable {
         this.ciudad = ciudad;
     }
 
-    public LocalDate getFechaContratacion() {
+  /*  public LocalDate getFechaContratacion() {
         return fechaContratacion;
     }
 
     public void setFechaContratacion(LocalDate fechaContratacion) {
         this.fechaContratacion = fechaContratacion;
-    }
+    }*/
 
     @XmlTransient
     public List<ProductoFarmaceutico> getProductoFarmaceutico() {
