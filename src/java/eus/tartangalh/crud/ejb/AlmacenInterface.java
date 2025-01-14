@@ -11,6 +11,7 @@ import excepciones.ActualizarException;
 import excepciones.BorrarException;
 import excepciones.CrearException;
 import excepciones.LeerException;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -36,7 +37,7 @@ public interface AlmacenInterface {
      * @throws LeerException Lanzada cuando ocurre un error o excepción durante
      * la lectura.
      */
-    public Almacen encontrarAlmacen(Long id) throws LeerException;
+    public Almacen encontrarAlmacen(Integer id) throws LeerException;
 
     /**
      * Este método actualiza los datos de un almacén existente en el sistema.
@@ -56,4 +57,6 @@ public interface AlmacenInterface {
      * durante la eliminación.
      */
     public void borrarAlmacen(Almacen almacen) throws BorrarException;
+
+    public List<Almacen> encontrarTodosAlmacenes() throws LeerException;
 }

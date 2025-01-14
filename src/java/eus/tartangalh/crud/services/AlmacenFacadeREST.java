@@ -6,6 +6,7 @@
 package eus.tartangalh.crud.services;
 
 import eus.tartangalh.crud.create.Almacen;
+import eus.tartangalh.crud.ejb.AlmacenInterface;
 import eus.tartangalh.crud.ejb.EJBAlmacen;
 import excepciones.ActualizarException;
 import excepciones.BorrarException;
@@ -31,7 +32,7 @@ public class AlmacenFacadeREST {
      * Objeto EJB que implementa la lógica de negocio relacionada con Almacen.
      */
     @EJB
-    private EJBAlmacen ejb;
+    private AlmacenInterface ejb;
 
     /**
      * Logger para registrar información y errores de la clase.
@@ -82,7 +83,7 @@ public class AlmacenFacadeREST {
      */
     @DELETE
     @Path("{id}")
-    public void borrarAlmacen(@PathParam("id") Long id) {
+    public void borrarAlmacen(@PathParam("id") Integer id) {
         try {
             LOGGER.log(Level.INFO, "Eliminando almacén {0}", id);
             ejb.borrarAlmacen(ejb.encontrarAlmacen(id));
@@ -102,7 +103,7 @@ public class AlmacenFacadeREST {
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Almacen encontrar(@PathParam("id") Long id) {
+    public Almacen encontrar(@PathParam("id") Integer id) {
         try {
             LOGGER.log(Level.INFO, "Leyendo datos del almacén {0}", id);
             return ejb.encontrarAlmacen(id);
