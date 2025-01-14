@@ -23,7 +23,7 @@ import javax.ws.rs.core.MediaType;
  * Servicio REST para gestionar entidades de tipo Almacen. Proporciona endpoints
  * para crear, actualizar, eliminar y consultar almacenes.
  *
- * Autor: Javier Martín Uría
+ * Autor: Andoni
  */
 @Path("eus.tartangalh.crud.create.almacen")
 public class AlmacenFacadeREST {
