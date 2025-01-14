@@ -72,7 +72,7 @@ public class ProveedorFacadeREST {
     }
 
     @DELETE
-    @Path("{id}")
+    @Path("{proveedor}")
     public void borrarProveedor(@PathParam("proveedor") Proveedor proveedor) throws BorrarException {
         try {
             LOGGER.log(Level.INFO, "Actualizando producto {0}", proveedor.getCif());

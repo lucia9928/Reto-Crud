@@ -10,6 +10,7 @@ import excepciones.ActualizarException;
 import excepciones.BorrarException;
 import excepciones.CrearException;
 import excepciones.LeerException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
@@ -75,9 +76,8 @@ public class EJBProveedor implements ProveedorInterfaz {
 
     @Override
     public List<Proveedor> mostrarTodosProveedores() throws LeerException {
-        
-        
-         List<Proveedor> proveedores;
+
+        List<Proveedor> proveedores;
         try {
             proveedores
                     = em.createNamedQuery("buscarTodosLosProveedores").getResultList();
@@ -98,8 +98,8 @@ public class EJBProveedor implements ProveedorInterfaz {
         } catch (Exception e) {
             throw new LeerException(e.getMessage());
         }
-        return proveedores; 
-        
+        return proveedores;
+
     }
 
 }

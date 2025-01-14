@@ -8,7 +8,10 @@ package eus.tartangalh.crud.services;
 import eus.tartangalh.crud.create.Gestiona;
 import eus.tartangalh.crud.create.GestionaId;
 import eus.tartangalh.crud.ejb.GestionaInterfaz;
+import excepciones.ActualizarException;
+import excepciones.BorrarException;
 import excepciones.CrearException;
+import excepciones.LeerException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -61,7 +64,7 @@ public class GestionaFacadeREST {
     public GestionaFacadeREST() {
 
     }
-    
+
     private Logger LOGGER = Logger.getLogger(ProveedorFacadeREST.class.getName());
 
     @POST
@@ -74,7 +77,7 @@ public class GestionaFacadeREST {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
         }
-        
+
     }
 
     @PUT
@@ -84,37 +87,56 @@ public class GestionaFacadeREST {
         try {
             LOGGER.log(Level.INFO, "Creando producto farmacéutico {0}", gestiona.getGestionaId());
             ejb.actualizarGestiona(gestiona);
-        } catch (CrearException ex) {
+        } catch (ActualizarException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
         }
-        
+
     }
 
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Gestiona find(@PathParam("id") PathSegment id) {
-        eus.tartangalh.crud.create.GestionaId key = getPrimaryKey(id);
-        return null;
+    public Gestiona encontrarGestiona(@PathParam("id") PathSegment id) throws LeerException {
+
+        try {
+            LOGGER.log(Level.INFO, "Buscando proveedor {0}", id);
+            return ejb.encontrarGestiona(id);
+        } catch (LeerException e) {
+            LOGGER.severe(e.getMessage());
+            throw new InternalServerErrorException(e.getMessage());
+        }
+
     }
 
     @DELETE
     @Path("{id}")
-    public void remove(@PathParam("id") PathSegment id) {
-        eus.tartangalh.crud.create.GestionaId key = getPrimaryKey(id);
+    public void borrarGestiona(@PathParam("id") Gestiona gestiona) throws BorrarException {
+        try {
+            LOGGER.log(Level.INFO, "Actualizando producto {0}", gestiona.getGestionaId());
+            ejb.borrarGestiona(gestiona);
+        } catch (BorrarException e) {
+            LOGGER.severe(e.getMessage());
+            throw new InternalServerErrorException(e.getMessage());
+        }
     }
 
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Gestiona> findAll() {
-        return null;
+    public List<Gestiona> mostrarTodosGestiona() throws LeerException {
+        try {
+            LOGGER.log(Level.INFO, "Buscando todos los proveedores");
+            return ejb.mostrarTodosGestiona();
+        } catch (LeerException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
     }
 
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Gestiona> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
+    public List<Gestiona> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) throws LeerException {
         return null;
     }
 

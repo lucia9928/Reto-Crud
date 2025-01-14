@@ -89,6 +89,7 @@ public class EJBAlmacen implements AlmacenInterface {
      * @throws LeerException Lanzada cuando ocurre un error durante la búsqueda.
      */
     @Override
+
     public Almacen encontrarAlmacen(Integer id) throws LeerException {
         try {
             return em.find(Almacen.class, id);
