@@ -34,7 +34,7 @@ import javax.ws.rs.core.MediaType;
  * @author oscar
  */
 @Stateless
-@Path("eus.tartangalh.crud.create.productofarmaceutico")
+@Path("Producto_Farmaceutico")
 public class ProductoFarmaceuticoFacadeREST {
 
     /**

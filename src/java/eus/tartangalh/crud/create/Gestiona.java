@@ -6,6 +6,7 @@
 package eus.tartangalh.crud.create;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.time.LocalDate;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -42,7 +43,7 @@ public class Gestiona implements Serializable {
     @ManyToOne
     @MapsId("idProducto")
     private ProductoFarmaceutico productoFarmaceutico;
-    private LocalDate fechaCompra;
+    private Date fechaCompra;
 
     private Integer cantidad;
 
@@ -56,11 +57,11 @@ public class Gestiona implements Serializable {
     public Gestiona() {
     }
 
-    public LocalDate getFechaCompra() {
+    public Date getFechaCompra() {
         return fechaCompra;
     }
 
-    public void setFechaCompra(LocalDate fechaCompra) {
+    public void setFechaCompra(Date fechaCompra) {
         this.fechaCompra = fechaCompra;
     }
 

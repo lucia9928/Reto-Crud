@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
-import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -31,13 +30,14 @@ import javax.ws.rs.core.MediaType;
  *
  * @author Melany
  */
-@Path("eus.tartangalh.crud.create.cliente")
+@Path("Cliente")
 public class ClienteFacadeREST {
 @EJB
     private ClienteInterface ejb;
     private Logger LOGGER=Logger.getLogger(ClienteFacadeREST.class.getName());
         
     @POST
+    @Path("Crear_Cliente")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void crearCliente(Cliente cliente) {
        try {
@@ -75,7 +75,7 @@ try {
     }
 
     @GET
-    @Path("{id}")
+    @Path("encontrar_cliente")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Cliente encontrarPorId(@PathParam("id") String id) {
    try {

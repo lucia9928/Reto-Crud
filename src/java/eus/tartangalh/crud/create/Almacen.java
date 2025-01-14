@@ -6,15 +6,12 @@
 package eus.tartangalh.crud.create;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.sql.Date;
 import java.util.List;
-import java.util.Set;
-import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -31,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     // Leer todos los almacenes
     @NamedQuery(
-            name = "encontrarAlmacenes",
+            name = "encontrarTodosAlmacenes",
             query = "SELECT c FROM Almacen c"
     )
     ,
@@ -63,11 +60,11 @@ public class Almacen implements Serializable {
     private String pais;
     private String ciudad;
     private Integer metrosCuadrados;
-    private LocalDate fechaAdquisicion;
+    private Date fechaAdquisicion;
     @OneToMany(mappedBy = "almacen")
     private List<ProductoFarmaceutico> producto;
 
-    public Almacen(Integer idAlmacen, String pais, String ciudad, Integer metrosCuadrados, LocalDate fechaAdquisicion) {
+    public Almacen(Integer idAlmacen, String pais, String ciudad, Integer metrosCuadrados, Date fechaAdquisicion) {
         this.idAlmacen = idAlmacen;
         this.pais = pais;
         this.ciudad = ciudad;
@@ -119,11 +116,11 @@ public class Almacen implements Serializable {
         this.metrosCuadrados = metrosCuadrados;
     }
 
-    public LocalDate getFechaAdquisicion() {
+    public Date getFechaAdquisicion() {
         return fechaAdquisicion;
     }
 
-    public void setFechaAdquisicion(LocalDate fechaAdquisicion) {
+    public void setFechaAdquisicion(Date fechaAdquisicion) {
         this.fechaAdquisicion = fechaAdquisicion;
     }
 

@@ -6,6 +6,7 @@
 package eus.tartangalh.crud.create;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
@@ -74,7 +75,7 @@ public class ProductoFarmaceutico implements Serializable {
     /*
      * Fecha de caducidad del producto.
      */
-    private LocalDate fechaCaducidad;
+    private Date fechaCaducidad;
 
     /*
      * Descripción del producto.
@@ -125,7 +126,7 @@ public class ProductoFarmaceutico implements Serializable {
     /*
      * Constructor con parámetros para inicializar las propiedades del producto.
      */
-    public ProductoFarmaceutico(Integer idProducto, String nombreProducto, String loteProducto, LocalDate fechaCaducidad, String Description, CategoriaProducto categoria, Float precio) {
+    public ProductoFarmaceutico(Integer idProducto, String nombreProducto, String loteProducto, Date fechaCaducidad, String Description, CategoriaProducto categoria, Float precio) {
         this.idProducto = idProducto;
         this.nombreProducto = nombreProducto;
         this.loteProducto = loteProducto;
@@ -162,11 +163,11 @@ public class ProductoFarmaceutico implements Serializable {
         this.loteProducto = loteProducto;
     }
 
-    public LocalDate getFechaCaducidad() {
+    public Date getFechaCaducidad() {
         return fechaCaducidad;
     }
 
-    public void setFechaCaducidad(LocalDate fechaCaducidad) {
+    public void setFechaCaducidad(Date fechaCaducidad) {
         this.fechaCaducidad = fechaCaducidad;
     }
 

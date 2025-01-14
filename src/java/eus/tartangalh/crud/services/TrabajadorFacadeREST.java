@@ -16,7 +16,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -33,7 +32,7 @@ import javax.ws.rs.core.MediaType;
  * @author melany
  */
 @Stateless
-@Path("eus.tartangalh.crud.create.trabajador")
+@Path("Trabajador")
 public class TrabajadorFacadeREST {
 @EJB
     private TrabajadorInterface ejb;

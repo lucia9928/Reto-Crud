@@ -6,10 +6,8 @@
 package eus.tartangalh.crud.create;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.sql.Date;
 import java.util.List;
-import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -45,12 +43,12 @@ public class Proveedor implements Serializable {
     private String calle;
     private Integer codPostal;
     private String ciudad;
-    private LocalDate fechaContratacion;
+    private Date fechaContratacion;
 
     @OneToMany(mappedBy = "proveedor")
     private List<ProductoFarmaceutico> productoFarmaceutico;
 
-    public Proveedor(Integer idProveedor, String cif, String nombreProveedor, String calle, Integer codPostal, String ciudad, LocalDate fechaContratacion, List<ProductoFarmaceutico> productoFarmaceutico) {
+    public Proveedor(Integer idProveedor, String cif, String nombreProveedor, String calle, Integer codPostal, String ciudad, Date fechaContratacion, List<ProductoFarmaceutico> productoFarmaceutico) {
         this.idProveedor = idProveedor;
         this.cif = cif;
         this.nombreProveedor = nombreProveedor;
@@ -112,11 +110,11 @@ public class Proveedor implements Serializable {
         this.ciudad = ciudad;
     }
 
-    public LocalDate getFechaContratacion() {
+    public Date getFechaContratacion() {
         return fechaContratacion;
     }
 
-    public void setFechaContratacion(LocalDate fechaContratacion) {
+    public void setFechaContratacion(Date fechaContratacion) {
         this.fechaContratacion = fechaContratacion;
     }
 

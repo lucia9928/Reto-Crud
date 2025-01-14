@@ -36,7 +36,7 @@ public class EJBCliente implements ClienteInterface{
 
     @Override
     public List<Cliente> encontrarTodosCliente() throws LeerException {
- List<Cliente> clientes;
+     List<Cliente> clientes;
         try{
             clientes=em.createNamedQuery("encontrarTodasLasRecetas").getResultList();
         }catch(Exception e){

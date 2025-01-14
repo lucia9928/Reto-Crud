@@ -6,6 +6,7 @@
 package eus.tartangalh.crud.create;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
@@ -26,13 +27,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Trabajador extends Usuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private LocalDate fechaContratacion;
+    private Date fechaContratacion;
     @Enumerated(EnumType.STRING)
     private TipoCargo tipoCargo;
     @OneToMany(mappedBy = "trabajador")
     private List<Gestiona> gestionaProducto;
 
-    public Trabajador(LocalDate fechaContratacion, TipoCargo tipoCargo) {
+    public Trabajador(Date fechaContratacion, TipoCargo tipoCargo) {
         this.fechaContratacion = fechaContratacion;
         this.tipoCargo = tipoCargo;
     }
@@ -41,11 +42,11 @@ public class Trabajador extends Usuario implements Serializable {
         super();
     }
 
-    public LocalDate getFechaContratacion() {
+    public Date getFechaContratacion() {
         return fechaContratacion;
     }
 
-    public void setFechaContratacion(LocalDate fechaContratacion) {
+    public void setFechaContratacion(Date fechaContratacion) {
         this.fechaContratacion = fechaContratacion;
     }
 
