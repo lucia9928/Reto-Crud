@@ -33,7 +33,6 @@ import javax.ws.rs.core.MediaType;
  */
     @Path("eus.tartangalh.crud.create.recetamedica")
     public class RecetaMedicaFacadeREST {
-    @PersistenceContext(unitName = "CRUDWebApplicationPU")
     @EJB
     private RecetaMedicaInterface ejb;
      /**

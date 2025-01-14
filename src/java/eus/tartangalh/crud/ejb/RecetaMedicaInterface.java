@@ -11,12 +11,14 @@ import excepciones.BorrarException;
 import excepciones.CrearException;
 import excepciones.LeerException;
 import java.util.List;
+import javax.ejb.Local;
 
 /**
  *
  * @author melany
  * 
  */
+@Local
 public interface RecetaMedicaInterface {
     public void crearRecetaMedica (RecetaMedica  receta)throws CrearException;
     public List<RecetaMedica> encontrarTodasLasRecetas() throws LeerException;
