@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(
             name = "buscarTodosLosProveedores",
-            query = "SELECT a FROM ProductoFarmaceutico a ORDER BY a.idProducto DESC"
+            query = "SELECT pr FROM Proveedor pr ORDER BY pr.idProveedor DESC"
     ),
 })
 @XmlRootElement

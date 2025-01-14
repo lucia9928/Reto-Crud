@@ -11,6 +11,8 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -19,8 +21,14 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author 2dam
  */
 @Entity
+@Table(name = "Gestiona_Producto", schema = "farmaciabd")
+@NamedQueries({
+    @NamedQuery(
+            name = "buscarTodasLasGestiones",
+            query = "SELECT ges FROM Gestiona ges"
+    ),})
+
 @XmlRootElement
-@Table(name = "Gestiona_Producto", schema="farmaciabd")
 public class Gestiona implements Serializable {
 
     private static final long serialVersionUID = 1L;

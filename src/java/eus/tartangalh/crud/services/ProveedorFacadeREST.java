@@ -19,6 +19,7 @@ import javax.ejb.Stateless;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -71,7 +72,7 @@ public class ProveedorFacadeREST {
     }
 
     @DELETE
-    @Path("{id}")
+    @Path("{proveedor}")
     public void borrarProveedor(@PathParam("proveedor") Proveedor proveedor) throws BorrarException {
         try {
             LOGGER.log(Level.INFO, "Actualizando producto {0}", proveedor.getCif());
