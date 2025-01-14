@@ -9,12 +9,10 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
-import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -42,7 +40,7 @@ public class Almacen implements Serializable {
     private Integer metrosCuadrados;
     private LocalDate fechaAdquisicion;
     @OneToMany(mappedBy="almacen")
-    private  Set<ProductoFarmaceutico> producto;
+    private  List<ProductoFarmaceutico> producto;
 
     public Almacen(Integer idAlmacen, String pais, String ciudad, Integer metrosCuadrados, LocalDate fechaAdquisicion) {
         this.idAlmacen = idAlmacen;
@@ -56,11 +54,11 @@ public class Almacen implements Serializable {
     }
 
     @XmlTransient    
-    public Set<ProductoFarmaceutico> getProducto() {
+    public List<ProductoFarmaceutico> getProducto() {
         return producto;
     }
 
-    public void setProducto(Set<ProductoFarmaceutico> producto) {
+    public void setProducto(List<ProductoFarmaceutico> producto) {
         this.producto = producto;
     }
     
