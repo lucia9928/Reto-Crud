@@ -17,8 +17,9 @@ import javax.persistence.PersistenceContext;
 
 /**
  * Clase Stateless para la gestión de la entidad Almacen en el sistema.
- * Proporciona métodos para crear, actualizar, eliminar y buscar registros de almacenes.
- * 
+ * Proporciona métodos para crear, actualizar, eliminar y buscar registros de
+ * almacenes.
+ *
  * @author Andoni
  */
 @Stateless
@@ -30,8 +31,10 @@ public class EJBAlmacen implements AlmacenInterface {
     /**
      * Crea un nuevo almacén en el sistema.
      *
-     * @param almacen El objeto de la entidad Almacen que contiene los datos del nuevo almacén.
-     * @throws CrearException Lanzada cuando ocurre un error durante la creación.
+     * @param almacen El objeto de la entidad Almacen que contiene los datos del
+     * nuevo almacén.
+     * @throws CrearException Lanzada cuando ocurre un error durante la
+     * creación.
      */
     @Override
     public void crearAlmacen(Almacen almacen) throws CrearException {
@@ -45,8 +48,10 @@ public class EJBAlmacen implements AlmacenInterface {
     /**
      * Actualiza los datos de un almacén existente.
      *
-     * @param almacen El objeto de la entidad Almacen que contiene los datos modificados.
-     * @throws ActualizarException Lanzada cuando ocurre un error durante la actualización.
+     * @param almacen El objeto de la entidad Almacen que contiene los datos
+     * modificados.
+     * @throws ActualizarException Lanzada cuando ocurre un error durante la
+     * actualización.
      */
     @Override
     public void actualizarAlmacen(Almacen almacen) throws ActualizarException {
@@ -64,7 +69,8 @@ public class EJBAlmacen implements AlmacenInterface {
      * Elimina un almacén del sistema.
      *
      * @param almacen El objeto de la entidad Almacen que se desea eliminar.
-     * @throws BorrarException Lanzada cuando ocurre un error durante la eliminación.
+     * @throws BorrarException Lanzada cuando ocurre un error durante la
+     * eliminación.
      */
     @Override
     public void borrarAlmacen(Almacen almacen) throws BorrarException {
@@ -83,7 +89,8 @@ public class EJBAlmacen implements AlmacenInterface {
      * @throws LeerException Lanzada cuando ocurre un error durante la búsqueda.
      */
     @Override
-    public Almacen encontrarAlmacen(Long id) throws LeerException {
+
+    public Almacen encontrarAlmacen(Integer id) throws LeerException {
         try {
             return em.find(Almacen.class, id);
         } catch (Exception e) {
