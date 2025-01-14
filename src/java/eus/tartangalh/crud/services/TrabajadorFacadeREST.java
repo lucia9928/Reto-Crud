@@ -37,6 +37,12 @@ import javax.ws.rs.core.MediaType;
 public class TrabajadorFacadeREST {
 @EJB
     private TrabajadorInterface ejb;
+
+    public TrabajadorFacadeREST() {
+    }
+    
+    
+    
     private Logger LOGGER=Logger.getLogger(TrabajadorFacadeREST.class.getName());
 
     @POST

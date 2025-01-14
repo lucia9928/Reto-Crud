@@ -19,9 +19,14 @@ import javax.ejb.Local;
  */
 @Local
 public interface TrabajadorInterface {
-     public void crearTrabajador (Trabajador  trabajador)throws CrearException;
-      public List<Trabajador>encontraTodosLosTrabajadores()throws LeerException;
-      public Trabajador encontrarTrabajdorId(String id) throws LeerException;
-      public void eliminarTrabajador(Trabajador trabajador) throws BorrarException;
-     public void modificarTrabajador(Trabajador trabajador) throws ActualizarException;
+
+    public void crearTrabajador(Trabajador trabajador) throws CrearException;
+
+    public List<Trabajador> encontraTodosLosTrabajadores() throws LeerException;
+
+    public Trabajador encontrarTrabajdorId(String id) throws LeerException;
+
+    public void eliminarTrabajador(Trabajador trabajador) throws BorrarException;
+
+    public void modificarTrabajador(Trabajador trabajador) throws ActualizarException;
 }
