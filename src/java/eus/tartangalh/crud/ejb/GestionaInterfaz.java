@@ -5,13 +5,10 @@
  */
 package eus.tartangalh.crud.ejb;
 
-import javax.ejb.Local;
-
 /**
  *
  * @author markel
  */
-@Local
 public interface GestionaInterfaz {
     
 }

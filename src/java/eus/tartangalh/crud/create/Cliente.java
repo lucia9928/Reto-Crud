@@ -7,8 +7,10 @@ package eus.tartangalh.crud.create;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -27,18 +29,18 @@ public class Cliente extends Usuario implements Serializable {
   private static final long serialVersionUID = 1L;
   private LocalDate fechaRegistro;
   @OneToMany( mappedBy ="cliente")
-  private List<RecetaMedica>recetas;
+  private Set<RecetaMedica>recetas;
 
     public Cliente() {
         super();
     }
 
     @XmlTransient
-    public List<RecetaMedica> getRecetas() {
+    public Set<RecetaMedica> getRecetas() {
         return recetas;
     }
 
-    public void setRecetas(List<RecetaMedica> recetas) {
+    public void setRecetas(Set<RecetaMedica> recetas) {
         this.recetas = recetas;
     }
 

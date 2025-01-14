@@ -7,7 +7,7 @@ package eus.tartangalh.crud.create;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -29,7 +29,7 @@ public class Trabajador extends Usuario implements Serializable {
     @Enumerated(EnumType.STRING)
     private TipoCargo tipoCargo;
     @OneToMany(mappedBy = "trabajador")
-    private List<Gestiona> gestionaProducto;
+    private Set<Gestiona> gestionaProducto;
 
     public Trabajador(LocalDate fechaContratacion, TipoCargo tipoCargo) {
         this.fechaContratacion = fechaContratacion;

@@ -7,7 +7,7 @@ package eus.tartangalh.crud.create;
 
 /**
  *
- * @author Melany
+ * @author 2dam
  */
 public enum TipoCargo {
     

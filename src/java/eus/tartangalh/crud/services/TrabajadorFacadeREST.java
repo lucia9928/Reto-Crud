@@ -35,6 +35,7 @@ import javax.ws.rs.core.MediaType;
 @Path("eus.tartangalh.crud.create.trabajador")
 public class TrabajadorFacadeREST {
 
+    @PersistenceContext(unitName = "CRUDWebApplicationPU")
     private TrabajadorInterface ejb;
     private Logger LOGGER=Logger.getLogger(TrabajadorFacadeREST.class.getName());
 

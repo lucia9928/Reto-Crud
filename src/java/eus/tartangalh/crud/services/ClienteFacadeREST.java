@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
+import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -34,7 +35,7 @@ import javax.ws.rs.core.MediaType;
 public class ClienteFacadeREST {
 @EJB
     private ClienteInterface ejb;
-
+        @PersistenceContext(unitName = "CRUDWebApplicationPU")
        private Logger LOGGER=Logger.getLogger(ClienteFacadeREST.class.getName());
         
     @POST

@@ -42,7 +42,7 @@ public class Almacen implements Serializable {
     private Integer metrosCuadrados;
     private LocalDate fechaAdquisicion;
     @OneToMany(mappedBy="almacen")
-    private  List<ProductoFarmaceutico> producto;
+    private  Set<ProductoFarmaceutico> producto;
 
     public Almacen(Integer idAlmacen, String pais, String ciudad, Integer metrosCuadrados, LocalDate fechaAdquisicion) {
         this.idAlmacen = idAlmacen;
@@ -56,11 +56,11 @@ public class Almacen implements Serializable {
     }
 
     @XmlTransient    
-    public List<ProductoFarmaceutico> getProducto() {
+    public Set<ProductoFarmaceutico> getProducto() {
         return producto;
     }
 
-    public void setProducto(List<ProductoFarmaceutico> producto) {
+    public void setProducto(Set<ProductoFarmaceutico> producto) {
         this.producto = producto;
     }
     
