@@ -37,7 +37,7 @@ public class ClienteFacadeREST {
     private Logger LOGGER=Logger.getLogger(ClienteFacadeREST.class.getName());
         
     @POST
-    @Path("Crear_Cliente")
+    @Path("crear/cliente/{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void crearCliente(Cliente cliente) {
        try {
@@ -50,7 +50,7 @@ public class ClienteFacadeREST {
     }
 
     @PUT
-    @Path("{id}")
+    @Path("modificar/cliente/ {id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void modificarCliente(@PathParam("id") String id, Cliente cliente) {
 try {
@@ -63,19 +63,18 @@ try {
     }
 
     @DELETE
-    @Path("{id}")
+    @Path("eliminar/cliente/{id}")
     public void eliminarCliente(@PathParam("id") String id) {
- try {
-            LOGGER.log(Level.INFO,"Elimianddo cliente {0}",id);
-            ejb.eliminarCliente(ejb.encontrarClienteId(id));
-        } catch (LeerException|BorrarException ex) {
-            LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());        
-        }
+    try {
+        LOGGER.log(Level.INFO,"Elimianddo cliente {0}",id);
+        ejb.eliminarCliente(id);
+    } catch (BorrarException ex) {
+        Logger.getLogger(ClienteFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+     }
     }
 
     @GET
-    @Path("encontrar_cliente")
+    @Path("encontrar/cliente/ {id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Cliente encontrarPorId(@PathParam("id") String id) {
    try {
@@ -86,7 +85,6 @@ try {
             throw new InternalServerErrorException(ex.getMessage());        
         }
        
-
     }
 
     @GET

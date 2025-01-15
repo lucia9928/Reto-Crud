@@ -6,6 +6,7 @@
 package eus.tartangalh.crud.create;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Embeddable;
 
 /**
@@ -14,6 +15,7 @@ import javax.persistence.Embeddable;
  */
 @Embeddable
 public class GestionaId implements Serializable{
+
     
     private String dni;
     private Integer idProducto;
@@ -43,5 +45,32 @@ public class GestionaId implements Serializable{
         this.idProducto = idProducto;
     }
 
-    
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 53 * hash + Objects.hashCode(this.dni);
+        hash = 53 * hash + Objects.hashCode(this.idProducto);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final GestionaId other = (GestionaId) obj;
+        if (!Objects.equals(this.dni, other.dni)) {
+            return false;
+        }
+        if (!Objects.equals(this.idProducto, other.idProducto)) {
+            return false;
+        }
+        return true;
+    }
 }

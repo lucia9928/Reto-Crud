@@ -38,7 +38,7 @@ public class EJBCliente implements ClienteInterface{
     public List<Cliente> encontrarTodosCliente() throws LeerException {
      List<Cliente> clientes;
         try{
-            clientes=em.createNamedQuery("encontrarTodasLasRecetas").getResultList();
+            clientes=em.createNamedQuery("encontrarTodosLosClientes").getResultList();
         }catch(Exception e){
             throw new LeerException(e.getMessage());
         }
@@ -55,10 +55,15 @@ public class EJBCliente implements ClienteInterface{
         return cliente;
     }
 
+    /**
+     *
+     * @param id
+     * @throws BorrarException
+     */
     @Override
-    public void eliminarCliente(Cliente cliente) throws BorrarException {
+    public void eliminarCliente(String id) throws BorrarException {
         try{
-            em.remove(em.merge(cliente));
+            em.remove(em.contains(id));
         }catch(Exception e){
             throw new BorrarException(e.getMessage());
         }

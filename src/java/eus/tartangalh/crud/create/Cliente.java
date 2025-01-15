@@ -6,10 +6,12 @@
 package eus.tartangalh.crud.create;
 
 import java.io.Serializable;
-import java.sql.Date;
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -21,8 +23,13 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name="Cliente", schema="farmaciabd")
+@NamedQueries({
+    @NamedQuery(
+        name = "encontrarTodosLosClientes",
+        query = "SELECT c FROM Cliente c ORDER BY c.dni DESC"
+    )
+})
 @XmlRootElement
-
 public class Cliente extends Usuario implements Serializable {
 
   private static final long serialVersionUID = 1L;
@@ -55,22 +62,39 @@ public class Cliente extends Usuario implements Serializable {
     public void setFechaRegistro(Date fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
     }
+
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (super.getDni()!= null ? super.getDni().hashCode() : 0);
+        int hash = 5;
+        hash = 83 * hash + Objects.hashCode(this.fechaRegistro);
+        hash = 83 * hash + Objects.hashCode(this.recetas);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-       return super.equals(object);
-       
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Cliente other = (Cliente) obj;
+        if (!Objects.equals(this.fechaRegistro, other.fechaRegistro)) {
+            return false;
+        }
+        if (!Objects.equals(this.recetas, other.recetas)) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public String toString() {
-        return "eus.tartangalh.crud.create.Cliente[ id=" + super.getDni()  + " ]";
+        return "Cliente{" + "fechaRegistro=" + fechaRegistro + ", recetas=" + recetas + '}';
     }
     
 }

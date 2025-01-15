@@ -6,7 +6,7 @@
 package eus.tartangalh.crud.create;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 import java.time.LocalDate;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
