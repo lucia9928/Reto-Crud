@@ -33,12 +33,12 @@ public interface GestionaInterfaz {
 
     public void actualizarGestiona(Gestiona gestiona) throws ActualizarException;
 
-    public Gestiona encontrarGestiona(@PathParam("id") PathSegment id) throws LeerException;
+    public Gestiona encontrarGestiona(PathSegment id) throws LeerException;
 
-    public void borrarGestiona(@PathParam("id") Gestiona gestiona) throws BorrarException;
+    public void borrarGestiona(Gestiona gestiona) throws BorrarException;
 
     public List<Gestiona> mostrarTodosGestiona() throws LeerException;
 
-    public List<Gestiona> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) throws LeerException;
+    public List<Gestiona> findRange(Integer from, Integer to) throws LeerException;
 
 }

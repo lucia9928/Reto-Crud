@@ -6,10 +6,8 @@
 package eus.tartangalh.crud.create;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
-import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,6 +16,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -30,7 +29,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(
             name = "buscarTodosLosProveedores",
-            query = "SELECT P.cif FROM Proveedor P"
+            query = "SELECT P FROM Proveedor P"
     ),
 })
 @XmlRootElement
@@ -45,19 +44,20 @@ public class Proveedor implements Serializable {
     private String calle;
     private Integer codPostal;
     private String ciudad;
-    //private LocalDate fechaContratacion;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date fechaContratacion;
 
     @OneToMany(mappedBy = "proveedor")
     private List<ProductoFarmaceutico> productoFarmaceutico;
 
-    public Proveedor(Integer idProveedor, String cif, String nombreProveedor, String calle, Integer codPostal, String ciudad, /*LocalDate fechaContratacion, */List<ProductoFarmaceutico> productoFarmaceutico) {
+    public Proveedor(Integer idProveedor, String cif, String nombreProveedor, String calle, Integer codPostal, String ciudad, Date fechaContratacion, List<ProductoFarmaceutico> productoFarmaceutico) {
         this.idProveedor = idProveedor;
         this.cif = cif;
         this.nombreProveedor = nombreProveedor;
         this.calle = calle;
         this.codPostal = codPostal;
         this.ciudad = ciudad;
-        //this.fechaContratacion = fechaContratacion;
+        this.fechaContratacion = fechaContratacion;
         this.productoFarmaceutico = productoFarmaceutico;
     }
 
@@ -112,13 +112,13 @@ public class Proveedor implements Serializable {
         this.ciudad = ciudad;
     }
 
-  /*  public LocalDate getFechaContratacion() {
+    public Date getFechaContratacion() {
         return fechaContratacion;
     }
 
-    public void setFechaContratacion(LocalDate fechaContratacion) {
+    public void setFechaContratacion(Date fechaContratacion) {
         this.fechaContratacion = fechaContratacion;
-    }*/
+    }
 
     @XmlTransient
     public List<ProductoFarmaceutico> getProductoFarmaceutico() {

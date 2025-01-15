@@ -44,9 +44,8 @@ public class ProveedorFacadeREST {
     private Logger LOGGER = Logger.getLogger(ProveedorFacadeREST.class.getName());
 
     @POST
-    @Path("{proveedor}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void crearProveedor(@PathParam("proveedor") Proveedor proveedor) throws CrearException {
+    public void crearProveedor(Proveedor proveedor){
         try {
             LOGGER.log(Level.INFO, "Creando producto farmacéutico {0}", proveedor.getCif());
             ejb.crearProveedor(proveedor);
@@ -60,7 +59,7 @@ public class ProveedorFacadeREST {
     @PUT
     @Path("{proveedor}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void actualizarProveedor(@PathParam("proveedor") Proveedor proveedor) throws ActualizarException {
+    public void actualizarProveedor(@PathParam("proveedor") Proveedor proveedor) {
         try {
             LOGGER.log(Level.INFO, "Actualizando producto {0}", proveedor.getCif());
             ejb.actualizarProveedor(proveedor);
@@ -72,12 +71,12 @@ public class ProveedorFacadeREST {
     }
 
     @DELETE
-    @Path("{proveedor}")
-    public void borrarProveedor(@PathParam("proveedor") Proveedor proveedor) throws BorrarException {
+    @Path("borrar/{id}")
+    public void borrarProveedor(@PathParam("id") Integer id){
         try {
-            LOGGER.log(Level.INFO, "Actualizando producto {0}", proveedor.getCif());
-            ejb.borrarProveedor(proveedor);
-        } catch (BorrarException e) {
+            LOGGER.log(Level.INFO, "Actualizando producto {0}", id);
+            ejb.borrarProveedor(ejb.encontrarProveedor(id));
+        } catch (BorrarException | LeerException e) {
             LOGGER.severe(e.getMessage());
             throw new InternalServerErrorException(e.getMessage());
         }
@@ -85,9 +84,9 @@ public class ProveedorFacadeREST {
     }
 
     @GET
-    @Path("{id}")
+    @Path("mostrarProveedorIntroduciendoId/{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Proveedor mostrarProveedor(@PathParam("id") Integer id) throws LeerException {
+    public Proveedor mostrarProveedor(@PathParam("id") Integer id) {
         try {
             LOGGER.log(Level.INFO, "Buscando proveedor {0}", id);
             return ejb.encontrarProveedor(id);
@@ -100,7 +99,7 @@ public class ProveedorFacadeREST {
 
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Proveedor> mostrarTodosProveedores() throws LeerException {
+    public List<Proveedor> mostrarTodosProveedores(){
 
         try {
             LOGGER.log(Level.INFO, "Buscando todos los proveedores");
@@ -113,9 +112,9 @@ public class ProveedorFacadeREST {
     }
 
     @GET
-    @Path("mostrarsProveedoresFecha/{fecha}")
+    @Path("mostrarProveedoresPorFecha/{fecha}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Proveedor> mostrarsProveedoresFecha(@PathParam("fecha") String fecha) throws LeerException {
+    public List<Proveedor> mostrarsProveedoresFecha(@PathParam("fecha") String fecha){
 
         try {
             LOGGER.log(Level.INFO, "Buscando todos los proveedores");
