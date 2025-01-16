@@ -16,7 +16,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -27,33 +26,34 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  *
  * @author melany
  */
 @Stateless
-@Path("eus.tartangalh.crud.create.trabajador")
+@Path("Trabajador")
 public class TrabajadorFacadeREST {
 @EJB
     private TrabajadorInterface ejb;
 
     public TrabajadorFacadeREST() {
     }
-    
-    
-    
+ 
     private Logger LOGGER=Logger.getLogger(TrabajadorFacadeREST.class.getName());
 
     @POST
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void crearTrabajador(Trabajador trabajador) {
+    public Response crearTrabajador(Trabajador trabajador) {
          try {
-         LOGGER.log(Level.INFO,"creando receta {0}", trabajador.getDni());
-        ejb.crearTrabajador(trabajador);
+         LOGGER.log(Level.INFO,"creando trabajador {0}", trabajador.getDni());
+        ejb.crearTrabajador(trabajador);      
+        return Response.status(Response.Status.CREATED).build(); 
+
         } catch (CrearException ex){
-            LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());        
+             LOGGER.severe(ex.getMessage());     
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();       
         }
     }
 
@@ -74,12 +74,12 @@ public class TrabajadorFacadeREST {
     @Path("{id}")
     public void eliminarTrabajador(@PathParam("id") String id) {
       try {
-            LOGGER.log(Level.INFO,"Elimianddo trabajador {0}",id);
-            ejb.eliminarTrabajador(ejb.encontrarTrabajdorId(id));
-        } catch (LeerException|BorrarException ex) {
-            LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());        
-        }
+        LOGGER.log(Level.INFO,"Elimianddo trabajador {0}",id);
+        ejb.eliminarTrabajador(ejb.encontrarTrabajdorId(id));
+    } catch (LeerException | BorrarException ex) {
+          LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());          
+     }
     }
 
     @GET

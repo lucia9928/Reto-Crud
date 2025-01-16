@@ -6,9 +6,10 @@
 package eus.tartangalh.crud.create;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.util.Date;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Temporal;
 import javax.persistence.Transient;
 
 /**
@@ -26,7 +27,8 @@ public class Usuario implements Serializable {
     private String email;
     @Transient
     private String contrasena;
-    private LocalDate fechaNacimiento;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date fechaNacimiento;
     private String calle;
     private Integer codigoPosta;
     private String cidudad;
@@ -71,11 +73,11 @@ public class Usuario implements Serializable {
         this.contrasena = contrasena;
     }
 
-    public LocalDate getFechaNacimiento() {
+    public Date getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(LocalDate fechaNacimiento) {
+    public void setFechaNacimiento(Date fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 

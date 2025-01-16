@@ -6,12 +6,16 @@
 package eus.tartangalh.crud.create;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -22,17 +26,24 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "Trabajador", schema = "farmaciabd")
+@NamedQueries({
+    @NamedQuery(
+        name = "encontrarTodosLosTrabajdores",
+        query = "SELECT t FROM Trabajador t ORDER BY t.dni DESC"
+    )
+})
 @XmlRootElement
 public class Trabajador extends Usuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private LocalDate fechaContratacion;
+    
+    private Date fechaContratacion;
     @Enumerated(EnumType.STRING)
     private TipoCargo tipoCargo;
-    @OneToMany(mappedBy = "trabajador")
+    @OneToMany(mappedBy = "trabajador", fetch = FetchType.EAGER)
     private List<Gestiona> gestionaProducto;
 
-    public Trabajador(LocalDate fechaContratacion, TipoCargo tipoCargo) {
+    public Trabajador(Date fechaContratacion, TipoCargo tipoCargo) {
         this.fechaContratacion = fechaContratacion;
         this.tipoCargo = tipoCargo;
     }
@@ -41,11 +52,11 @@ public class Trabajador extends Usuario implements Serializable {
         super();
     }
 
-    public LocalDate getFechaContratacion() {
+    public Date getFechaContratacion() {
         return fechaContratacion;
     }
 
-    public void setFechaContratacion(LocalDate fechaContratacion) {
+    public void setFechaContratacion(Date fechaContratacion) {
         this.fechaContratacion = fechaContratacion;
     }
 

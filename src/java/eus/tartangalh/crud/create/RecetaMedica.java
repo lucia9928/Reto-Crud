@@ -6,9 +6,9 @@
 package eus.tartangalh.crud.create;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.util.Date;
+
 import java.util.List;
-import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -42,8 +42,8 @@ public class RecetaMedica implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer idReceta;
     @ManyToOne
-    private Cliente cliente;
-    private LocalDate fechaReceta;
+   private Cliente cliente;
+    private Date fechaReceta;
     private String descripcion;
     private Integer cantidad;
     @ManyToMany(fetch = FetchType.EAGER)
@@ -54,7 +54,7 @@ public class RecetaMedica implements Serializable {
 
     }
 
-    public RecetaMedica(Integer idReceta, LocalDate fechaReceta, String descripcion, Integer cantidad) {
+    public RecetaMedica(Integer idReceta, Date fechaReceta, String descripcion, Integer cantidad) {
         this.idReceta = idReceta;
         this.fechaReceta = fechaReceta;
         this.descripcion = descripcion;
@@ -70,12 +70,11 @@ public class RecetaMedica implements Serializable {
     public void setListaProductos(List<ProductoFarmaceutico> productos) {
         this.productos = productos;
     }
-
-    public LocalDate getFechaReceta() {
+    public Date getFechaReceta() {
         return fechaReceta;
     }
 
-    public void setFechaReceta(LocalDate fechaReceta) {
+    public void setFechaReceta(Date fechaReceta) {
         this.fechaReceta = fechaReceta;
     }
 
