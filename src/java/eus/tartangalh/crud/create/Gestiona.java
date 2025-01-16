@@ -7,6 +7,7 @@ package eus.tartangalh.crud.create;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Date;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -14,6 +15,7 @@ import javax.persistence.MapsId;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -42,25 +44,27 @@ public class Gestiona implements Serializable {
     @ManyToOne
     @MapsId("idProducto")
     private ProductoFarmaceutico productoFarmaceutico;
-    private LocalDate fechaCompra;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date fechaCompra;
 
     private Integer cantidad;
 
-    public Gestiona(GestionaId gestionaId, Trabajador trabajador, ProductoFarmaceutico productoFarmaceutico, Integer cantidad) {
+    public Gestiona(GestionaId gestionaId, Trabajador trabajador, ProductoFarmaceutico productoFarmaceutico, Integer cantidad, Date fechaCompra) {
         this.gestionaId = gestionaId;
         this.trabajador = trabajador;
         this.productoFarmaceutico = productoFarmaceutico;
+        this.fechaCompra=fechaCompra;
         this.cantidad = cantidad;
     }
 
     public Gestiona() {
     }
 
-    public LocalDate getFechaCompra() {
+    public Date getFechaCompra() {
         return fechaCompra;
     }
 
-    public void setFechaCompra(LocalDate fechaCompra) {
+    public void setFechaCompra(Date fechaCompra) {
         this.fechaCompra = fechaCompra;
     }
 
