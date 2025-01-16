@@ -61,11 +61,9 @@ public class EJBCliente implements ClienteInterface{
      * @throws BorrarException
      */
     @Override
-    public void eliminarCliente(String id) throws BorrarException {
-        Cliente cliente;
+    public void eliminarCliente(Cliente cliente) throws BorrarException {
         try{
-            cliente = em.find(Cliente.class, id);
-            em.remove(cliente);
+           em.remove(em.merge(cliente));
         }catch(Exception e){
             throw new BorrarException(e.getMessage());
         }

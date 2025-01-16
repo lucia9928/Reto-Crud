@@ -40,20 +40,20 @@ public class TrabajadorFacadeREST {
 
     public TrabajadorFacadeREST() {
     }
-    
-    
-    
+ 
     private Logger LOGGER=Logger.getLogger(TrabajadorFacadeREST.class.getName());
 
     @POST
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void crearTrabajador(Trabajador trabajador) {
+    public Response crearTrabajador(Trabajador trabajador) {
          try {
-         LOGGER.log(Level.INFO,"creando receta {0}", trabajador.getDni());
-        ejb.crearTrabajador(trabajador);
+         LOGGER.log(Level.INFO,"creando trabajador {0}", trabajador.getDni());
+        ejb.crearTrabajador(trabajador);      
+        return Response.status(Response.Status.CREATED).build(); 
+
         } catch (CrearException ex){
-            LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());        
+             LOGGER.severe(ex.getMessage());     
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();       
         }
     }
 
@@ -72,19 +72,18 @@ public class TrabajadorFacadeREST {
 
     @DELETE
     @Path("{id}")
-    public Response eliminarTrabajador(@PathParam("id") String id) {
+    public void eliminarTrabajador(@PathParam("id") String id) {
       try {
-            LOGGER.log(Level.INFO,"Elimianddo trabajador {0}",id);
-            ejb.eliminarTrabajador(id);
-            return Response.noContent().build();  // 204 No Content
-        } catch (BorrarException ex) {
-            LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());        
-        }
+        LOGGER.log(Level.INFO,"Elimianddo trabajador {0}",id);
+        ejb.eliminarTrabajador(ejb.encontrarTrabajdorId(id));
+    } catch (LeerException | BorrarException ex) {
+          LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());          
+     }
     }
 
     @GET
-    @Path("encontrar/trabajador/{id}")
+    @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Trabajador encontrarPorId(@PathParam("id") String id) {
         try {

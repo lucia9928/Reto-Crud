@@ -58,16 +58,14 @@ public class EJBTrabajador implements TrabajadorInterface {
     }
 
     @Override
-    public void eliminarTrabajador(String idTrabajador) throws BorrarException {
-        Trabajador trabajador;
+    public void eliminarTrabajador(Trabajador trabajador) throws BorrarException {
+       
         
         try {
-            trabajador = em.find(Trabajador.class, idTrabajador);
-            em.remove(trabajador);
-        } catch (Exception e) {
+            em.remove(em.merge(trabajador));
+        }catch(Exception e){
             throw new BorrarException(e.getMessage());
-        }
-    }
+        }    }
 
     @Override
     public void modificarTrabajador(Trabajador trabajador) throws ActualizarException {
