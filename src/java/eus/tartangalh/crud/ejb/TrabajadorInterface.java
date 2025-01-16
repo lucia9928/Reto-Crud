@@ -26,7 +26,7 @@ public interface TrabajadorInterface {
 
     public Trabajador encontrarTrabajdorId(String id) throws LeerException;
 
-    public void eliminarTrabajador(Trabajador trabajador) throws BorrarException;
+    public void eliminarTrabajador(String idTrabajador) throws BorrarException;
 
     public void modificarTrabajador(Trabajador trabajador) throws ActualizarException;
 }

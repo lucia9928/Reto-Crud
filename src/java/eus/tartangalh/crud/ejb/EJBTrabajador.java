@@ -13,6 +13,7 @@ import excepciones.LeerException;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 
 /**
@@ -38,7 +39,7 @@ public class EJBTrabajador implements TrabajadorInterface {
     public List<Trabajador> encontraTodosLosTrabajadores() throws LeerException {
         List<Trabajador> trabajadores;
         try {
-            trabajadores = em.createNamedQuery("encontrarTodasLasRecetas").getResultList();
+            trabajadores = em.createNamedQuery("encontrarTodosLosTrabajdores").getResultList();
         } catch (Exception e) {
             throw new LeerException(e.getMessage());
         }
@@ -57,9 +58,12 @@ public class EJBTrabajador implements TrabajadorInterface {
     }
 
     @Override
-    public void eliminarTrabajador(Trabajador trabajador) throws BorrarException {
+    public void eliminarTrabajador(String idTrabajador) throws BorrarException {
+        Trabajador trabajador;
+        
         try {
-            em.remove(em.merge(trabajador));
+            trabajador = em.find(Trabajador.class, idTrabajador);
+            em.remove(trabajador);
         } catch (Exception e) {
             throw new BorrarException(e.getMessage());
         }

@@ -26,6 +26,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  *
@@ -71,18 +72,19 @@ public class TrabajadorFacadeREST {
 
     @DELETE
     @Path("{id}")
-    public void eliminarTrabajador(@PathParam("id") String id) {
+    public Response eliminarTrabajador(@PathParam("id") String id) {
       try {
             LOGGER.log(Level.INFO,"Elimianddo trabajador {0}",id);
-            ejb.eliminarTrabajador(ejb.encontrarTrabajdorId(id));
-        } catch (LeerException|BorrarException ex) {
+            ejb.eliminarTrabajador(id);
+            return Response.noContent().build();  // 204 No Content
+        } catch (BorrarException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());        
         }
     }
 
     @GET
-    @Path("{id}")
+    @Path("encontrar/trabajador/{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Trabajador encontrarPorId(@PathParam("id") String id) {
         try {
