@@ -6,6 +6,7 @@
 package eus.tartangalh.crud.ejb;
 
 import eus.tartangalh.crud.create.Almacen;
+import eus.tartangalh.crud.create.ProductoFarmaceutico;
 import excepciones.ActualizarException;
 import excepciones.BorrarException;
 import excepciones.CrearException;
@@ -111,5 +112,28 @@ public class EJBAlmacen implements AlmacenInterface {
         } catch (Exception e) {
             throw new LeerException("Error al leer todos los almacenes: " + e.getMessage());
         }
+    }
+
+    @Override
+    public List<Almacen> encontrarAlmacenPorPais(String pais) throws LeerException {
+        List<Almacen> almacenes;
+        try {
+            almacenes = em.createNamedQuery("buscarAlmacenPorPais").setParameter("pais", pais).getResultList();
+        } catch (Exception e) {
+            throw new LeerException(e.getMessage());
+        }
+        return almacenes;
+    }
+
+    @Override
+    public List<Almacen> encontrarAlmacenPorCiudad(String ciudad) throws LeerException {
+        List<Almacen> almacenes;
+        try {
+            almacenes = em.createNamedQuery("buscarAlmacenPorCiudad").setParameter("ciudad", ciudad).getResultList();
+        } catch (Exception e) {
+            throw new LeerException(e.getMessage());
+        }
+        return almacenes;
+
     }
 }
