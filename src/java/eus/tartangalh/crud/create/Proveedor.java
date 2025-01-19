@@ -30,7 +30,12 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(
             name = "buscarTodosLosProveedores",
             query = "SELECT P FROM Proveedor P"
-    ),
+    )
+    ,
+    @NamedQuery(
+            name = "buscarProveedorPorFecha",
+            query = "SELECT P FROM Proveedor P WHERE P.fechaContratacion = :date ORDER BY P.fechaContratacion ASC"
+    )
 })
 @XmlRootElement
 public class Proveedor implements Serializable {

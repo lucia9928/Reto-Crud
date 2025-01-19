@@ -106,7 +106,7 @@ public class GestionaFacadeREST {
     }
 
     @GET
-    @Path("{id}")
+    @Path("gestionaPorId/{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Gestiona encontrarGestiona(@PathParam("id") PathSegment id) throws LeerException {
 
@@ -131,12 +131,12 @@ public class GestionaFacadeREST {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
+/*
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Gestiona> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) throws LeerException {
         return null;
     }
-
+*/
 }
