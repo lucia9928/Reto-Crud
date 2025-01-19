@@ -7,14 +7,14 @@ package eus.tartangalh.crud.ejb;
 
 /**
  *
- * @author 2dam
+ * @author Oscar
  */
 import eus.tartangalh.crud.create.ProductoFarmaceutico;
 import excepciones.ActualizarException;
 import excepciones.BorrarException;
 import excepciones.CrearException;
 import excepciones.LeerException;
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -63,7 +63,17 @@ public interface ProductoFarmaceuticoInterface {
      * @return Una lista de objetos ProductoFarmaceutico.
      * @throws LeerException Lanzada cuando ocurre un error o excepción durante la lectura.
      */
-    public List<ProductoFarmaceutico> encontrarProductosFarmaceuticosFechaCaducidad(LocalDate fechaLimite) throws LeerException;
+    public List<ProductoFarmaceutico> encontrarProductosFarmaceuticosFechaCaducidad(Date fechaLimite) throws LeerException;
+    
+    /**
+     * Obtiene una lista con todos los ProductoFarmaceutico cuya fecha de caducidad es anterior a una fecha específica.
+     * @param fechaInicio La fecha límite para filtrar los productos.
+     * @param fechaFin La fecha límite para filtrar los productos.
+     * @return Una lista de objetos ProductoFarmaceutico.
+     * @throws LeerException Lanzada cuando ocurre un error o excepción durante la lectura.
+     */
+    
+    public List<ProductoFarmaceutico> encontrarProductosFarmaceuticosFechaCaducidadDesdeHasta(Date fechaInicio, Date fechaFin) throws LeerException;
 
     /**
      * Obtiene una lista de ProductoFarmaceutico según su nombre.
@@ -73,4 +83,3 @@ public interface ProductoFarmaceuticoInterface {
      */
     public List<ProductoFarmaceutico> encontrarProductoPorNombre(String nombre) throws LeerException;
 }
-
