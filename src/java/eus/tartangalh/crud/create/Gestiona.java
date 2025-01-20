@@ -21,15 +21,21 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author 2dam
+ * @author markel
  */
 @Entity
-@Table(name = "Gestiona_Producto", schema = "farmaciabd")
+@Table(name = "Gestiona", schema = "farmaciabd")
 @NamedQueries({
     @NamedQuery(
             name = "buscarTodasLasGestiones",
             query = "SELECT G FROM Gestiona G"
-    ),})
+    ),
+ @NamedQuery(
+            name = "buscarGestion",
+            query = "SELECT g FROM Gestiona g WHERE g.trabajador.dni = :dni AND g.productoFarmaceutico.idProducto = :idProducto"
+    )
+
+})
 
 @XmlRootElement
 public class Gestiona implements Serializable {
@@ -45,7 +51,6 @@ public class Gestiona implements Serializable {
     @ManyToOne
     @MapsId("idProducto")
     private ProductoFarmaceutico productoFarmaceutico;
-    @Temporal(javax.persistence.TemporalType.DATE)
     private Date fechaCompra;
 
     private Integer cantidad;
@@ -54,7 +59,7 @@ public class Gestiona implements Serializable {
         this.gestionaId = gestionaId;
         this.trabajador = trabajador;
         this.productoFarmaceutico = productoFarmaceutico;
-        this.fechaCompra=fechaCompra;
+        this.fechaCompra = fechaCompra;
         this.cantidad = cantidad;
     }
 
