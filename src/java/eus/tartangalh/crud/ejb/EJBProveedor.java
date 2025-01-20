@@ -55,6 +55,7 @@ public class EJBProveedor implements ProveedorInterfaz {
     @Override
     public void borrarProveedor(Proveedor proveedor) throws BorrarException {
         try {
+
             em.remove(em.merge(proveedor));
         } catch (Exception e) {
             throw new BorrarException(e.getMessage());
@@ -77,14 +78,13 @@ public class EJBProveedor implements ProveedorInterfaz {
     @Override
     public List<Proveedor> mostrarTodosProveedores() throws LeerException {
 
-        List<Proveedor> proveedores;
+        
         try {
-            proveedores
-                    = em.createNamedQuery("buscarTodosLosProveedores").getResultList();
+            return em.createNamedQuery("buscarTodosLosProveedores", Proveedor.class).getResultList();
         } catch (Exception e) {
             throw new LeerException(e.getMessage());
         }
-        return proveedores;
+       
     }
 
     @Override
@@ -94,7 +94,7 @@ public class EJBProveedor implements ProveedorInterfaz {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             Date date = formatter.parse(fecha);
             proveedores
-                    = em.createNamedQuery("viewAllAccounts").getResultList();
+                    = em.createNamedQuery("buscarProveedorPorFecha").setParameter("date", date).getResultList();
         } catch (Exception e) {
             throw new LeerException(e.getMessage());
         }

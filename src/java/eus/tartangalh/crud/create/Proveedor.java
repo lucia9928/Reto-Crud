@@ -16,6 +16,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -28,8 +29,13 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(
             name = "buscarTodosLosProveedores",
-            query = "SELECT pr FROM Proveedor pr ORDER BY pr.idProveedor DESC"
-    ),
+            query = "SELECT P FROM Proveedor P"
+    )
+    ,
+    @NamedQuery(
+            name = "buscarProveedorPorFecha",
+            query = "SELECT P FROM Proveedor P WHERE P.fechaContratacion = :date ORDER BY P.fechaContratacion ASC"
+    )
 })
 @XmlRootElement
 public class Proveedor implements Serializable {
@@ -43,6 +49,7 @@ public class Proveedor implements Serializable {
     private String calle;
     private Integer codPostal;
     private String ciudad;
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Date fechaContratacion;
 
     @OneToMany(mappedBy = "proveedor")

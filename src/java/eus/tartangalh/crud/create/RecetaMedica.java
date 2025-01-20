@@ -28,15 +28,16 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author melany
  */
 @Entity
-@Table(name = "Receta_Medica", schema="farmaciabd")
+@Table(name = "Receta_Medica", schema = "farmaciabd")
 @NamedQueries({
     @NamedQuery(
-        name = "encontrarTodasLasRecetas",
-        query = "SELECT a FROM RecetaMedica a ORDER BY a.idReceta DESC"
+            name = "encontrarTodasLasRecetas",
+            query = "SELECT a FROM RecetaMedica a ORDER BY a.idReceta DESC"
     )
 })
 @XmlRootElement
 public class RecetaMedica implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer idReceta;
@@ -46,12 +47,11 @@ public class RecetaMedica implements Serializable {
     private String descripcion;
     private Integer cantidad;
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name="Producto_Receta", schema="farmaciabd")
-    private List<ProductoFarmaceutico>productos;
+    @JoinTable(name = "Producto_Receta", schema = "farmaciabd")
+    private List<ProductoFarmaceutico> productos;
 
-    
     public RecetaMedica() {
-        
+
     }
 
     public RecetaMedica(Integer idReceta, Date fechaReceta, String descripcion, Integer cantidad) {
@@ -61,10 +61,9 @@ public class RecetaMedica implements Serializable {
         this.cantidad = cantidad;
     }
 
-
     private static final long serialVersionUID = 1L;
     @XmlTransient
-  public List<ProductoFarmaceutico> getProductos() {
+    public List<ProductoFarmaceutico> getProductos() {
         return productos;
     }
 
@@ -78,7 +77,6 @@ public class RecetaMedica implements Serializable {
     public void setFechaReceta(Date fechaReceta) {
         this.fechaReceta = fechaReceta;
     }
-    
 
     public String getDescripcion() {
         return descripcion;
@@ -95,6 +93,7 @@ public class RecetaMedica implements Serializable {
     public void setCantidad(Integer cantidad) {
         this.cantidad = cantidad;
     }
+
     public Integer getIdReceta() {
         return idReceta;
     }
@@ -102,7 +101,7 @@ public class RecetaMedica implements Serializable {
     public void setId(Integer idReceta) {
         this.idReceta = idReceta;
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -127,5 +126,5 @@ public class RecetaMedica implements Serializable {
     public String toString() {
         return "eus.tartangalh.crud.create.RecetaMedica[ id=" + idReceta + " ]";
     }
-    
+
 }

@@ -50,9 +50,9 @@ public class ClienteFacadeREST {
     }
 
     @PUT
-    @Path("{id}")
+    @Path("modificar/{cliente}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void modificarCliente(Cliente cliente) {
+    public void modificarCliente(@PathParam("cliente") Cliente cliente) {
         try {
             LOGGER.log(Level.INFO,"Modificando el cliente{0}",cliente.getDni());
             ejb.modificarCliente(cliente);
