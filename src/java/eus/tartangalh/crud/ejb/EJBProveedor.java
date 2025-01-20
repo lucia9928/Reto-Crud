@@ -94,7 +94,7 @@ public class EJBProveedor implements ProveedorInterfaz {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             Date date = formatter.parse(fecha);
             proveedores
-                    = em.createNamedQuery("viewAllAccounts").getResultList();
+                    = em.createNamedQuery("buscarProveedorPorFecha").setParameter("date", date).getResultList();
         } catch (Exception e) {
             throw new LeerException(e.getMessage());
         }
