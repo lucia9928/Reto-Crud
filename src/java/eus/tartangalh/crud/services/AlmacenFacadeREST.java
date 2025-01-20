@@ -1,8 +1,3 @@
-/*
- * Servicio RESTful para la gestión de almacenes.
- * Este servicio permite realizar operaciones CRUD sobre entidades de tipo Almacen
- * mediante métodos HTTP como POST, PUT, GET y DELETE.
- */
 package eus.tartangalh.crud.services;
 
 import eus.tartangalh.crud.create.Almacen;
@@ -25,10 +20,12 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 /**
- * Servicio REST para gestionar entidades de tipo Almacen. Proporciona endpoints
- * para crear, actualizar, eliminar y consultar almacenes.
+ * Servicio RESTful para la gestión de almacenes. Este servicio proporciona
+ * métodos para realizar operaciones CRUD sobre entidades de tipo Almacen.
+ * Permite la creación, actualización, eliminación y consulta de almacenes
+ * mediante los métodos HTTP POST, PUT, DELETE y GET.
  *
- * Autor: Andoni
+ * @author Andoni
  */
 @Path("eus.tartangalh.crud.create.almacen")
 public class AlmacenFacadeREST {
@@ -45,10 +42,12 @@ public class AlmacenFacadeREST {
     private Logger LOGGER = Logger.getLogger(AlmacenFacadeREST.class.getName());
 
     /**
-     * Método POST para crear un nuevo almacén. Llama al método de negocio
-     * "crearAlmacen" del EJB.
+     * Crea un nuevo almacén en la base de datos. Llama al método "crearAlmacen"
+     * del EJB.
      *
      * @param almacen Objeto Almacen que contiene los datos a crear.
+     * @throws InternalServerErrorException Si ocurre un error durante la
+     * creación del almacén.
      */
     @POST
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -63,10 +62,12 @@ public class AlmacenFacadeREST {
     }
 
     /**
-     * Método PUT para actualizar un almacén existente. Llama al método de
-     * negocio "actualizarAlmacen" del EJB.
+     * Actualiza un almacén existente en la base de datos. Llama al método
+     * "actualizarAlmacen" del EJB.
      *
      * @param almacen Objeto Almacen con los datos actualizados.
+     * @throws InternalServerErrorException Si ocurre un error durante la
+     * actualización del almacén.
      */
     @PUT
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -81,10 +82,12 @@ public class AlmacenFacadeREST {
     }
 
     /**
-     * Método DELETE para eliminar un almacén. Llama al método de negocio
-     * "borrarAlmacen" del EJB.
+     * Elimina un almacén de la base de datos. Llama al método "borrarAlmacen"
+     * del EJB.
      *
      * @param id Identificador del almacén a eliminar.
+     * @throws InternalServerErrorException Si ocurre un error durante la
+     * eliminación del almacén.
      */
     @DELETE
     @Path("{id}")
@@ -99,11 +102,12 @@ public class AlmacenFacadeREST {
     }
 
     /**
-     * Método GET para consultar un almacén por su identificador. Llama al
-     * método de negocio "encontrarAlmacen" del EJB.
+     * Obtiene un almacén por su identificador.
      *
      * @param id Identificador del almacén a consultar.
      * @return Objeto Almacen correspondiente al identificador proporcionado.
+     * @throws InternalServerErrorException Si ocurre un error al leer el
+     * almacén.
      */
     @GET
     @Path("{id}")
@@ -119,10 +123,11 @@ public class AlmacenFacadeREST {
     }
 
     /**
-     * Método GET para consultar todos los almacenes. Llama al método de negocio
-     * "encontrarTodosAlmacenes" del EJB.
+     * Obtiene todos los almacenes registrados en la base de datos.
      *
      * @return Lista de objetos Almacen.
+     * @throws InternalServerErrorException Si ocurre un error al leer los
+     * almacenes.
      */
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -136,6 +141,14 @@ public class AlmacenFacadeREST {
         }
     }
 
+    /**
+     * Obtiene los almacenes registrados en un país específico.
+     *
+     * @param pais Nombre del país a consultar.
+     * @return Lista de objetos Almacen del país especificado.
+     * @throws InternalServerErrorException Si ocurre un error al leer los
+     * almacenes por país.
+     */
     @GET
     @Path("pais/{pais}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -149,6 +162,14 @@ public class AlmacenFacadeREST {
         }
     }
 
+    /**
+     * Obtiene los almacenes registrados en una ciudad específica.
+     *
+     * @param ciudad Nombre de la ciudad a consultar.
+     * @return Lista de objetos Almacen de la ciudad especificada.
+     * @throws InternalServerErrorException Si ocurre un error al leer los
+     * almacenes por ciudad.
+     */
     @GET
     @Path("ciudad/{ciudad}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -162,22 +183,45 @@ public class AlmacenFacadeREST {
         }
     }
 
+    /**
+     * Obtiene los almacenes cuya fecha de adquisición sea anterior a la fecha
+     * especificada.
+     *
+     * @param fechaLimite Fecha límite en formato yyyy-MM-dd.
+     * @return Lista de objetos Almacen con fecha de adquisición anterior a la
+     * fecha límite.
+     * @throws InternalServerErrorException Si ocurre un error al leer los
+     * almacenes por fecha.
+     */
     @GET
-    @Path("caducidad/{fechaLimite}")
+    @Path("fechaAdquisicion/{fechaLimite}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Almacen> encontrarAlmacenPorFecha(@PathParam("fechaLimite") String fechaLimite) {
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate localdate = LocalDate.parse(fechaLimite, formatter);
             Date fecha = Date.from(localdate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-            LOGGER.log(Level.INFO, "Buscando productos con fecha de caducidad anterior a {0}", fecha);
+            LOGGER.log(Level.INFO, "Buscando almacenes con fecha de adquisicion anterior a {0}", fecha);
             return ejb.encontrarAlmacenPorFecha(fecha);
         } catch (LeerException ex) {
-            LOGGER.severe("Error al leer los productos: " + ex.getMessage());
+            LOGGER.severe("Error al leer los almacenes: " + ex.getMessage());
             throw new InternalServerErrorException("Error al procesar la solicitud.");
         }
     }
 
+    /**
+     * Obtiene los almacenes cuya fecha de adquisición esté dentro del rango de
+     * fechas especificado.
+     *
+     * @param fechaInicio Fecha de inicio del rango en formato yyyy-MM-dd.
+     * @param fechaFin Fecha de fin del rango en formato yyyy-MM-dd.
+     * @return Lista de objetos Almacen cuyo rango de adquisición se encuentra
+     * entre las fechas proporcionadas.
+     * @throws InternalServerErrorException Si ocurre un error al leer los
+     * almacenes por rango de fechas.
+     * @throws BadRequestException Si las fechas proporcionadas no están en
+     * formato válido.
+     */
     @GET
     @Path("{fechaInicio}/{fechaFin}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -195,13 +239,12 @@ public class AlmacenFacadeREST {
             Date fechaInicioDate = Date.from(localDateInicio.atStartOfDay(ZoneId.systemDefault()).toInstant());
             Date fechaFinDate = Date.from(localDateFin.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-            LOGGER.log(Level.INFO, "Buscando productos con fecha de caducidad entre {0} y {1}",
+            LOGGER.log(Level.INFO, "Buscando productos con fecha de adquisicion entre {0} y {1}",
                     new Object[]{fechaInicioDate, fechaFinDate});
 
-            // Llamar al método EJB para obtener los productos dentro del rango de fechas
             return ejb.encontrarAlmacenPorFechaDesdeHasta(fechaInicioDate, fechaFinDate);
         } catch (LeerException ex) {
-            LOGGER.severe("Error al leer los productos: " + ex.getMessage());
+            LOGGER.severe("Error al leer los almacenes: " + ex.getMessage());
             throw new InternalServerErrorException("Error al procesar la solicitud.");
         } catch (DateTimeParseException ex) {
             LOGGER.severe("Formato de fecha inválido: " + ex.getMessage());

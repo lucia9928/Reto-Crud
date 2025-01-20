@@ -1,12 +1,6 @@
-/*
- * Para cambiar esta cabecera de licencia, elige "Propiedades del proyecto".
- * Para cambiar este archivo de plantilla, selecciona "Herramientas | Plantillas"
- * y abre la plantilla en el editor.
- */
 package eus.tartangalh.crud.ejb;
 
 import eus.tartangalh.crud.create.Almacen;
-import eus.tartangalh.crud.create.ProductoFarmaceutico;
 import excepciones.ActualizarException;
 import excepciones.BorrarException;
 import excepciones.CrearException;
@@ -91,7 +85,6 @@ public class EJBAlmacen implements AlmacenInterface {
      * @throws LeerException Lanzada cuando ocurre un error durante la búsqueda.
      */
     @Override
-
     public Almacen encontrarAlmacen(Integer id) throws LeerException {
         try {
             return em.find(Almacen.class, id);
@@ -115,49 +108,68 @@ public class EJBAlmacen implements AlmacenInterface {
         }
     }
 
+    /**
+     * Encuentra almacenes por país.
+     *
+     * @param pais El nombre del país donde se encuentran los almacenes.
+     * @return Lista de almacenes encontrados.
+     * @throws LeerException Lanzada cuando ocurre un error durante la búsqueda.
+     */
     @Override
     public List<Almacen> encontrarAlmacenPorPais(String pais) throws LeerException {
-        List<Almacen> almacenes;
         try {
-            almacenes = em.createNamedQuery("buscarAlmacenPorPais").setParameter("pais", pais).getResultList();
+            return em.createNamedQuery("buscarAlmacenPorPais").setParameter("pais", pais).getResultList();
         } catch (Exception e) {
             throw new LeerException(e.getMessage());
         }
-        return almacenes;
     }
 
+    /**
+     * Encuentra almacenes por ciudad.
+     *
+     * @param ciudad La ciudad donde se encuentran los almacenes.
+     * @return Lista de almacenes encontrados.
+     * @throws LeerException Lanzada cuando ocurre un error durante la búsqueda.
+     */
     @Override
     public List<Almacen> encontrarAlmacenPorCiudad(String ciudad) throws LeerException {
-        List<Almacen> almacenes;
         try {
-            almacenes = em.createNamedQuery("buscarAlmacenPorCiudad").setParameter("ciudad", ciudad).getResultList();
+            return em.createNamedQuery("buscarAlmacenPorCiudad").setParameter("ciudad", ciudad).getResultList();
         } catch (Exception e) {
             throw new LeerException(e.getMessage());
         }
-        return almacenes;
-
     }
 
+    /**
+     * Encuentra almacenes por fecha límite.
+     *
+     * @param fechaLimite La fecha límite para buscar almacenes.
+     * @return Lista de almacenes encontrados.
+     * @throws LeerException Lanzada cuando ocurre un error durante la búsqueda.
+     */
     @Override
     public List<Almacen> encontrarAlmacenPorFecha(Date fechaLimite) throws LeerException {
-        List<Almacen> almacen;
         try {
-            almacen = em.createNamedQuery("buscarAlmacenPorFecha").setParameter("fechaLimite", fechaLimite).getResultList();
+            return em.createNamedQuery("buscarAlmacenPorFecha").setParameter("fechaLimite", fechaLimite).getResultList();
         } catch (Exception e) {
             throw new LeerException(e.getMessage());
         }
-        return almacen;
     }
 
+    /**
+     * Encuentra almacenes entre dos fechas.
+     *
+     * @param fechaInicio Fecha de inicio del rango de búsqueda.
+     * @param fechaFin Fecha de fin del rango de búsqueda.
+     * @return Lista de almacenes encontrados.
+     * @throws LeerException Lanzada cuando ocurre un error durante la búsqueda.
+     */
     @Override
     public List<Almacen> encontrarAlmacenPorFechaDesdeHasta(Date fechaInicio, Date fechaFin) throws LeerException {
-        List<Almacen> almacen;
         try {
-            almacen = em.createNamedQuery("buscarAlmacenPorRangoDeFechas").setParameter("fechaInicio", fechaInicio).setParameter("fechaFin", fechaFin).getResultList();
+            return em.createNamedQuery("buscarAlmacenPorRangoDeFechas").setParameter("fechaInicio", fechaInicio).setParameter("fechaFin", fechaFin).getResultList();
         } catch (Exception e) {
             throw new LeerException(e.getMessage());
         }
-        return almacen;
     }
-
 }
