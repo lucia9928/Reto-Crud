@@ -6,17 +6,14 @@
 package eus.tartangalh.crud.ejb;
 
 import eus.tartangalh.crud.create.Gestiona;
-import eus.tartangalh.crud.create.Proveedor;
 import excepciones.ActualizarException;
 import excepciones.BorrarException;
 import excepciones.CrearException;
 import excepciones.LeerException;
 import java.util.List;
-import java.util.logging.Level;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.core.PathSegment;
 
 /**
