@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
             query = "SELECT P FROM Proveedor P"
     )
     ,
-    @NamedQuery(
+       @NamedQuery(
             name = "buscarProveedorPorFecha",
             query = "SELECT P FROM Proveedor P WHERE P.fechaContratacion = :date ORDER BY P.fechaContratacion ASC"
     )
@@ -49,7 +49,7 @@ public class Proveedor implements Serializable {
     private String calle;
     private Integer codPostal;
     private String ciudad;
-    @Temporal(javax.persistence.TemporalType.DATE)
+    
     private Date fechaContratacion;
 
     @OneToMany(mappedBy = "proveedor")
