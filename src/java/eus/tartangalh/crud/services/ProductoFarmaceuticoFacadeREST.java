@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package eus.tartangalh.crud.services;
+
 import eus.tartangalh.crud.create.ProductoFarmaceutico;
 import eus.tartangalh.crud.ejb.ProductoFarmaceuticoInterface;
 import excepciones.ActualizarException;
@@ -11,11 +12,16 @@ import excepciones.BorrarException;
 import excepciones.CrearException;
 import excepciones.LeerException;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -28,10 +34,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
- * Clase REST para gestionar las operaciones relacionadas con productos farmacéuticos.
- * Proporciona métodos para crear, actualizar, eliminar y buscar productos.
- * 
- * @author oscar
+ * Clase REST para gestionar las operaciones relacionadas con productos
+ * farmacéuticos. Proporciona métodos para crear, actualizar, eliminar y buscar
+ * productos.
+ *
+ * @author Oscar
  */
 @Stateless
 @Path("Producto_Farmaceutico")
@@ -50,6 +57,7 @@ public class ProductoFarmaceuticoFacadeREST {
 
     /**
      * Método para crear un producto farmacéutico.
+     *
      * @param productoFarmaceutico Objeto con los datos del producto a crear.
      */
     @POST
@@ -66,6 +74,7 @@ public class ProductoFarmaceuticoFacadeREST {
 
     /**
      * Método para actualizar un producto farmacéutico existente.
+     *
      * @param producto Objeto con los datos actualizados del producto.
      */
     @PUT
@@ -82,6 +91,7 @@ public class ProductoFarmaceuticoFacadeREST {
 
     /**
      * Método para eliminar un producto farmacéutico por su ID.
+     *
      * @param id Identificador del producto a eliminar.
      */
     @DELETE
@@ -98,6 +108,7 @@ public class ProductoFarmaceuticoFacadeREST {
 
     /**
      * Método para encontrar un producto farmacéutico por su ID.
+     *
      * @param id Identificador del producto a buscar.
      * @return Producto farmacéutico encontrado.
      */
@@ -116,6 +127,7 @@ public class ProductoFarmaceuticoFacadeREST {
 
     /**
      * Método para obtener todos los productos farmacéuticos.
+     *
      * @return Lista de todos los productos farmacéuticos.
      */
     @GET
@@ -131,7 +143,9 @@ public class ProductoFarmaceuticoFacadeREST {
     }
 
     /**
-     * Método para buscar productos farmacéuticos con fecha de caducidad anterior a una fecha dada.
+     * Método para buscar productos farmacéuticos con fecha de caducidad
+     * anterior a una fecha dada.
+     *
      * @param fechaLimite Fecha límite en formato String.
      * @return Lista de productos farmacéuticos que cumplen el criterio.
      */
@@ -140,17 +154,20 @@ public class ProductoFarmaceuticoFacadeREST {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<ProductoFarmaceutico> encontrarPorFechaCaducidad(@PathParam("fechaLimite") String fechaLimite) {
         try {
-            LocalDate fecha = LocalDate.parse(fechaLimite);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate localdate = LocalDate.parse(fechaLimite, formatter);
+            Date fecha = Date.from(localdate.atStartOfDay(ZoneId.systemDefault()).toInstant());
             LOGGER.log(Level.INFO, "Buscando productos con fecha de caducidad anterior a {0}", fecha);
             return ejb.encontrarProductosFarmaceuticosFechaCaducidad(fecha);
         } catch (LeerException ex) {
-            LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());
+            LOGGER.severe("Error al leer los productos: " + ex.getMessage());
+            throw new InternalServerErrorException("Error al procesar la solicitud.");
         }
     }
 
     /**
      * Método para buscar productos farmacéuticos por su nombre.
+     *
      * @param nombre Nombre del producto.
      * @return Lista de productos farmacéuticos que coinciden con el nombre.
      */
@@ -164,6 +181,43 @@ public class ProductoFarmaceuticoFacadeREST {
         } catch (LeerException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
+        }
+    }
+     /**
+     * Método para buscar productos farmacéuticos comprendidas entre un rango de
+     * fechas de caducidades
+     * @param fechaInicio Fecha inicio en formato String.
+     * @param fechaFin Fecha fin en formato String.
+     * @return Lista de productos farmacéuticos que cumplen el criterio.
+     */
+    @GET
+    @Path("{fechaInicio}/{fechaFin}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<ProductoFarmaceutico> encontrarPorRangoDeFechas(
+            @PathParam("fechaInicio") String fechaInicio,
+            @PathParam("fechaFin") String fechaFin) {
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+            // Convertir las fechas recibidas a objetos LocalDate
+            LocalDate localDateInicio = LocalDate.parse(fechaInicio, formatter);
+            LocalDate localDateFin = LocalDate.parse(fechaFin, formatter);
+
+            // Convertir LocalDate a Date
+            Date fechaInicioDate = Date.from(localDateInicio.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            Date fechaFinDate = Date.from(localDateFin.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+            LOGGER.log(Level.INFO, "Buscando productos con fecha de caducidad entre {0} y {1}",
+                    new Object[]{fechaInicioDate, fechaFinDate});
+
+            // Llamar al método EJB para obtener los productos dentro del rango de fechas
+            return ejb.encontrarProductosFarmaceuticosFechaCaducidadDesdeHasta(fechaInicioDate, fechaFinDate);
+        } catch (LeerException ex) {
+            LOGGER.severe("Error al leer los productos: " + ex.getMessage());
+            throw new InternalServerErrorException("Error al procesar la solicitud.");
+        } catch (DateTimeParseException ex) {
+            LOGGER.severe("Formato de fecha inválido: " + ex.getMessage());
+            throw new BadRequestException("Las fechas deben estar en formato yyyy-MM-dd.");
         }
     }
 }
