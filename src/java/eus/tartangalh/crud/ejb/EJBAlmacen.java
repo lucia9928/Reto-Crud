@@ -11,6 +11,7 @@ import excepciones.ActualizarException;
 import excepciones.BorrarException;
 import excepciones.CrearException;
 import excepciones.LeerException;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -136,4 +137,27 @@ public class EJBAlmacen implements AlmacenInterface {
         return almacenes;
 
     }
+
+    @Override
+    public List<Almacen> encontrarAlmacenPorFecha(Date fechaLimite) throws LeerException {
+        List<Almacen> almacen;
+        try {
+            almacen = em.createNamedQuery("buscarAlmacenPorFecha").setParameter("fechaLimite", fechaLimite).getResultList();
+        } catch (Exception e) {
+            throw new LeerException(e.getMessage());
+        }
+        return almacen;
+    }
+
+    @Override
+    public List<Almacen> encontrarAlmacenPorFechaDesdeHasta(Date fechaInicio, Date fechaFin) throws LeerException {
+        List<Almacen> almacen;
+        try {
+            almacen = em.createNamedQuery("buscarAlmacenPorRangoDeFechas").setParameter("fechaInicio", fechaInicio).setParameter("fechaFin", fechaFin).getResultList();
+        } catch (Exception e) {
+            throw new LeerException(e.getMessage());
+        }
+        return almacen;
+    }
+
 }

@@ -6,7 +6,9 @@
 package eus.tartangalh.crud.create;
 
 import java.io.Serializable;
-import java.sql.Date;
+import static java.sql.Date.valueOf;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,38 +18,42 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
+ * Clase que representa un almacén en la base de datos de la farmacia.
+ * Contiene información sobre la ubicación, tamaño y fecha de adquisición.
+ * 
  * @author Andoni
  */
 @Entity
 @Table(name = "Almacen", schema = "farmaciabd")
 @NamedQueries({
-    // Leer todos los almacenes
     @NamedQuery(
             name = "encontrarTodosAlmacenes",
             query = "SELECT c FROM Almacen c"
-    )
-    ,
-    // Leer almacén por ID
+    ),
     @NamedQuery(
             name = "encontrarAlmacenPorId",
             query = "SELECT c FROM Almacen c WHERE c.idAlmacen = :id"
-    )
-    ,
-    // Actualizar la ciudad de un almacén por ID
+    ),
     @NamedQuery(
-            name = "actualizarCiudadAlmacen",
-            query = "UPDATE Almacen c SET c.ciudad = :ciudad WHERE c.idAlmacen = :id"
-    )
-    ,
-    // Eliminar almacén por ID
+            name = "buscarAlmacenPorPais",
+            query = "SELECT c FROM Almacen c WHERE c.pais = :pais"
+    ),
     @NamedQuery(
-            name = "eliminarAlmacen",
-            query = "DELETE FROM Almacen c WHERE c.idAlmacen = :id"
+            name = "buscarAlmacenPorCiudad",
+            query = "SELECT c FROM Almacen c WHERE c.ciudad = :ciudad"
+    ),
+    @NamedQuery(
+            name = "buscarAlmacenPorRangoDeFechas",
+            query = "SELECT c FROM Almacen c WHERE c.fechaAdquisicion BETWEEN :fechaInicio AND :fechaFin"
+    ),
+    @NamedQuery(
+            name = "buscarAlmacenPorFecha",
+            query = "SELECT c FROM Almacen c WHERE c.fechaAdquisicion = :fechaLimite"
     )
 })
 @XmlRootElement
@@ -60,10 +66,19 @@ public class Almacen implements Serializable {
     private String pais;
     private String ciudad;
     private Integer metrosCuadrados;
-    private Date fechaAdquisicion;
+    private Date fechaAdquisicion = valueOf(LocalDate.now());
     @OneToMany(mappedBy = "almacen")
     private List<ProductoFarmaceutico> producto;
 
+    /**
+     * Constructor con parámetros.
+     * 
+     * @param idAlmacen Identificador del almacén.
+     * @param pais País del almacén.
+     * @param ciudad Ciudad del almacén.
+     * @param metrosCuadrados Metros cuadrados del almacén.
+     * @param fechaAdquisicion Fecha de adquisición del almacén.
+     */
     public Almacen(Integer idAlmacen, String pais, String ciudad, Integer metrosCuadrados, Date fechaAdquisicion) {
         this.idAlmacen = idAlmacen;
         this.pais = pais;
@@ -72,81 +87,118 @@ public class Almacen implements Serializable {
         this.fechaAdquisicion = fechaAdquisicion;
     }
 
+    /**
+     * Constructor vacío.
+     */
     public Almacen() {
     }
 
+    /**
+     * Obtiene la lista de productos farmacéuticos asociados al almacén.
+     * 
+     * @return Lista de productos farmacéuticos.
+     */
     @XmlTransient
     public List<ProductoFarmaceutico> getProducto() {
         return producto;
     }
 
+    /**
+     * Establece la lista de productos farmacéuticos asociados al almacén.
+     * 
+     * @param producto Lista de productos farmacéuticos.
+     */
     public void setProducto(List<ProductoFarmaceutico> producto) {
         this.producto = producto;
     }
 
+    /**
+     * Obtiene el identificador del almacén.
+     * 
+     * @return Identificador del almacén.
+     */
     public Integer getIdAlmacen() {
         return idAlmacen;
     }
 
+    /**
+     * Establece el identificador del almacén.
+     * 
+     * @param idAlmacen Identificador del almacén.
+     */
     public void setIdAlmacen(Integer idAlmacen) {
         this.idAlmacen = idAlmacen;
     }
 
+    /**
+     * Obtiene el país del almacén.
+     * 
+     * @return País del almacén.
+     */
     public String getPais() {
         return pais;
     }
 
+    /**
+     * Establece el país del almacén.
+     * 
+     * @param pais País del almacén.
+     */
     public void setPais(String pais) {
         this.pais = pais;
     }
 
+    /**
+     * Obtiene la ciudad del almacén.
+     * 
+     * @return Ciudad del almacén.
+     */
     public String getCiudad() {
         return ciudad;
     }
 
+    /**
+     * Establece la ciudad del almacén.
+     * 
+     * @param ciudad Ciudad del almacén.
+     */
     public void setCiudad(String ciudad) {
         this.ciudad = ciudad;
     }
 
+    /**
+     * Obtiene los metros cuadrados del almacén.
+     * 
+     * @return Metros cuadrados del almacén.
+     */
     public Integer getMetrosCuadrados() {
         return metrosCuadrados;
     }
 
+    /**
+     * Establece los metros cuadrados del almacén.
+     * 
+     * @param metrosCuadrados Metros cuadrados del almacén.
+     */
     public void setMetrosCuadrados(Integer metrosCuadrados) {
         this.metrosCuadrados = metrosCuadrados;
     }
 
+    /**
+     * Obtiene la fecha de adquisición del almacén.
+     * 
+     * @return Fecha de adquisición.
+     */
     public Date getFechaAdquisicion() {
         return fechaAdquisicion;
     }
 
+    /**
+     * Establece la fecha de adquisición del almacén.
+     * 
+     * @param fechaAdquisicion Fecha de adquisición.
+     */
     public void setFechaAdquisicion(Date fechaAdquisicion) {
         this.fechaAdquisicion = fechaAdquisicion;
     }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (idAlmacen != null ? idAlmacen.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Almacen)) {
-            return false;
-        }
-        Almacen other = (Almacen) object;
-        if ((this.idAlmacen == null && other.idAlmacen != null) || (this.idAlmacen != null && !this.idAlmacen.equals(other.idAlmacen))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "eus.tartangalh.crud.create.Almacen[ id=" + idAlmacen + " ]";
-    }
-
 }
