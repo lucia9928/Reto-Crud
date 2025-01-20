@@ -6,9 +6,7 @@
 package eus.tartangalh.crud.create;
 
 import java.io.Serializable;
-import static java.sql.Date.valueOf;
 import java.util.Date;
-import java.time.LocalDate;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
