@@ -17,9 +17,15 @@ import java.util.List;
  * @author melany
  */
 public interface ClienteInterface {
-     public void crearCliente (Cliente  account) throws CrearException;
+
+    /**
+     *
+     * @param cliente
+     * @throws CrearException
+     */
+    public void crearCliente (Cliente  cliente) throws CrearException;
      public List<Cliente> encontrarTodosCliente()throws LeerException;
      public Cliente encontrarClienteId(String id) throws LeerException;
-      public void eliminarCliente(Cliente cliente)throws BorrarException;
+      public void eliminarCliente(Cliente  cliente)throws BorrarException;
      public void modificarCliente(Cliente cliente)throws ActualizarException;
 }

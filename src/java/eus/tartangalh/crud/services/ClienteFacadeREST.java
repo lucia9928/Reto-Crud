@@ -25,6 +25,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  *
@@ -37,23 +38,22 @@ public class ClienteFacadeREST {
     private Logger LOGGER=Logger.getLogger(ClienteFacadeREST.class.getName());
         
     @POST
-    @Path("Crear_Cliente")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void crearCliente(Cliente cliente) {
-       try {
-         LOGGER.log(Level.INFO,"creando cliente {0}", cliente.getDni());
-        ejb.crearCliente(cliente);
-        } catch (CrearException ex){
-            LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());        
-        }
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON}) 
+    public Response crearCliente(Cliente cliente) { 
+        try { LOGGER.log(Level.INFO, "Creando cliente {0}", cliente.getDni()); 
+        ejb.crearCliente(cliente);  
+        return Response.status(Response.Status.CREATED).build(); 
+        } catch (CrearException ex) { 
+         LOGGER.severe(ex.getMessage());     
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build(); 
+        } 
     }
 
     @PUT
-    @Path("{id}")
+    @Path("modificar/{cliente}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void modificarCliente(@PathParam("id") String id, Cliente cliente) {
-try {
+    public void modificarCliente(@PathParam("cliente") Cliente cliente) {
+        try {
             LOGGER.log(Level.INFO,"Modificando el cliente{0}",cliente.getDni());
             ejb.modificarCliente(cliente);
         } catch (ActualizarException ex) {
@@ -65,17 +65,17 @@ try {
     @DELETE
     @Path("{id}")
     public void eliminarCliente(@PathParam("id") String id) {
- try {
-            LOGGER.log(Level.INFO,"Elimianddo cliente {0}",id);
-            ejb.eliminarCliente(ejb.encontrarClienteId(id));
-        } catch (LeerException|BorrarException ex) {
-            LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());        
-        }
+    try {
+        LOGGER.log(Level.INFO,"Elimianddo cliente {0}",id);
+        ejb.eliminarCliente(ejb.encontrarClienteId(id));
+    } catch (LeerException | BorrarException ex) {
+          LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());          
+     }
     }
 
     @GET
-    @Path("encontrar_cliente")
+    @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Cliente encontrarPorId(@PathParam("id") String id) {
    try {
@@ -86,7 +86,6 @@ try {
             throw new InternalServerErrorException(ex.getMessage());        
         }
        
-
     }
 
     @GET

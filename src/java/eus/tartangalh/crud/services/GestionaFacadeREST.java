@@ -81,9 +81,8 @@ public class GestionaFacadeREST {
     }
 
     @PUT
-    @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void actualizarGestiona(@PathParam("id") PathSegment id, Gestiona gestiona) {
+    public void actualizarGestiona(Gestiona gestiona) {
         try {
             LOGGER.log(Level.INFO, "Creando producto farmacéutico {0}", gestiona.getGestionaId());
             ejb.actualizarGestiona(gestiona);
@@ -94,8 +93,20 @@ public class GestionaFacadeREST {
 
     }
 
+    @DELETE
+    @Path("gestionaPorId/{id}")
+    public void borrarGestiona(@PathParam("id") Gestiona gestiona) throws BorrarException {
+        try {
+            LOGGER.log(Level.INFO, "Actualizando producto {0}", gestiona.getGestionaId());
+            ejb.borrarGestiona(gestiona);
+        } catch (BorrarException e) {
+            LOGGER.severe(e.getMessage());
+            throw new InternalServerErrorException(e.getMessage());
+        }
+    }
+
     @GET
-    @Path("{id}")
+    @Path("gestionaPorId/{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Gestiona encontrarGestiona(@PathParam("id") PathSegment id) throws LeerException {
 
@@ -109,18 +120,6 @@ public class GestionaFacadeREST {
 
     }
 
-    @DELETE
-    @Path("{id}")
-    public void borrarGestiona(@PathParam("id") Gestiona gestiona) throws BorrarException {
-        try {
-            LOGGER.log(Level.INFO, "Actualizando producto {0}", gestiona.getGestionaId());
-            ejb.borrarGestiona(gestiona);
-        } catch (BorrarException e) {
-            LOGGER.severe(e.getMessage());
-            throw new InternalServerErrorException(e.getMessage());
-        }
-    }
-
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Gestiona> mostrarTodosGestiona() throws LeerException {
@@ -132,12 +131,12 @@ public class GestionaFacadeREST {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
+/*
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Gestiona> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) throws LeerException {
         return null;
     }
-
+*/
 }

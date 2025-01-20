@@ -10,7 +10,7 @@ import excepciones.ActualizarException;
 import excepciones.BorrarException;
 import excepciones.CrearException;
 import excepciones.LeerException;
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -18,7 +18,7 @@ import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author 2dam
+ * @author Oscar
  */
 @Stateless
 public class EJBProductoFarmaceutico implements ProductoFarmaceuticoInterface {
@@ -75,7 +75,7 @@ public class EJBProductoFarmaceutico implements ProductoFarmaceuticoInterface {
     @Override
     public void borrarProducto(ProductoFarmaceutico producto) throws BorrarException {
         try {
-            em.remove(em.merge(producto)); // Se realiza un merge si el objeto no está en el contexto de persistencia.
+            em.remove(em.merge(producto));
         } catch (Exception e) {
             throw new BorrarException(e.getMessage());
         }
@@ -128,10 +128,10 @@ public class EJBProductoFarmaceutico implements ProductoFarmaceuticoInterface {
      * búsqueda.
      */
     @Override
-    public List<ProductoFarmaceutico> encontrarProductosFarmaceuticosFechaCaducidad(LocalDate fechaLimite) throws LeerException {
+    public List<ProductoFarmaceutico> encontrarProductosFarmaceuticosFechaCaducidad(Date fechaLimite) throws LeerException {
         List<ProductoFarmaceutico> productos;
         try {
-            productos = em.createNamedQuery("buscarProductosPorFechaCaducidad").getResultList();
+            productos = em.createNamedQuery("buscarProductosPorFechaCaducidad").setParameter("fechaLimite", fechaLimite).getResultList();
         } catch (Exception e) {
             throw new LeerException(e.getMessage());
         }
@@ -157,4 +157,24 @@ public class EJBProductoFarmaceutico implements ProductoFarmaceuticoInterface {
         }
         return productos;
     }
-}
+    /**
+     * Recupera todos los ProductoFarmaceutico cuya fecha de caducidad es
+     * anterior a una fecha límite.
+     *
+     * @param fechaInicio La fecha de inicia para filtrar los productos.
+     * @param fechaFin La fecha fin para filtrar los productos.
+     * @return Una lista de productos que cumplen con el criterio.
+     * @throws LeerException Lanzada si ocurre un error durante la operación de
+     * búsqueda.
+     */
+    @Override
+    public List<ProductoFarmaceutico> encontrarProductosFarmaceuticosFechaCaducidadDesdeHasta(Date fechaInicio, Date fechaFin) throws LeerException {
+        List<ProductoFarmaceutico> productos;
+        try {
+            productos = em.createNamedQuery("buscarProductosPorRangoDeFechas").setParameter("fechaInicio", fechaInicio).setParameter("fechaFin", fechaFin).getResultList();
+        } catch (Exception e) {
+            throw new LeerException(e.getMessage());
+        }
+        return productos;
+    }
+    }
