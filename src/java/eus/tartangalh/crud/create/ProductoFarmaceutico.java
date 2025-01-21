@@ -6,10 +6,10 @@
 package eus.tartangalh.crud.create;
 
 import java.io.Serializable;
+import static java.sql.Date.valueOf;
 import java.util.Date;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -26,29 +26,37 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Entidad JPA que representa un producto farmacéutico.
- * Define las propiedades, relaciones y consultas asociadas a los productos farmacéuticos.
- * 
+ * Entidad JPA que representa un producto farmacéutico. Define las propiedades,
+ * relaciones y consultas asociadas a los productos farmacéuticos.
+ *
  * @author Oscar
  */
 @Entity
 @Table(name = "Producto_Farmaceutico", schema = "farmaciabd")
 @NamedQueries({
     @NamedQuery(
-        name = "buscarTodosLosProductos",
-        query = "SELECT a FROM ProductoFarmaceutico a ORDER BY a.idProducto DESC"
-    ),
+            name = "buscarTodosLosProductos",
+            query = "SELECT a FROM ProductoFarmaceutico a ORDER BY a.idProducto DESC"
+    )
+    ,
     @NamedQuery(
-        name = "buscarProductosPorCategoria",
-        query = "SELECT a FROM ProductoFarmaceutico a WHERE a.categoria = :categoria"
-    ),
+            name = "buscarProductosPorCategoria",
+            query = "SELECT a FROM ProductoFarmaceutico a WHERE a.categoria = :categoria"
+    )
+    ,
     @NamedQuery(
-        name = "buscarProductoPorNombre",
-        query = "SELECT a FROM ProductoFarmaceutico a WHERE a.nombreProducto = :nombre"
-    ),
+            name = "buscarProductoPorNombre",
+            query = "SELECT a FROM ProductoFarmaceutico a WHERE a.nombreProducto = :nombre"
+    )
+    ,
     @NamedQuery(
-        name = "buscarProductosPorFechaCaducidad",
-        query = "SELECT a FROM ProductoFarmaceutico a WHERE a.fechaCaducidad < :fechaLimite ORDER BY a.fechaCaducidad ASC"
+            name = "buscarProductosPorRangoDeFechas",
+            query = "SELECT a FROM ProductoFarmaceutico a WHERE a.fechaCaducidad BETWEEN :fechaInicio AND :fechaFin"
+    )
+    ,
+    @NamedQuery(
+            name = "buscarProductosPorFechaCaducidad",
+            query = "SELECT a FROM ProductoFarmaceutico a WHERE a.fechaCaducidad = :fechaLimite"
     )
 })
 @XmlRootElement
@@ -76,7 +84,7 @@ public class ProductoFarmaceutico implements Serializable {
     /*
      * Fecha de caducidad del producto.
      */
-    private Date fechaCaducidad;
+    private Date fechaCaducidad = valueOf(LocalDate.now());
 
     /*
      * Descripción del producto.
@@ -154,6 +162,22 @@ public class ProductoFarmaceutico implements Serializable {
 
     public void setNombreProducto(String nombreProducto) {
         this.nombreProducto = nombreProducto;
+    }
+
+    public Almacen getAlmacen() {
+        return almacen;
+    }
+
+    public void setAlmacen(Almacen almacen) {
+        this.almacen = almacen;
+    }
+
+    public Proveedor getProveedor() {
+        return proveedor;
+    }
+
+    public void setProveedor(Proveedor proveedor) {
+        this.proveedor = proveedor;
     }
 
     public String getLoteProducto() {
