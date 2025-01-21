@@ -6,10 +6,12 @@
 package eus.tartangalh.crud.ejb;
 
 import eus.tartangalh.crud.create.Almacen;
+import eus.tartangalh.crud.create.ProductoFarmaceutico;
 import excepciones.ActualizarException;
 import excepciones.BorrarException;
 import excepciones.CrearException;
 import excepciones.LeerException;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -47,6 +49,10 @@ public interface AlmacenInterface {
      * @throws ActualizarException Lanzada cuando ocurre un error o excepción
      * durante la actualización.
      */
+    public List<Almacen> encontrarAlmacenPorPais(String pais) throws LeerException;
+
+    public List<Almacen> encontrarAlmacenPorCiudad(String ciudad) throws LeerException;
+
     public void actualizarAlmacen(Almacen almacen) throws ActualizarException;
 
     /**
@@ -59,4 +65,9 @@ public interface AlmacenInterface {
     public void borrarAlmacen(Almacen almacen) throws BorrarException;
 
     public List<Almacen> encontrarTodosAlmacenes() throws LeerException;
+
+    public List<Almacen> encontrarAlmacenPorFecha(Date fechaLimite) throws LeerException;
+
+    public List<Almacen> encontrarAlmacenPorFechaDesdeHasta(Date fechaInicio, Date fechaFin) throws LeerException;
+
 }

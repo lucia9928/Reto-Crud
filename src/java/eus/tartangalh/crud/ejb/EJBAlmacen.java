@@ -6,10 +6,12 @@
 package eus.tartangalh.crud.ejb;
 
 import eus.tartangalh.crud.create.Almacen;
+import eus.tartangalh.crud.create.ProductoFarmaceutico;
 import excepciones.ActualizarException;
 import excepciones.BorrarException;
 import excepciones.CrearException;
 import excepciones.LeerException;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -112,4 +114,50 @@ public class EJBAlmacen implements AlmacenInterface {
             throw new LeerException("Error al leer todos los almacenes: " + e.getMessage());
         }
     }
+
+    @Override
+    public List<Almacen> encontrarAlmacenPorPais(String pais) throws LeerException {
+        List<Almacen> almacenes;
+        try {
+            almacenes = em.createNamedQuery("buscarAlmacenPorPais").setParameter("pais", pais).getResultList();
+        } catch (Exception e) {
+            throw new LeerException(e.getMessage());
+        }
+        return almacenes;
+    }
+
+    @Override
+    public List<Almacen> encontrarAlmacenPorCiudad(String ciudad) throws LeerException {
+        List<Almacen> almacenes;
+        try {
+            almacenes = em.createNamedQuery("buscarAlmacenPorCiudad").setParameter("ciudad", ciudad).getResultList();
+        } catch (Exception e) {
+            throw new LeerException(e.getMessage());
+        }
+        return almacenes;
+
+    }
+
+    @Override
+    public List<Almacen> encontrarAlmacenPorFecha(Date fechaLimite) throws LeerException {
+        List<Almacen> almacen;
+        try {
+            almacen = em.createNamedQuery("buscarAlmacenPorFecha").setParameter("fechaLimite", fechaLimite).getResultList();
+        } catch (Exception e) {
+            throw new LeerException(e.getMessage());
+        }
+        return almacen;
+    }
+
+    @Override
+    public List<Almacen> encontrarAlmacenPorFechaDesdeHasta(Date fechaInicio, Date fechaFin) throws LeerException {
+        List<Almacen> almacen;
+        try {
+            almacen = em.createNamedQuery("buscarAlmacenPorRangoDeFechas").setParameter("fechaInicio", fechaInicio).setParameter("fechaFin", fechaFin).getResultList();
+        } catch (Exception e) {
+            throw new LeerException(e.getMessage());
+        }
+        return almacen;
+    }
+
 }
