@@ -38,7 +38,6 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Cliente extends Usuario implements Serializable {
 
   private static final long serialVersionUID = 1L;
-  @Temporal(javax.persistence.TemporalType.DATE)
   private Date fechaRegistro;
   @OneToMany( mappedBy ="cliente")
   private List<RecetaMedica>recetas;
