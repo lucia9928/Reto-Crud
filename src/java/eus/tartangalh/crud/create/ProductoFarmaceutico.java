@@ -6,6 +6,8 @@
 package eus.tartangalh.crud.create;
 
 import java.io.Serializable;
+import static java.sql.Date.valueOf;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Entity;

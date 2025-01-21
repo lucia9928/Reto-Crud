@@ -10,6 +10,7 @@ import excepciones.ActualizarException;
 import excepciones.BorrarException;
 import excepciones.CrearException;
 import excepciones.LeerException;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -74,6 +75,21 @@ public class EJBRecetaMedica implements RecetaMedicaInterface{
         } 
     }
 
+    @Override
+    public List<RecetaMedica> encontrarRecetasPorFecha(Date fechaInicio, Date fechaFin) throws LeerException {
+ try {
+            if (fechaInicio == null || fechaFin == null) {
+                throw new IllegalArgumentException("Las fechas no pueden ser nulas.");
+            }
+            return em.createNamedQuery("buscarRecetasPorFecha", RecetaMedica.class)
+                     .setParameter("fechaInicio", fechaInicio)
+                     .setParameter("fechaFin", fechaFin)
+                     .getResultList();
+        } catch (Exception ex) {
+            throw new LeerException("Error al buscar recetas en el rango de fechas: " + ex.getMessage());
+        }
+    
+    }
  
     
 }
