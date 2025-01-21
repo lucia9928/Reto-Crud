@@ -49,11 +49,12 @@ public class EJBGestiona implements GestionaInterfaz {
     }
 
     @Override
-    public Gestiona encontrarGestiona(PathSegment id) throws LeerException {
+    public Gestiona encontrarGestiona(String dni, Integer idProducto) throws LeerException {
         Gestiona gestiona;
         try {
-            gestiona = em.find(Gestiona.class,
-                    id);
+            gestiona = (Gestiona) em.createNamedQuery("buscarGestion")
+                    .setParameter("dni", dni).setParameter("idProducto", idProducto)
+                    .getSingleResult();
         } catch (Exception e) {
             throw new LeerException(e.getMessage());
         }
@@ -74,7 +75,7 @@ public class EJBGestiona implements GestionaInterfaz {
     public List<Gestiona> mostrarTodosGestiona() throws LeerException {
         List<Gestiona> gestiones;
         try {
-            
+
             gestiones
                     = em.createNamedQuery("buscarTodasLasGestiones").getResultList();
         } catch (Exception e) {

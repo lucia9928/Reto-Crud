@@ -12,6 +12,11 @@ import excepciones.ActualizarException;
 import excepciones.BorrarException;
 import excepciones.CrearException;
 import excepciones.LeerException;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -128,6 +133,79 @@ public class AlmacenFacadeREST {
         } catch (LeerException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
+        }
+    }
+
+    @GET
+    @Path("pais/{pais}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Almacen> encontrarPorPais(@PathParam("pais") String pais) {
+        try {
+            LOGGER.log(Level.INFO, "Buscando almacenes por pais {0}", pais);
+            return ejb.encontrarAlmacenPorPais(pais);
+        } catch (LeerException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+    }
+
+    @GET
+    @Path("ciudad/{ciudad}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Almacen> encontrarPorCiudad(@PathParam("ciudad") String ciudad) {
+        try {
+            LOGGER.log(Level.INFO, "Buscando almacenes por ciudad {0}", ciudad);
+            return ejb.encontrarAlmacenPorCiudad(ciudad);
+        } catch (LeerException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+    }
+
+    @GET
+    @Path("caducidad/{fechaLimite}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Almacen> encontrarAlmacenPorFecha(@PathParam("fechaLimite") String fechaLimite) {
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate localdate = LocalDate.parse(fechaLimite, formatter);
+            Date fecha = Date.from(localdate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            LOGGER.log(Level.INFO, "Buscando productos con fecha de caducidad anterior a {0}", fecha);
+            return ejb.encontrarAlmacenPorFecha(fecha);
+        } catch (LeerException ex) {
+            LOGGER.severe("Error al leer los productos: " + ex.getMessage());
+            throw new InternalServerErrorException("Error al procesar la solicitud.");
+        }
+    }
+
+    @GET
+    @Path("{fechaInicio}/{fechaFin}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Almacen> encontrarPorRangoDeFechas(
+            @PathParam("fechaInicio") String fechaInicio,
+            @PathParam("fechaFin") String fechaFin) {
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+            // Convertir las fechas recibidas a objetos LocalDate
+            LocalDate localDateInicio = LocalDate.parse(fechaInicio, formatter);
+            LocalDate localDateFin = LocalDate.parse(fechaFin, formatter);
+
+            // Convertir LocalDate a Date
+            Date fechaInicioDate = Date.from(localDateInicio.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            Date fechaFinDate = Date.from(localDateFin.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+            LOGGER.log(Level.INFO, "Buscando productos con fecha de caducidad entre {0} y {1}",
+                    new Object[]{fechaInicioDate, fechaFinDate});
+
+            // Llamar al método EJB para obtener los productos dentro del rango de fechas
+            return ejb.encontrarAlmacenPorFechaDesdeHasta(fechaInicioDate, fechaFinDate);
+        } catch (LeerException ex) {
+            LOGGER.severe("Error al leer los productos: " + ex.getMessage());
+            throw new InternalServerErrorException("Error al procesar la solicitud.");
+        } catch (DateTimeParseException ex) {
+            LOGGER.severe("Formato de fecha inválido: " + ex.getMessage());
+            throw new BadRequestException("Las fechas deben estar en formato yyyy-MM-dd.");
         }
     }
 }

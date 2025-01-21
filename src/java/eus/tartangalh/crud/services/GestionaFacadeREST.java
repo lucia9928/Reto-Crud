@@ -106,13 +106,13 @@ public class GestionaFacadeREST {
     }
 
     @GET
-    @Path("gestionaPorId/{id}")
+    @Path("{dni}/{idProducto}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Gestiona encontrarGestiona(@PathParam("id") PathSegment id) throws LeerException {
+    public Gestiona encontrarGestiona(@PathParam("dni") String dni, @PathParam("idProducto") Integer idProducto){
 
         try {
-            LOGGER.log(Level.INFO, "Buscando proveedor {0}", id);
-            return ejb.encontrarGestiona(id);
+            LOGGER.log(Level.INFO, "Buscando proveedor {0}", idProducto);
+            return ejb.encontrarGestiona(dni, idProducto);
         } catch (LeerException e) {
             LOGGER.severe(e.getMessage());
             throw new InternalServerErrorException(e.getMessage());
