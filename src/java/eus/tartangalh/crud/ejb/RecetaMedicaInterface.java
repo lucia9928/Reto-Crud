@@ -10,6 +10,7 @@ import excepciones.ActualizarException;
 import excepciones.BorrarException;
 import excepciones.CrearException;
 import excepciones.LeerException;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -20,9 +21,10 @@ import javax.ejb.Local;
  */
 @Local
 public interface RecetaMedicaInterface {
-    public void crearRecetaMedica (RecetaMedica  receta)throws CrearException;
+    public void crearRecetaMedica(RecetaMedica  receta)throws CrearException;
     public List<RecetaMedica> encontrarTodasLasRecetas() throws LeerException;
     public RecetaMedica encontrarRecetasPorId(Integer id) throws LeerException;
     public void eliminarRecetaMedica(RecetaMedica receta) throws BorrarException;
     public void modificarRecetaMedica(RecetaMedica receta) throws ActualizarException;
+    public List<RecetaMedica> encontrarRecetasPorFecha(Date fechaInicio, Date fechaFin) throws LeerException;
 }

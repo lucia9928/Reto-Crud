@@ -6,15 +6,20 @@
 package eus.tartangalh.crud.services;
 
 import eus.tartangalh.crud.create.Cliente;
+import eus.tartangalh.crud.create.RecetaMedica;
 import eus.tartangalh.crud.ejb.ClienteInterface;
 import excepciones.ActualizarException;
 import excepciones.BorrarException;
 import excepciones.CrearException;
 import excepciones.LeerException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
+import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -50,9 +55,8 @@ public class ClienteFacadeREST {
     }
 
     @PUT
-    @Path("modificar/{cliente}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void modificarCliente(@PathParam("cliente") Cliente cliente) {
+    public void modificarCliente(Cliente cliente) {
         try {
             LOGGER.log(Level.INFO,"Modificando el cliente{0}",cliente.getDni());
             ejb.modificarCliente(cliente);
@@ -62,6 +66,10 @@ public class ClienteFacadeREST {
         }
     }
 
+    /**
+     *
+     * @param id
+     */
     @DELETE
     @Path("{id}")
     public void eliminarCliente(@PathParam("id") String id) {
@@ -99,5 +107,31 @@ public class ClienteFacadeREST {
             throw new InternalServerErrorException(ex.getMessage());        
         }
     }
-    
+     @GET
+    @Path("fecha/{fechaInicio}/{fechaFin}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Cliente> buscarClientesPorFecha(
+            @PathParam("fechaInicio") String fechaInicioStr,
+            @PathParam("fechaFin") String fechaFinStr) {
+        try {
+            Date fechaInicio = convertirStringAFecha(fechaInicioStr);
+            Date fechaFin = convertirStringAFecha(fechaFinStr);
+
+            LOGGER.log(Level.INFO, "Buscando clientes entre {0} y {1}", new Object[]{fechaInicio, fechaFin});
+            return ejb.buscarClientesPorFecha(fechaInicio, fechaFin);
+        }catch (LeerException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+    }
+
+    private Date convertirStringAFecha(String fechaStr) {
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            return formatter.parse(fechaStr);
+        } catch (ParseException ex) {
+            LOGGER.log(Level.SEVERE, "Error al convertir la fecha: {0}", fechaStr);
+            throw new BadRequestException("Formato de fecha inválido. Debe ser 'yyyy-MM-dd'");
+        }
+    }
 }
