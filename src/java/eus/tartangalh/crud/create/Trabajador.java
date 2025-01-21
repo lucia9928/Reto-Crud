@@ -41,7 +41,7 @@ public class Trabajador extends Usuario implements Serializable {
     @Enumerated(EnumType.STRING)
     private TipoCargo tipoCargo;
     @OneToMany(mappedBy = "trabajador", fetch = FetchType.EAGER)
-    private List<Gestiona> gestionaProducto;
+    private List<Gestiona> gestiona;
 
     public Trabajador(Date fechaContratacion, TipoCargo tipoCargo) {
         this.fechaContratacion = fechaContratacion;
@@ -68,13 +68,6 @@ public class Trabajador extends Usuario implements Serializable {
         this.tipoCargo = tipoCargo;
     }
 
-    public List<Gestiona> getGestionaProducto() {
-        return gestionaProducto;
-    }
-
-    public void setGestionaProducto(List<Gestiona> gestionaProducto) {
-        this.gestionaProducto = gestionaProducto;
-    }
 
     @Override
     public int hashCode() {
