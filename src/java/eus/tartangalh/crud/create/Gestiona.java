@@ -7,8 +7,6 @@ package eus.tartangalh.crud.create;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.time.LocalDate;
-import java.util.Date;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -24,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author 2dam
  */
 @Entity
-@Table(name = "Gestiona_Producto", schema = "farmaciabd")
+@Table(name = "Gestiona", schema = "farmaciabd")
 @NamedQueries({
     @NamedQuery(
             name = "buscarTodasLasGestiones",
