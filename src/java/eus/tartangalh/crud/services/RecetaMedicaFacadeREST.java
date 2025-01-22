@@ -11,10 +11,14 @@ import excepciones.ActualizarException;
 import excepciones.BorrarException;
 import excepciones.CrearException;
 import excepciones.LeerException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
+import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -43,7 +47,7 @@ import javax.ws.rs.core.MediaType;
      * @param receta
      */
     @POST
-    @Path ("Crear_Receta")
+    @Path ("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void crearRecetaMedica(RecetaMedica receta) {
          try {
@@ -56,7 +60,6 @@ import javax.ws.rs.core.MediaType;
     }
      
     @PUT
-    @Path("{Modificar}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
      public void modificarRecetaMedica(RecetaMedica receta) {
         try {
@@ -69,7 +72,7 @@ import javax.ws.rs.core.MediaType;
     }
 
     @DELETE
-        @Path("{Eliminar}")
+    @Path("{id}")
     public void eliminarRecetamedica(@PathParam("id") Integer id) {
      try {
             LOGGER.log(Level.INFO,"Elimianddo Receta {0}",id);
@@ -81,7 +84,7 @@ import javax.ws.rs.core.MediaType;
     }
 
     @GET
-    @Path("{Encontrar}")
+    @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public RecetaMedica encontrarRecetaPorId(@PathParam("id") Integer id) {
      try {
@@ -98,11 +101,38 @@ import javax.ws.rs.core.MediaType;
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<RecetaMedica> encontrarTodasLasRecetas() {
      try {
-            LOGGER.log(Level.INFO,"Reading data for all accounts");
+            LOGGER.log(Level.INFO,"Buscar todas las recetas");
             return ejb.encontrarTodasLasRecetas();
         } catch (LeerException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());        
+        }
+    }
+    @GET
+    @Path("fecha/{fechaInicio}/{fechaFin}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<RecetaMedica> encontrarRecetasPorFecha(
+            @PathParam("fechaInicio") String fechaInicioStr,
+            @PathParam("fechaFin") String fechaFinStr) {
+        try {
+            Date fechaInicio = convertirStringAFecha(fechaInicioStr);
+            Date fechaFin = convertirStringAFecha(fechaFinStr);
+
+            LOGGER.log(Level.INFO, "Buscando recetas entre {0} y {1}", new Object[]{fechaInicio, fechaFin});
+            return ejb.encontrarRecetasPorFecha(fechaInicio, fechaFin);
+        } catch (LeerException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+    }
+
+    private Date convertirStringAFecha(String fechaStr) {
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            return formatter.parse(fechaStr);
+        } catch (ParseException ex) {
+            LOGGER.log(Level.SEVERE, "Error al convertir la fecha: {0}", fechaStr);
+            throw new BadRequestException("Formato de fecha inválido. Debe ser 'yyyy-MM-dd'");
         }
     }
    

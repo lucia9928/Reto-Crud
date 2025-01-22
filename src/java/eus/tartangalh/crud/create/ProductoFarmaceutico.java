@@ -7,6 +7,7 @@ package eus.tartangalh.crud.create;
 
 import java.io.Serializable;
 import static java.sql.Date.valueOf;
+import java.time.LocalDate;
 import java.util.Date;
 import java.time.LocalDate;
 import java.util.List;
@@ -172,14 +173,7 @@ public class ProductoFarmaceutico implements Serializable {
         this.almacen = almacen;
     }
 
-    public List<Gestiona> getGestiona() {
-        return gestiona;
-    }
-
-    public void setGestiona(List<Gestiona> gestiona) {
-        this.gestiona = gestiona;
-    }
-
+ 
     public List<RecetaMedica> getReceta() {
         return receta;
     }

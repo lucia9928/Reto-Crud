@@ -58,9 +58,9 @@ public class TrabajadorFacadeREST {
     }
 
     @PUT
-    @Path("{id}")
+   
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void modificarTrabajador(@PathParam("id") String id, Trabajador trabajador) {
+    public void modificarTrabajador( Trabajador trabajador) {
       try {
             LOGGER.log(Level.INFO,"Modificando el trabajador {0}",trabajador.getDni());
             ejb.modificarTrabajador(trabajador);
