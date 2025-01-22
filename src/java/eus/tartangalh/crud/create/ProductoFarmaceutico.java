@@ -37,7 +37,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(
             name = "buscarTodosLosProductos",
-            query = "SELECT a FROM ProductoFarmaceutico a ORDER BY a.idProducto DESC"
+            query = "SELECT a FROM ProductoFarmaceutico a"
     )
     ,
     @NamedQuery(
