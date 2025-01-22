@@ -67,15 +67,7 @@ public class Trabajador extends Usuario implements Serializable {
     public void setTipoCargo(TipoCargo tipoCargo) {
         this.tipoCargo = tipoCargo;
     }
-
-    public List<Gestiona> getGestionaProducto() {
-        return gestionaProducto;
-    }
-
-    public void setGestionaProducto(List<Gestiona> gestionaProducto) {
-        this.gestionaProducto = gestionaProducto;
-    }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;
