@@ -21,7 +21,7 @@ import javax.mail.internet.MimeMessage;
 
 /**
  *
- * @author bayron
+ * @author Oscar
  */
 public class EmailServicio {
 
