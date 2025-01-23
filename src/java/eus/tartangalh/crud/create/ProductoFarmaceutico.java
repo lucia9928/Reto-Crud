@@ -7,6 +7,7 @@ package eus.tartangalh.crud.create;
 
 import java.io.Serializable;
 import static java.sql.Date.valueOf;
+import java.time.LocalDate;
 import java.util.Date;
 import java.time.LocalDate;
 import java.util.List;
@@ -36,7 +37,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(
             name = "buscarTodosLosProductos",
-            query = "SELECT a FROM ProductoFarmaceutico a ORDER BY a.idProducto DESC"
+            query = "SELECT a FROM ProductoFarmaceutico a"
     )
     ,
     @NamedQuery(

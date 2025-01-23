@@ -28,13 +28,16 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(
         name = "encontrarTodosLosClientes",
         query = "SELECT c FROM Cliente c ORDER BY c.dni DESC"
+    ), 
+    @NamedQuery(
+        name = "buscarClientesPorFecha",
+         query = "SELECT c FROM Cliente c WHERE c.fechaRegistro BETWEEN :fechaInicio AND :fechaFin ORDER BY c.fechaRegistro ASC"
     )
 })
 @XmlRootElement
 public class Cliente extends Usuario implements Serializable {
 
   private static final long serialVersionUID = 1L;
-  @Temporal(javax.persistence.TemporalType.DATE)
   private Date fechaRegistro;
   @OneToMany( mappedBy ="cliente")
   private List<RecetaMedica>recetas;

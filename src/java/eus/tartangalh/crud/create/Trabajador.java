@@ -68,7 +68,6 @@ public class Trabajador extends Usuario implements Serializable {
         this.tipoCargo = tipoCargo;
     }
 
-
     @Override
     public int hashCode() {
         int hash = 0;

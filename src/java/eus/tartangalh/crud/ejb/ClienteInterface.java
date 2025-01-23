@@ -6,10 +6,12 @@
 package eus.tartangalh.crud.ejb;
 
 import eus.tartangalh.crud.create.Cliente;
+import eus.tartangalh.crud.create.RecetaMedica;
 import excepciones.ActualizarException;
 import excepciones.BorrarException;
 import excepciones.CrearException;
 import excepciones.LeerException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,4 +30,7 @@ public interface ClienteInterface {
      public Cliente encontrarClienteId(String id) throws LeerException;
       public void eliminarCliente(Cliente  cliente)throws BorrarException;
      public void modificarCliente(Cliente cliente)throws ActualizarException;
+
+    public List<Cliente> buscarClientesPorFecha(Date fechaInicio, Date fechaFin)throws LeerException;
 }
+
