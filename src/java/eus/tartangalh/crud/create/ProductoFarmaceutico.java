@@ -173,15 +173,6 @@ public class ProductoFarmaceutico implements Serializable {
         this.almacen = almacen;
     }
 
- 
-    public List<RecetaMedica> getReceta() {
-        return receta;
-    }
-
-    public void setReceta(List<RecetaMedica> receta) {
-        this.receta = receta;
-    }
-
     public Proveedor getProveedor() {
         return proveedor;
     }
