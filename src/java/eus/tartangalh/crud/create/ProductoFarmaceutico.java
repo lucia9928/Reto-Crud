@@ -94,7 +94,7 @@ public class ProductoFarmaceutico implements Serializable {
     /*
      * Categoría del producto farmacéutico (enum).
      */
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private CategoriaProducto categoria;
 
     /*
