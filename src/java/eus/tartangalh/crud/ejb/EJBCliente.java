@@ -88,7 +88,7 @@ try{
             if (fechaInicio == null || fechaFin == null) {
                 throw new IllegalArgumentException("Las fechas no pueden ser nulas.");
             }
-            return em.createNamedQuery("buscarClientesPorFecha", Cliente.class)
+            return em.createNamedQuery("buscarClientesPorFecha")
                      .setParameter("fechaInicio", fechaInicio)
                      .setParameter("fechaFin", fechaFin)
                      .getResultList();

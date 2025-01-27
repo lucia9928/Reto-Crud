@@ -109,7 +109,7 @@ public class EJBAlmacen implements AlmacenInterface {
     @Override
     public List<Almacen> encontrarTodosAlmacenes() throws LeerException {
         try {
-            return em.createNamedQuery("encontrarTodosAlmacenes", Almacen.class).getResultList();
+            return em.createNamedQuery("encontrarTodosAlmacenes").getResultList();
         } catch (Exception e) {
             throw new LeerException("Error al leer todos los almacenes: " + e.getMessage());
         }
