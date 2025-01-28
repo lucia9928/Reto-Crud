@@ -177,7 +177,7 @@ public class ProductoFarmaceutico implements Serializable {
     public void setAlmacen(Almacen almacen) {
         this.almacen = almacen;
     }
-    
+
     public Proveedor getProveedor() {
         return proveedor;
     }
