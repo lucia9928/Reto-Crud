@@ -10,6 +10,7 @@ import static java.sql.Date.valueOf;
 import java.util.Date;
 import java.time.LocalDate;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -113,14 +114,14 @@ public class ProductoFarmaceutico implements Serializable {
     /*
      * Relación con las entidades de gestión del producto.
      */
-    @OneToMany(mappedBy = "productoFarmaceutico", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "productoFarmaceutico", fetch = FetchType.EAGER, cascade=CascadeType.REMOVE)
     @XmlTransient
     private List<Gestiona> gestiona;
 
     /*
      * Relación con las recetas médicas que incluyen el producto.
      */
-    @ManyToMany(mappedBy = "productos", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "productos", fetch = FetchType.EAGER, cascade=CascadeType.REMOVE)
     @XmlTransient
     private List<RecetaMedica> receta;
 
@@ -176,7 +177,7 @@ public class ProductoFarmaceutico implements Serializable {
     public void setAlmacen(Almacen almacen) {
         this.almacen = almacen;
     }
-    
+
     public Proveedor getProveedor() {
         return proveedor;
     }
