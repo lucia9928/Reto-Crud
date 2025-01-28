@@ -121,7 +121,7 @@ public class ProductoFarmaceutico implements Serializable {
     /*
      * Relación con las recetas médicas que incluyen el producto.
      */
-    @ManyToMany(mappedBy = "productos", fetch = FetchType.EAGER, cascade=CascadeType.REMOVE)
+    @ManyToMany(mappedBy = "productos", fetch = FetchType.LAZY, cascade=CascadeType.REMOVE)
     @XmlTransient
     private List<RecetaMedica> receta;
 
