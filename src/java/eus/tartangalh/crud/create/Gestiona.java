@@ -35,12 +35,6 @@ import javax.xml.bind.annotation.XmlRootElement;
             name = "buscarGestion",
             query = "SELECT g FROM Gestiona g WHERE g.trabajador.dni = :dni AND g.productoFarmaceutico.idProducto = :idProducto"
     )
-    ,
-  @NamedQuery(
-            name = "buscarGestionPorIdProducto",
-            query = "SELECT g FROM Gestiona g WHERE g.productoFarmaceutico.idProducto = :idProducto"
-    )
-
 })
 
 @XmlRootElement

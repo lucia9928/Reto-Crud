@@ -62,18 +62,6 @@ public class EJBGestiona implements GestionaInterfaz {
 
     }
 
-    @Override
-    public Gestiona encontrarGestiona(Integer idProducto) throws LeerException {
-        Gestiona gestiona;
-        try {
-            gestiona = (Gestiona) em.createNamedQuery("buscarGestionPorIdProducto").setParameter("idProducto", idProducto)
-                    .getSingleResult();
-        } catch (Exception e) {
-            throw new LeerException(e.getMessage());
-        }
-        return gestiona;
-
-    }
 
     @Override
     public void borrarGestiona(Gestiona gestiona) throws BorrarException {

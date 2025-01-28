@@ -69,7 +69,7 @@ public class GestionaFacadeREST {
 
     @POST
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void crearGestiona(Gestiona gestiona) throws CrearException {
+    public void crearGestiona(Gestiona gestiona) {
         try {
             LOGGER.log(Level.INFO, "Creando producto farmacéutico {0}", gestiona.getGestionaId());
             ejb.crearGestion(gestiona);
@@ -94,12 +94,12 @@ public class GestionaFacadeREST {
     }
 
     @DELETE
-    @Path("gestionaPorId/{id}")
-    public void borrarGestiona(@PathParam("id") Gestiona gestiona) throws BorrarException {
+    @Path("{dni}/{idProducto}")
+    public void borrarGestiona(@PathParam("dni") String dni, @PathParam("idProducto") Integer idProducto)  {
         try {
-            LOGGER.log(Level.INFO, "Actualizando producto {0}", gestiona.getGestionaId());
-            ejb.borrarGestiona(gestiona);
-        } catch (BorrarException e) {
+            LOGGER.log(Level.INFO, "Actualizando producto {0}", idProducto);
+            ejb.borrarGestiona(ejb.encontrarGestiona(dni, idProducto));
+        } catch (BorrarException | LeerException e) {
             LOGGER.severe(e.getMessage());
             throw new InternalServerErrorException(e.getMessage());
         }
@@ -121,23 +121,8 @@ public class GestionaFacadeREST {
     }
 
     @GET
-    @Path("{idProducto}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Gestiona encontrarGestiona(@PathParam("idProducto") Integer idProducto) {
-
-        try {
-            LOGGER.log(Level.INFO, "Buscando proveedor {0}", idProducto);
-            return ejb.encontrarGestiona(idProducto);
-        } catch (LeerException e) {
-            LOGGER.severe(e.getMessage());
-            throw new InternalServerErrorException(e.getMessage());
-        }
-
-    }
-
-    @GET
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Gestiona> mostrarTodosGestiona() throws LeerException {
+    public List<Gestiona> mostrarTodosGestiona(){
         try {
             LOGGER.log(Level.INFO, "Buscando todos los proveedores");
             return ejb.mostrarTodosGestiona();
