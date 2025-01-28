@@ -29,10 +29,16 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(
             name = "buscarTodasLasGestiones",
             query = "SELECT G FROM Gestiona G"
-    ),
+    )
+    ,
  @NamedQuery(
             name = "buscarGestion",
             query = "SELECT g FROM Gestiona g WHERE g.trabajador.dni = :dni AND g.productoFarmaceutico.idProducto = :idProducto"
+    )
+    ,
+  @NamedQuery(
+            name = "buscarGestionPorIdProducto",
+            query = "SELECT g FROM Gestiona g WHERE g.productoFarmaceutico.idProducto = :idProducto"
     )
 
 })

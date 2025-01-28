@@ -27,6 +27,8 @@ public interface GestionaInterfaz {
     public void actualizarGestiona(Gestiona gestiona) throws ActualizarException;
 
     public Gestiona encontrarGestiona(String dni, Integer idProducto) throws LeerException;
+    
+    public Gestiona encontrarGestiona(Integer idProducto) throws LeerException;
 
     public void borrarGestiona(Gestiona gestiona) throws BorrarException;
 

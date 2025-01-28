@@ -6,6 +6,7 @@
 package eus.tartangalh.crud.services;
 
 import eus.tartangalh.crud.create.ProductoFarmaceutico;
+import eus.tartangalh.crud.ejb.GestionaInterfaz;
 import eus.tartangalh.crud.ejb.ProductoFarmaceuticoInterface;
 import excepciones.ActualizarException;
 import excepciones.BorrarException;
@@ -49,7 +50,8 @@ public class ProductoFarmaceuticoFacadeREST {
      */
     @EJB
     private ProductoFarmaceuticoInterface ejb;
-
+    private GestionaInterfaz ejbg;
+    
     /**
      * Logger para registrar mensajes y errores de la clase.
      */
@@ -99,6 +101,7 @@ public class ProductoFarmaceuticoFacadeREST {
     public void borrarProducto(@PathParam("id") Integer id) {
         try {
             LOGGER.log(Level.INFO, "Borrando producto {0}", id);
+            ejbg.borrarGestiona(ejbg.encontrarGestiona(id));
             ejb.borrarProducto(ejb.encontrarProductoFarmaceutico(id));
         } catch (LeerException | BorrarException ex) {
             LOGGER.severe(ex.getMessage());
