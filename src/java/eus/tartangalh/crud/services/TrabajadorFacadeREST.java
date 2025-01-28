@@ -35,51 +35,52 @@ import javax.ws.rs.core.Response;
 @Stateless
 @Path("Trabajador")
 public class TrabajadorFacadeREST {
-@EJB
+
+    @EJB
     private TrabajadorInterface ejb;
 
     public TrabajadorFacadeREST() {
     }
- 
-    private Logger LOGGER=Logger.getLogger(TrabajadorFacadeREST.class.getName());
+
+    private Logger LOGGER = Logger.getLogger(TrabajadorFacadeREST.class.getName());
 
     @POST
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Response crearTrabajador(Trabajador trabajador) {
-         try {
-         LOGGER.log(Level.INFO,"creando trabajador {0}", trabajador.getDni());
-        ejb.crearTrabajador(trabajador);      
-        return Response.status(Response.Status.CREATED).build(); 
+        try {
+            LOGGER.log(Level.INFO, "creando trabajador {0}", trabajador.getDni());
+            ejb.crearTrabajador(trabajador);
+            return Response.status(Response.Status.CREATED).build();
 
-        } catch (CrearException ex){
-             LOGGER.severe(ex.getMessage());     
-        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();       
+        } catch (CrearException ex) {
+            LOGGER.severe(ex.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
         }
     }
 
     @PUT
-   
+
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void modificarTrabajador( Trabajador trabajador) {
-      try {
-            LOGGER.log(Level.INFO,"Modificando el trabajador {0}",trabajador.getDni());
+    public void modificarTrabajador(Trabajador trabajador) {
+        try {
+            LOGGER.log(Level.INFO, "Modificando el trabajador {0}", trabajador.getDni());
             ejb.modificarTrabajador(trabajador);
         } catch (ActualizarException ex) {
             LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());        
+            throw new InternalServerErrorException(ex.getMessage());
         }
     }
 
     @DELETE
     @Path("{id}")
     public void eliminarTrabajador(@PathParam("id") String id) {
-      try {
-        LOGGER.log(Level.INFO,"Elimianddo trabajador {0}",id);
-        ejb.eliminarTrabajador(ejb.encontrarTrabajdorId(id));
-    } catch (LeerException | BorrarException ex) {
-          LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());          
-     }
+        try {
+            LOGGER.log(Level.INFO, "Elimianddo trabajador {0}", id);
+            ejb.eliminarTrabajador(ejb.encontrarTrabajdorId(id));
+        } catch (LeerException | BorrarException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
     }
 
     @GET
@@ -87,11 +88,11 @@ public class TrabajadorFacadeREST {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Trabajador encontrarPorId(@PathParam("id") String id) {
         try {
-            LOGGER.log(Level.INFO,"Leer los trabajadores por id {0}",id);
+            LOGGER.log(Level.INFO, "Leer los trabajadores por id {0}", id);
             return ejb.encontrarTrabajdorId(id);
         } catch (LeerException ex) {
             LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());        
+            throw new InternalServerErrorException(ex.getMessage());
         }
     }
 
@@ -99,12 +100,25 @@ public class TrabajadorFacadeREST {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Trabajador> encontrarTodosLosTrabajdores() {
         try {
-            LOGGER.log(Level.INFO,"Buscando todos los trabajadores");
+            LOGGER.log(Level.INFO, "Buscando todos los trabajadores");
             return ejb.encontraTodosLosTrabajadores();
         } catch (LeerException ex) {
             LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());        
+            throw new InternalServerErrorException(ex.getMessage());
         }
     }
-    
+
+    @GET
+    @Path("{email}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Trabajador> encontrarTrabajdorEmail(@PathParam("email") String email) {
+        try {
+            LOGGER.log(Level.INFO, "Buscando todos los trabajadores");
+            return ejb.encontrarTrabajdorEmail(email);
+        } catch (LeerException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+    }
+
 }

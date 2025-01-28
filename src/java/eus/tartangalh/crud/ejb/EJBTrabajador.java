@@ -79,4 +79,14 @@ public class EJBTrabajador implements TrabajadorInterface {
         }
     }
 
-}
+    @Override
+    public List<Trabajador> encontrarTrabajdorEmail(String email) throws LeerException {
+                List<Trabajador> trabajador;
+        try {
+            trabajador = em.createNamedQuery("encontrarTrabajdorEmail").getResultList();
+        } catch (Exception e) {
+            throw new LeerException(e.getMessage());
+        }
+        return trabajador;
+    }
+    }

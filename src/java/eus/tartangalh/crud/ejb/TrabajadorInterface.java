@@ -23,6 +23,8 @@ public interface TrabajadorInterface {
     public void crearTrabajador(Trabajador trabajador) throws CrearException;
 
     public List<Trabajador> encontraTodosLosTrabajadores() throws LeerException;
+    
+    public List<Trabajador> encontrarTrabajdorEmail(String email) throws LeerException;
 
     public Trabajador encontrarTrabajdorId(String id) throws LeerException;
 

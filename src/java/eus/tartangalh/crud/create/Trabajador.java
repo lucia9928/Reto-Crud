@@ -30,6 +30,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(
         name = "encontrarTodosLosTrabajdores",
         query = "SELECT t FROM Trabajador t ORDER BY t.dni DESC"
+    ),
+        @NamedQuery(
+        name = "encontrarTrabajdorEmail",
+        query = "SELECT t FROM Trabajador t WHERE t.email = :email"
     )
 })
 @XmlRootElement
