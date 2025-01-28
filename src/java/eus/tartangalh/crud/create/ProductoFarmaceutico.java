@@ -107,7 +107,7 @@ public class ProductoFarmaceutico implements Serializable {
     /*
      * Relación con el almacén al que pertenece el producto.
      */
-    @ManyToOne(cascade=CascadeType.REMOVE)
+    @ManyToOne
     @XmlTransient
     private Almacen almacen;
 
