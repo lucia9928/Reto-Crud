@@ -10,6 +10,7 @@ import static java.sql.Date.valueOf;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -68,7 +69,7 @@ public class Almacen implements Serializable {
     private String ciudad;
     private Integer metrosCuadrados;
     private Date fechaAdquisicion = valueOf(LocalDate.now());
-    @OneToMany(mappedBy = "almacen", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "almacen", fetch = FetchType.EAGER, cascade=CascadeType.REMOVE)
     private List<ProductoFarmaceutico> producto;
 
     /**

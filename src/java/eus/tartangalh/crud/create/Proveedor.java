@@ -8,6 +8,7 @@ package eus.tartangalh.crud.create;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -52,7 +53,7 @@ public class Proveedor implements Serializable {
     
     private Date fechaContratacion;
 
-    @OneToMany(mappedBy = "proveedor")
+    @OneToMany(mappedBy = "proveedor", cascade=CascadeType.REMOVE)
     private List<ProductoFarmaceutico> productoFarmaceutico;
 
     public Proveedor(Integer idProveedor, String cif, String nombreProveedor, String calle, Integer codPostal, String ciudad, Date fechaContratacion, List<ProductoFarmaceutico> productoFarmaceutico) {
