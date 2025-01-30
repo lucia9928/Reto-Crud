@@ -5,7 +5,11 @@
  */
 package eus.tartangalh.crud.ejb;
 
+import static com.sun.xml.ws.spi.db.BindingContextFactory.LOGGER;
 import eus.tartangalh.crud.create.Trabajador;
+import eus.tartangalh.crud.crypto.Asymmetric;
+import eus.tartangalh.crud.crypto.EmailServicio;
+import eus.tartangalh.crud.crypto.Hash;
 import excepciones.ActualizarException;
 import excepciones.BorrarException;
 import excepciones.CrearException;
@@ -15,6 +19,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
+import javax.xml.bind.DatatypeConverter;
 
 /**
  *
@@ -29,6 +34,8 @@ public class EJBTrabajador implements TrabajadorInterface {
     @Override
     public void crearTrabajador(Trabajador trabajador) throws CrearException {
         try {
+            byte[] passwordBytes = new Asymmetric().decrypt(DatatypeConverter.parseHexBinary(trabajador.getContrasena()));
+            trabajador.setContrasena(Hash.hashText(new String(passwordBytes)));
             em.persist(trabajador);
         } catch (Exception e) {
             throw new CrearException(e.getMessage());
@@ -59,13 +66,13 @@ public class EJBTrabajador implements TrabajadorInterface {
 
     @Override
     public void eliminarTrabajador(Trabajador trabajador) throws BorrarException {
-       
-        
+
         try {
             em.remove(em.merge(trabajador));
-        }catch(Exception e){
+        } catch (Exception e) {
             throw new BorrarException(e.getMessage());
-        }    }
+        }
+    }
 
     @Override
     public void modificarTrabajador(Trabajador trabajador) throws ActualizarException {
@@ -81,7 +88,7 @@ public class EJBTrabajador implements TrabajadorInterface {
 
     @Override
     public List<Trabajador> encontrarTrabajdorEmail(String email) throws LeerException {
-                List<Trabajador> trabajador;
+        List<Trabajador> trabajador;
         try {
             trabajador = em.createNamedQuery("encontrarTrabajdorEmail").getResultList();
         } catch (Exception e) {
@@ -89,4 +96,45 @@ public class EJBTrabajador implements TrabajadorInterface {
         }
         return trabajador;
     }
+
+    @Override
+    public void recuperarContrasena(Trabajador trabajador) throws ActualizarException {
+        try {
+            if (!em.contains(trabajador)) {
+                EmailServicio emailService = new EmailServicio();
+                String password = emailService.generateRandomPassword().toString();
+                String body = "Has solicitado una nueva contraseña:\n"
+                        + password;
+                String subject = "Recuperar contraseña";
+                emailService.sendEmail(trabajador.getEmail(), password, body, subject);
+
+                trabajador.setContrasena(Hash.hashText(password));
+                LOGGER.info(trabajador.getContrasena());
+                em.merge(trabajador);
+            }
+            em.flush();
+        } catch (Exception e) {
+            throw new ActualizarException(e.getMessage());
+        }
     }
+
+    @Override
+    public void actualizarContrasena(Trabajador trabajador) throws ActualizarException {
+        try {
+            if (!em.contains(trabajador)) {
+                EmailServicio emailService = new EmailServicio();
+                String body = "Sr/a " + trabajador.getApellido() + ",\n"
+                        + "Hemos realizado el cambio de contraseña solicitado por usted exitosamente!"
+                        + "Gracias por seguir usando nuestra app";
+                String subject = "Cambio de contraseña";
+                emailService.sendEmail(trabajador.getEmail(), null, body, subject);
+                byte[] passwordBytes = new Asymmetric().decrypt(DatatypeConverter.parseHexBinary(trabajador.getContrasena()));
+                trabajador.setContrasena(Hash.hashText(new String(passwordBytes)));
+                em.merge(trabajador);
+            }
+            em.flush();
+        } catch (Exception e) {
+            throw new ActualizarException(e.getMessage());
+        }
+    }
+}

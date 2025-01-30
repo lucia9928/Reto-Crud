@@ -124,6 +124,34 @@ public class ClienteFacadeREST {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
+    
+    @PUT
+    @Path("recoverPassword")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public void recoverPassword(Cliente entity) {
+        try {
+            LOGGER.log(Level.INFO, "Updating client {0}", entity.getDni());
+            ejb.recuperarContrasena(entity);
+        } catch (ActualizarException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+    }
+    
+    @PUT
+    @Path("editPassword")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public void editPassword(Cliente entity) {
+        try {
+            LOGGER.log(Level.INFO, "cliente", entity.getDni());
+            ejb.actualizarContrasena(entity);
+        } catch (ActualizarException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+    }
+    
+    
 
     private Date convertirStringAFecha(String fechaStr) {
         try {

@@ -5,6 +5,7 @@
  */
 package eus.tartangalh.crud.services;
 
+import eus.tartangalh.crud.create.Cliente;
 import eus.tartangalh.crud.create.Trabajador;
 import eus.tartangalh.crud.ejb.TrabajadorInterface;
 import excepciones.ActualizarException;
@@ -107,6 +108,34 @@ public class TrabajadorFacadeREST {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
+    
+        
+    @PUT
+    @Path("recoverPassword")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public void recoverPassword(Trabajador entity) {
+        try {
+            LOGGER.log(Level.INFO, "Updating client {0}", entity.getDni());
+            ejb.recuperarContrasena(entity);
+        } catch (ActualizarException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+    }
+    
+    @PUT
+    @Path("editPassword")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public void editPassword(Trabajador entity) {
+        try {
+            LOGGER.log(Level.INFO, "cliente", entity.getDni());
+            ejb.actualizarContrasena(entity);
+        } catch (ActualizarException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+    }
+    
 
     @GET
     @Path("{email}")
