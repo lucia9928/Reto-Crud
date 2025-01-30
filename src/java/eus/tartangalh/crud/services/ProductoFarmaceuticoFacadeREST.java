@@ -6,6 +6,7 @@
 package eus.tartangalh.crud.services;
 
 import eus.tartangalh.crud.create.ProductoFarmaceutico;
+import eus.tartangalh.crud.ejb.GestionaInterfaz;
 import eus.tartangalh.crud.ejb.ProductoFarmaceuticoInterface;
 import excepciones.ActualizarException;
 import excepciones.BorrarException;
@@ -49,7 +50,7 @@ public class ProductoFarmaceuticoFacadeREST {
      */
     @EJB
     private ProductoFarmaceuticoInterface ejb;
-
+    
     /**
      * Logger para registrar mensajes y errores de la clase.
      */

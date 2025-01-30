@@ -108,7 +108,7 @@ public class GestionaFacadeREST {
     @GET
     @Path("{dni}/{idProducto}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Gestiona encontrarGestiona(@PathParam("dni") String dni, @PathParam("idProducto") Integer idProducto){
+    public Gestiona encontrarGestiona(@PathParam("dni") String dni, @PathParam("idProducto") Integer idProducto) {
 
         try {
             LOGGER.log(Level.INFO, "Buscando proveedor {0}", idProducto);
@@ -131,12 +131,12 @@ public class GestionaFacadeREST {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-/*
+    /*
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Gestiona> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) throws LeerException {
         return null;
     }
-*/
+     */
 }
