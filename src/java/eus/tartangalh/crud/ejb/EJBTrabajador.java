@@ -136,4 +136,19 @@ public class EJBTrabajador implements TrabajadorInterface {
             throw new ActualizarException(e.getMessage());
         }
     }
+
+    @Override
+    public Trabajador iniciarSesion(String id, String passwd) throws LeerException {
+        Trabajador trabajador;
+
+        try {
+            LOGGER.info("Contraseña que llega: " + passwd);
+            byte[] passwordBytes = new Asymmetric().decrypt(DatatypeConverter.parseHexBinary(passwd));
+            LOGGER.info(Hash.hashText(new String(passwordBytes)));
+            trabajador = (Trabajador) em.createNamedQuery("iniciarSesion").setParameter("Tradni", id).setParameter("contrasenaTra", Hash.hashText(new String(passwordBytes))).getSingleResult();
+        } catch (Exception e) {
+            throw new LeerException(e.getMessage());
+        }
+        return trabajador;
+    }
 }

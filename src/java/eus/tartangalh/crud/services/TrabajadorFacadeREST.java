@@ -108,8 +108,7 @@ public class TrabajadorFacadeREST {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-    
-        
+
     @PUT
     @Path("recoverPassword")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -122,7 +121,7 @@ public class TrabajadorFacadeREST {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-    
+
     @PUT
     @Path("editPassword")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -135,15 +134,17 @@ public class TrabajadorFacadeREST {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-    
 
     @GET
-    @Path("{email}")
+    @Path("/{Tradni}/{contrasenaTra}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Trabajador> encontrarTrabajdorEmail(@PathParam("email") String email) {
+    public Trabajador iniciarSesion(@PathParam("Tradni") String id, @PathParam("contrasenaTra") String passwd) {
         try {
+            LOGGER.log(Level.INFO, "Intentando iniciar sesion");
+            Trabajador usuario = ejb.iniciarSesion(id, passwd);
             LOGGER.log(Level.INFO, "Buscando todos los trabajadores");
-            return ejb.encontrarTrabajdorEmail(email);
+            //usuario.setContrasenia(null);
+            return usuario;
         } catch (LeerException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());

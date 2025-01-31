@@ -37,6 +37,8 @@ public interface ClienteInterface {
     public void recuperarContrasena(Cliente cliente) throws ActualizarException;
 
     public void actualizarContrasena(Cliente cliente) throws ActualizarException;
+    
+    public Cliente iniciarSesion(String id, String passwd) throws LeerException;
 
     public List<Cliente> buscarClientesPorFecha(Date fechaInicio, Date fechaFin) throws LeerException;
 }

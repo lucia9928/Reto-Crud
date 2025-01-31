@@ -28,6 +28,8 @@ public interface TrabajadorInterface {
     public List<Trabajador> encontrarTrabajdorEmail(String email) throws LeerException;
 
     public Trabajador encontrarTrabajdorId(String id) throws LeerException;
+    
+    public Trabajador iniciarSesion(String id, String passwd) throws LeerException;
 
     public void recuperarContrasena(Trabajador trabajador) throws ActualizarException;
 

@@ -7,6 +7,7 @@ package eus.tartangalh.crud.services;
 
 import eus.tartangalh.crud.create.Cliente;
 import eus.tartangalh.crud.create.RecetaMedica;
+import eus.tartangalh.crud.create.Trabajador;
 import eus.tartangalh.crud.ejb.ClienteInterface;
 import excepciones.ActualizarException;
 import excepciones.BorrarException;
@@ -151,7 +152,21 @@ public class ClienteFacadeREST {
         }
     }
     
-    
+    @GET
+    @Path("/{Clidni}/{contrasenaCli}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Cliente iniciarSesion(@PathParam("Clidni") String id, @PathParam("contrasenaCli") String passwd) {
+        try {
+            LOGGER.log(Level.INFO, "Intentando iniciar sesion");
+            Cliente cliente = ejb.iniciarSesion(id, passwd);
+            LOGGER.log(Level.INFO, "Buscando todos los trabajadores");
+            //usuario.setContrasenia(null);
+            return cliente;
+        } catch (LeerException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+    }
 
     private Date convertirStringAFecha(String fechaStr) {
         try {
