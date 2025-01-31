@@ -37,6 +37,10 @@ import javax.xml.bind.annotation.XmlTransient;
      @NamedQuery(
             name = "buscarRecetasMedicasPorDeFechas",
             query = "SELECT r FROM RecetaMedica r WHERE r.fechaReceta BETWEEN :fechaInicio AND :fechaFin"
+    ),
+     @NamedQuery(
+            name = "buscarListaProductosDeReceta",
+            query = "SELECT p FROM RecetaMedica r JOIN r.productos p WHERE r.idReceta = :idReceta"
     )
 })
 @XmlRootElement
