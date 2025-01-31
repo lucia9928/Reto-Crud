@@ -90,6 +90,15 @@ public class EJBRecetaMedica implements RecetaMedicaInterface{
         }
     
     }
+   @Override
+    public List<ProductoFarmaceutico> obtenerProductosPorReceta(Integer recetaId) throws LeerException {
+       List<ProductoFarmaceutico> lista= null;
+       try{
+       lista = em.createNamedQuery("buscarListaProductosDeReceta").setParameter("idReceta", recetaId).getResultList();
+       }catch(Exception e){
+            throw new LeerException(e.getMessage());
+        }
+     return lista;  
  
     
 }
