@@ -51,7 +51,7 @@ public class ClienteFacadeREST {
         } catch (CrearException ex) { 
          LOGGER.severe(ex.getMessage());     
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build(); 
-        } 
+        }
     }
 
     @PUT

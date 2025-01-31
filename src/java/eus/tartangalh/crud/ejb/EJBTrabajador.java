@@ -17,7 +17,6 @@ import excepciones.LeerException;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.xml.bind.DatatypeConverter;
 
