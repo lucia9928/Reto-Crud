@@ -135,5 +135,17 @@ import javax.ws.rs.core.MediaType;
             throw new BadRequestException("Formato de fecha inválido. Debe ser 'yyyy-MM-dd'");
         }
     }
+          @GET
+    @Path("productos/{id}")
+    @Produces(MediaType.APPLICATION_XML)
+    public List<ProductoFarmaceutico> obtenerProductosPorReceta(@PathParam("id") Integer id) {
+        try {
+            return ejb.obtenerProductosPorReceta(id);
+        } catch (LeerException ex) {
+            LOGGER.getLogger(RecetaMedicaFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+             throw new InternalServerErrorException(ex.getMessage());
+
+        }
+    }
    
 }
