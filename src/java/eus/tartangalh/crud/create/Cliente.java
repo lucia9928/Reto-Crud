@@ -32,6 +32,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(
         name = "buscarClientesPorFecha",
          query = "SELECT c FROM Cliente c WHERE c.fechaRegistro BETWEEN :fechaInicio AND :fechaFin ORDER BY c.fechaRegistro ASC"
+    ),
+        @NamedQuery(
+            name = "buscarCliente", 
+                query = "SELECT u from Cliente u WHERE email = :userEmail "
     )
 })
 @XmlRootElement

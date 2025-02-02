@@ -36,9 +36,22 @@ public class EJBCliente implements ClienteInterface {
 
     @Override
     public void crearCliente(Cliente cliente) throws CrearException {
-        try {
-            byte[] passwordBytes = new Asymmetric().decrypt(DatatypeConverter.parseHexBinary(cliente.getContrasena()));
-            cliente.setContrasena(Hash.hashText(new String(passwordBytes)));
+    try {
+        // Load the private key using the Asymmetric class
+        Asymmetric asymmetric = new Asymmetric();
+        
+        // Decrypt the password
+        byte[] encryptedPassword = DatatypeConverter.parseHexBinary(cliente.getContrasena());
+        byte[] decryptedPassword = asymmetric.decrypt(encryptedPassword);
+
+        // Check if decryption was successful
+        if (decryptedPassword == null) {
+            throw new CrearException("Failed to decrypt the password.");
+        }
+
+        // Hash the decrypted password
+        String hashedPassword = Hash.hashText(new String(decryptedPassword));
+            cliente.setContrasena(Hash.hashText(new String(hashedPassword)));
             em.persist(cliente);
         } catch (Exception e) {
             throw new CrearException(e.getMessage());
@@ -61,6 +74,18 @@ public class EJBCliente implements ClienteInterface {
         Cliente cliente;
         try {
             cliente = em.find(Cliente.class, id);
+        } catch (Exception e) {
+            throw new LeerException(e.getMessage());
+        }
+        return cliente;
+    }
+    
+    @Override
+    public Cliente buscarCliente(String email) throws LeerException {
+        Cliente cliente;
+        try {
+            cliente = (Cliente) em.createNamedQuery("buscarCliente").setParameter("userEmail", email).getSingleResult();
+            LOGGER.info("Cliente encontrado: " + cliente.toString());
         } catch (Exception e) {
             throw new LeerException(e.getMessage());
         }

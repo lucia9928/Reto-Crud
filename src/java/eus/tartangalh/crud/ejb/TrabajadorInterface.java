@@ -26,6 +26,8 @@ public interface TrabajadorInterface {
     public List<Trabajador> encontraTodosLosTrabajadores() throws LeerException;
 
     public List<Trabajador> encontrarTrabajdorEmail(String email) throws LeerException;
+    
+    public Trabajador buscarTrabajador(String valor) throws LeerException;
 
     public Trabajador encontrarTrabajdorId(String id) throws LeerException;
     

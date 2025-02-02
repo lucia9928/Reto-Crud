@@ -47,12 +47,12 @@ public class AsimetricoRSA_KeyGenerator {
             System.out.println(privateKey.getFormat());
             
             // Publica     
-            FileOutputStream fileOutputStream = new FileOutputStream(".\\EjemploRSA_Public.key");
+            FileOutputStream fileOutputStream = new FileOutputStream(".\\Public.key");
             fileOutputStream.write(publicKey.getEncoded());
             fileOutputStream.close();
 
             // Privada    
-            fileOutputStream = new FileOutputStream(".\\EjemploRSA_Private.key");
+            fileOutputStream = new FileOutputStream(".\\Private.key");
             fileOutputStream.write(privateKey.getEncoded());
             fileOutputStream.close();
         } catch (NoSuchAlgorithmException e)

@@ -31,6 +31,8 @@ public interface ClienteInterface {
     public Cliente encontrarClienteId(String id) throws LeerException;
 
     public void eliminarCliente(Cliente cliente) throws BorrarException;
+    
+    public Cliente buscarCliente(String valor) throws LeerException;
 
     public void modificarCliente(Cliente cliente) throws ActualizarException;
 

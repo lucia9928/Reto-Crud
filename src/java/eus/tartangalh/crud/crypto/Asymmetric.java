@@ -4,27 +4,21 @@
  * and open the template in the editor.
  */
 package eus.tartangalh.crud.crypto;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.security.KeyFactory;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.spec.PKCS8EncodedKeySpec;
-import java.security.spec.X509EncodedKeySpec;
-import javax.crypto.Cipher;
 
-/**
- *
- * @author Oscar
- */
+import java.io.*;
+import java.nio.file.Files;
+import java.security.*;
+import java.security.spec.*;
+import javax.crypto.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Asymmetric {
 
     public byte[] cipher(String mensaje) {
         byte[] encodedMessage = null;
         try {
-            byte fileKey[] = fileReader("./src/eus/tartangalh/crud/crypto/Public.key");
+            byte fileKey[] = fileReader("./src/archivo/Public.key");
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
             X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(fileKey);
             PublicKey publicKey = keyFactory.generatePublic(x509EncodedKeySpec);

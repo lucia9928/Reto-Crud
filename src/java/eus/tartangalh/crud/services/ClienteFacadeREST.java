@@ -66,6 +66,20 @@ public class ClienteFacadeREST {
             throw new InternalServerErrorException(ex.getMessage());        
         }
     }
+    
+    @GET
+    @Path("/busqueda/{userEmail}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Cliente buscar(@PathParam("userEmail") String email) {
+        try {
+            LOGGER.info("entrando a buscar " + email);
+            Cliente cliente = ejb.buscarCliente(email);
+            return cliente;
+        } catch (LeerException e) {
+            LOGGER.severe(e.getMessage());
+            throw new InternalServerErrorException(e.getMessage());
+        }
+    }
 
     /**
      *

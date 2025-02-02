@@ -25,9 +25,7 @@ public class Usuario implements Serializable {
     private String nombre;
     private String apellido;
     private String email;
-    @Transient
     private String contrasena;
-    @Temporal(javax.persistence.TemporalType.DATE)
     private Date fechaNacimiento;
     private String calle;
     private Integer codigoPosta;

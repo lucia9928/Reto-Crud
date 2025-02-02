@@ -6,6 +6,7 @@
 package eus.tartangalh.crud.ejb;
 
 import static com.sun.xml.ws.spi.db.BindingContextFactory.LOGGER;
+import eus.tartangalh.crud.create.Cliente;
 import eus.tartangalh.crud.create.Trabajador;
 import eus.tartangalh.crud.crypto.Asymmetric;
 import eus.tartangalh.crud.crypto.EmailServicio;
@@ -30,17 +31,34 @@ public class EJBTrabajador implements TrabajadorInterface {
     @PersistenceContext(unitName = "CRUDWebApplicationPU")
     private EntityManager em;
 
-    @Override
-    public void crearTrabajador(Trabajador trabajador) throws CrearException {
-        try {
-            byte[] passwordBytes = new Asymmetric().decrypt(DatatypeConverter.parseHexBinary(trabajador.getContrasena()));
-            trabajador.setContrasena(Hash.hashText(new String(passwordBytes)));
-            em.persist(trabajador);
-        } catch (Exception e) {
-            throw new CrearException(e.getMessage());
-        }
-    }
+@Override
+public void crearTrabajador(Trabajador trabajador) throws CrearException {
+    try {
+        // Load the private key using the Asymmetric class
+        Asymmetric asymmetric = new Asymmetric();
+        
+        // Decrypt the password
+        byte[] encryptedPassword = DatatypeConverter.parseHexBinary(trabajador.getContrasena());
+        byte[] decryptedPassword = asymmetric.decrypt(encryptedPassword);
 
+        // Check if decryption was successful
+        if (decryptedPassword == null) {
+            throw new CrearException("Failed to decrypt the password.");
+        }
+
+        // Hash the decrypted password
+        String hashedPassword = Hash.hashText(new String(decryptedPassword));
+
+        // Set the hashed password in the worker entity
+        trabajador.setContrasena(hashedPassword);
+
+        // Persist the worker entity
+        em.persist(trabajador);
+    } catch (Exception e) {
+        // Handle exceptions and wrap them in a custom exception
+        throw new CrearException(e.getMessage());
+    }
+}
     @Override
     public List<Trabajador> encontraTodosLosTrabajadores() throws LeerException {
         List<Trabajador> trabajadores;
@@ -90,6 +108,18 @@ public class EJBTrabajador implements TrabajadorInterface {
         List<Trabajador> trabajador;
         try {
             trabajador = em.createNamedQuery("encontrarTrabajdorEmail").getResultList();
+        } catch (Exception e) {
+            throw new LeerException(e.getMessage());
+        }
+        return trabajador;
+    }
+    
+    @Override
+    public Trabajador buscarTrabajador(String email) throws LeerException {
+        Trabajador trabajador;
+        try {
+            trabajador = (Trabajador) em.createNamedQuery("buscarTrabajador").setParameter("userEmail", email).getSingleResult();
+            LOGGER.info("Cliente encontrado: " + trabajador.toString());
         } catch (Exception e) {
             throw new LeerException(e.getMessage());
         }

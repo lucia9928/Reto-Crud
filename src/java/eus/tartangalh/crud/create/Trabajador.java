@@ -32,8 +32,13 @@ import javax.xml.bind.annotation.XmlRootElement;
             query = "SELECT t FROM Trabajador t ORDER BY t.dni DESC"
     )
     ,
-        @NamedQuery(
+    @NamedQuery(
             name = "iniciarSesion", query = "SELECT u FROM Trabajador u WHERE u.dni = :Tradni AND contrasena = :contrasenaTra"
+    )
+    ,
+    @NamedQuery(
+            name = "buscarTrabajador",
+            query = "SELECT u from Trabajador u WHERE email = :userEmail "
     )
 
 })

@@ -109,6 +109,20 @@ public class TrabajadorFacadeREST {
         }
     }
 
+    @GET
+    @Path("/busqueda/{userEmail}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Trabajador buscar(@PathParam("userEmail") String email) {
+        try {
+            LOGGER.info("entrando a buscar " + email);
+            Trabajador trabajador = ejb.buscarTrabajador(email);
+            return trabajador;
+        } catch (LeerException e) {
+            LOGGER.severe(e.getMessage());
+            throw new InternalServerErrorException(e.getMessage());
+        }
+    }
+
     @PUT
     @Path("recoverPassword")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
