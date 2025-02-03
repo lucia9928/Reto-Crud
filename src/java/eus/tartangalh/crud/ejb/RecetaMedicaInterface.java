@@ -27,4 +27,5 @@ public interface RecetaMedicaInterface {
     public void eliminarRecetaMedica(RecetaMedica receta) throws BorrarException;
     public void modificarRecetaMedica(RecetaMedica receta) throws ActualizarException;
     public List<RecetaMedica> encontrarRecetasPorFecha(Date fechaInicio, Date fechaFin) throws LeerException;
+     public List<ProductoFarmaceutico> obtenerProductosPorReceta (Integer recetaid)throws LeerException;
 }

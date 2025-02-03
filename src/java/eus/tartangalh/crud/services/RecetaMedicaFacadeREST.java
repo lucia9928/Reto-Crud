@@ -5,6 +5,7 @@
  */
 package eus.tartangalh.crud.services;
 
+import eus.tartangalh.crud.create.ProductoFarmaceutico;
 import eus.tartangalh.crud.create.RecetaMedica;
 import eus.tartangalh.crud.ejb.RecetaMedicaInterface;
 import excepciones.ActualizarException;
@@ -133,6 +134,19 @@ import javax.ws.rs.core.MediaType;
         } catch (ParseException ex) {
             LOGGER.log(Level.SEVERE, "Error al convertir la fecha: {0}", fechaStr);
             throw new BadRequestException("Formato de fecha inválido. Debe ser 'yyyy-MM-dd'");
+        }
+    }
+    @GET
+    @Path("productos/{idReceta}")
+    @Produces(MediaType.APPLICATION_XML)
+    public List<ProductoFarmaceutico> obtenerProductosPorReceta(@PathParam("idReceta") Integer id) {
+        try {
+            LOGGER.log(Level.SEVERE, "entrando en obtener productos por receta");
+            return ejb.obtenerProductosPorReceta(id);
+        } catch (LeerException ex) {
+            LOGGER.getLogger(RecetaMedicaFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+             throw new InternalServerErrorException(ex.getMessage());
+
         }
     }
    
