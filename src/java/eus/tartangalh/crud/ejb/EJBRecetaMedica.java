@@ -5,6 +5,7 @@
  */
 package eus.tartangalh.crud.ejb;
 
+import eus.tartangalh.crud.create.ProductoFarmaceutico;
 import eus.tartangalh.crud.create.RecetaMedica;
 import excepciones.ActualizarException;
 import excepciones.BorrarException;
@@ -12,6 +13,8 @@ import excepciones.CrearException;
 import excepciones.LeerException;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -24,7 +27,8 @@ import javax.persistence.PersistenceContext;
 public class EJBRecetaMedica implements RecetaMedicaInterface{
   @PersistenceContext(unitName = "CRUDWebApplicationPU")
     private EntityManager em;
-  
+      private final Logger LOGGER=Logger.getLogger(EJBRecetaMedica.class.getName());
+
     @Override
     public void crearRecetaMedica(RecetaMedica receta)throws CrearException {
         try{
@@ -90,6 +94,21 @@ public class EJBRecetaMedica implements RecetaMedicaInterface{
         }
     
     }
- 
+   @Override
+    public List<ProductoFarmaceutico> obtenerProductosPorReceta(Integer recetaId) throws LeerException {
+       List<ProductoFarmaceutico> lista= null;
+       try{
+        em.clear();
+        LOGGER.log(Level.SEVERE, "entrando en obtener productos por receta");
+       lista = em.createNamedQuery("buscarListaProductosDeReceta").setParameter("idReceta", recetaId).getResultList();
+       }catch(Exception e){
+            throw new LeerException(e.getMessage());
+        }
+     return lista;  
+    
+     
+     
+    }
+    
     
 }
