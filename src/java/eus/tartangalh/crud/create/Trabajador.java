@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     )
     ,
     @NamedQuery(
-            name = "iniciarSesion", query = "SELECT u FROM Trabajador u WHERE u.dni = :Tradni AND contrasena = :contrasenaTra"
+            name = "iniciarSesionTra", query = "SELECT u FROM Trabajador u WHERE u.dni = :Tradni AND u.contrasena = :contrasenaTra"
     )
     ,
     @NamedQuery(

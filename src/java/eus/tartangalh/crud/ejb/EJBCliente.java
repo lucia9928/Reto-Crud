@@ -7,8 +7,6 @@ package eus.tartangalh.crud.ejb;
 
 import static com.sun.xml.ws.spi.db.BindingContextFactory.LOGGER;
 import eus.tartangalh.crud.create.Cliente;
-import eus.tartangalh.crud.create.RecetaMedica;
-import eus.tartangalh.crud.create.Trabajador;
 import eus.tartangalh.crud.crypto.Asymmetric;
 import eus.tartangalh.crud.crypto.EmailServicio;
 import eus.tartangalh.crud.crypto.Hash;
@@ -183,7 +181,7 @@ public class EJBCliente implements ClienteInterface {
             LOGGER.info("Contraseña que llega: " + passwd);
             byte[] passwordBytes = new Asymmetric().decrypt(DatatypeConverter.parseHexBinary(passwd));
             LOGGER.info(Hash.hashText(new String(passwordBytes)));
-            cliente = (Cliente) em.createNamedQuery("iniciarSesion").setParameter("Clidni", id).setParameter("contrasenaCli", Hash.hashText(new String(passwordBytes))).getSingleResult();
+            cliente = (Cliente) em.createNamedQuery("iniciarSesionCli").setParameter("Clidni", id).setParameter("contrasenaCli", Hash.hashText(new String(passwordBytes))).getSingleResult();
         } catch (Exception e) {
             throw new LeerException(e.getMessage());
         }

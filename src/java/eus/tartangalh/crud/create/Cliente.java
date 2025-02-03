@@ -14,7 +14,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -23,28 +22,34 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author melany
  */
 @Entity
-@Table(name="Cliente", schema="farmaciabd")
+@Table(name = "Cliente", schema = "farmaciabd")
 @NamedQueries({
     @NamedQuery(
-        name = "encontrarTodosLosClientes",
-        query = "SELECT c FROM Cliente c ORDER BY c.dni DESC"
-    ), 
+            name = "encontrarTodosLosClientes",
+            query = "SELECT c FROM Cliente c ORDER BY c.dni DESC"
+    )
+    , 
     @NamedQuery(
-        name = "buscarClientesPorFecha",
-         query = "SELECT c FROM Cliente c WHERE c.fechaRegistro BETWEEN :fechaInicio AND :fechaFin ORDER BY c.fechaRegistro ASC"
-    ),
+            name = "buscarClientesPorFecha",
+            query = "SELECT c FROM Cliente c WHERE c.fechaRegistro BETWEEN :fechaInicio AND :fechaFin ORDER BY c.fechaRegistro ASC"
+    )
+    ,
         @NamedQuery(
-            name = "buscarCliente", 
-                query = "SELECT u from Cliente u WHERE email = :userEmail "
+            name = "buscarCliente",
+            query = "SELECT u from Cliente u WHERE email = :userEmail "
+    )
+    ,
+            @NamedQuery(
+            name = "iniciarSesionCli", query = "SELECT u FROM Cliente u WHERE u.dni = :Clidni AND u.contrasena = :contrasenaCli"
     )
 })
 @XmlRootElement
 public class Cliente extends Usuario implements Serializable {
 
-  private static final long serialVersionUID = 1L;
-  private Date fechaRegistro;
-  @OneToMany( mappedBy ="cliente")
-  private List<RecetaMedica>recetas;
+    private static final long serialVersionUID = 1L;
+    private Date fechaRegistro;
+    @OneToMany(mappedBy = "cliente")
+    private List<RecetaMedica> recetas;
 
     public Cliente() {
         super();
@@ -60,7 +65,7 @@ public class Cliente extends Usuario implements Serializable {
     }
 
     public Cliente(Date fechaRegistro) {
-         super();
+        super();
         this.fechaRegistro = fechaRegistro;
     }
 
@@ -105,5 +110,5 @@ public class Cliente extends Usuario implements Serializable {
     public String toString() {
         return "Cliente{" + "fechaRegistro=" + fechaRegistro + ", recetas=" + recetas + '}';
     }
-    
+
 }

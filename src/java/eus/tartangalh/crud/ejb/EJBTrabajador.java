@@ -175,7 +175,7 @@ public void crearTrabajador(Trabajador trabajador) throws CrearException {
             LOGGER.info("Contraseña que llega: " + passwd);
             byte[] passwordBytes = new Asymmetric().decrypt(DatatypeConverter.parseHexBinary(passwd));
             LOGGER.info(Hash.hashText(new String(passwordBytes)));
-            trabajador = (Trabajador) em.createNamedQuery("iniciarSesion").setParameter("Tradni", id).setParameter("contrasenaTra", Hash.hashText(new String(passwordBytes))).getSingleResult();
+            trabajador = (Trabajador) em.createNamedQuery("iniciarSesionTra").setParameter("Tradni", id).setParameter("contrasenaTra", Hash.hashText(new String(passwordBytes))).getSingleResult();
         } catch (Exception e) {
             throw new LeerException(e.getMessage());
         }
