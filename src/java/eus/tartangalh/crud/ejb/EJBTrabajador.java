@@ -18,6 +18,7 @@ import excepciones.LeerException;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.xml.bind.DatatypeConverter;
 
@@ -31,34 +32,35 @@ public class EJBTrabajador implements TrabajadorInterface {
     @PersistenceContext(unitName = "CRUDWebApplicationPU")
     private EntityManager em;
 
-@Override
-public void crearTrabajador(Trabajador trabajador) throws CrearException {
-    try {
-        // Load the private key using the Asymmetric class
-        Asymmetric asymmetric = new Asymmetric();
-        
-        // Decrypt the password
-        byte[] encryptedPassword = DatatypeConverter.parseHexBinary(trabajador.getContrasena());
-        byte[] decryptedPassword = asymmetric.decrypt(encryptedPassword);
+    @Override
+    public void crearTrabajador(Trabajador trabajador) throws CrearException {
+        try {
+            // Load the private key using the Asymmetric class
+            Asymmetric asymmetric = new Asymmetric();
 
-        // Check if decryption was successful
-        if (decryptedPassword == null) {
-            throw new CrearException("Failed to decrypt the password.");
+            // Decrypt the password
+            byte[] encryptedPassword = DatatypeConverter.parseHexBinary(trabajador.getContrasena());
+            byte[] decryptedPassword = asymmetric.decrypt(encryptedPassword);
+
+            // Check if decryption was successful
+            if (decryptedPassword == null) {
+                throw new CrearException("Failed to decrypt the password.");
+            }
+
+            // Hash the decrypted password
+            String hashedPassword = Hash.hashText(new String(decryptedPassword));
+
+            // Set the hashed password in the worker entity
+            trabajador.setContrasena(hashedPassword);
+
+            // Persist the worker entity
+            em.persist(trabajador);
+        } catch (Exception e) {
+            // Handle exceptions and wrap them in a custom exception
+            throw new CrearException(e.getMessage());
         }
-
-        // Hash the decrypted password
-        String hashedPassword = Hash.hashText(new String(decryptedPassword));
-
-        // Set the hashed password in the worker entity
-        trabajador.setContrasena(hashedPassword);
-
-        // Persist the worker entity
-        em.persist(trabajador);
-    } catch (Exception e) {
-        // Handle exceptions and wrap them in a custom exception
-        throw new CrearException(e.getMessage());
     }
-}
+
     @Override
     public List<Trabajador> encontraTodosLosTrabajadores() throws LeerException {
         List<Trabajador> trabajadores;
@@ -113,7 +115,7 @@ public void crearTrabajador(Trabajador trabajador) throws CrearException {
         }
         return trabajador;
     }
-    
+
     @Override
     public Trabajador buscarTrabajador(String email) throws LeerException {
         Trabajador trabajador;
@@ -168,16 +170,46 @@ public void crearTrabajador(Trabajador trabajador) throws CrearException {
     }
 
     @Override
-    public Trabajador iniciarSesion(String id, String passwd) throws LeerException {
+    public Trabajador iniciarSesion(String Tradni, String contrasenaTra) throws LeerException {
         Trabajador trabajador;
 
         try {
-            LOGGER.info("Contraseña que llega: " + passwd);
-            byte[] passwordBytes = new Asymmetric().decrypt(DatatypeConverter.parseHexBinary(passwd));
-            LOGGER.info(Hash.hashText(new String(passwordBytes)));
-            trabajador = (Trabajador) em.createNamedQuery("iniciarSesion").setParameter("Tradni", id).setParameter("contrasenaTra", Hash.hashText(new String(passwordBytes))).getSingleResult();
+            LOGGER.info("Contraseña recibida: " + contrasenaTra);
+
+            String passwdHash;
+
+            // Si la contraseña está en formato hexadecimal (usando una expresión regular para validar)
+            if (contrasenaTra.matches("^[0-9A-Fa-f]+$") && contrasenaTra.length() % 2 == 0) {
+                LOGGER.info("La contraseña está en formato cifrado, procediendo a desencriptar.");
+
+                // Desencriptar la contraseña
+                Asymmetric asymmetric = new Asymmetric();
+                byte[] encryptedPassword = DatatypeConverter.parseHexBinary(contrasenaTra);
+                byte[] decryptedPassword = asymmetric.decrypt(encryptedPassword);
+
+                // Verificar si la desencriptación fue exitosa
+                if (decryptedPassword == null) {
+                    throw new LeerException("Error al desencriptar la contraseña.");
+                }
+
+                passwdHash = Hash.hashText(new String(decryptedPassword));
+            } else {
+                // Si no está en formato hexadecimal, asumimos que es una contraseña en texto plano y la hasheamos directamente
+                LOGGER.info("La contraseña no está en formato cifrado, se procederá a hashearla directamente.");
+                passwdHash = Hash.hashText(contrasenaTra);
+            }
+
+            LOGGER.info("Contraseña hasheada: " + passwdHash);
+
+            // Consulta en la base de datos
+            trabajador = (Trabajador) em.createNamedQuery("iniciarSesion")
+                    .setParameter("Tradni", Tradni)
+                    .setParameter("contrasenaTra", passwdHash)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            throw new LeerException("Usuario o contraseña incorrectos.");
         } catch (Exception e) {
-            throw new LeerException(e.getMessage());
+            throw new LeerException("Error al iniciar sesión: " + e.getMessage());
         }
         return trabajador;
     }
