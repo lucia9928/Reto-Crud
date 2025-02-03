@@ -53,7 +53,7 @@ public class Symmetric {
             c.init(Cipher.ENCRYPT_MODE, privateKey);
             byte[] encodedMessage = c.doFinal(data.getBytes());
             byte[] iv = c.getIV();
-            fileWriter("./java/archivos/PrivateSymmetric.key", iv);
+            fileWriter("./java/archivos/Symmetric.key", iv);
             fileWriter("./java/archivos/Credenciales.properties", encodedMessage);
         } catch (InvalidKeyException | NoSuchAlgorithmException | InvalidKeySpecException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException e) {
             LOGGER.severe(e.getMessage());

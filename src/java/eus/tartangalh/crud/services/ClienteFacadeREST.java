@@ -7,6 +7,7 @@ package eus.tartangalh.crud.services;
 
 import eus.tartangalh.crud.create.Cliente;
 import eus.tartangalh.crud.create.RecetaMedica;
+import eus.tartangalh.crud.create.Trabajador;
 import eus.tartangalh.crud.ejb.ClienteInterface;
 import excepciones.ActualizarException;
 import excepciones.BorrarException;
@@ -51,7 +52,7 @@ public class ClienteFacadeREST {
         } catch (CrearException ex) { 
          LOGGER.severe(ex.getMessage());     
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build(); 
-        } 
+        }
     }
 
     @PUT
@@ -63,6 +64,20 @@ public class ClienteFacadeREST {
         } catch (ActualizarException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());        
+        }
+    }
+    
+    @GET
+    @Path("/busqueda/{userEmail}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Cliente buscar(@PathParam("userEmail") String email) {
+        try {
+            LOGGER.info("entrando a buscar " + email);
+            Cliente cliente = ejb.buscarCliente(email);
+            return cliente;
+        } catch (LeerException e) {
+            LOGGER.severe(e.getMessage());
+            throw new InternalServerErrorException(e.getMessage());
         }
     }
 
@@ -120,6 +135,48 @@ public class ClienteFacadeREST {
             LOGGER.log(Level.INFO, "Buscando clientes entre {0} y {1}", new Object[]{fechaInicio, fechaFin});
             return ejb.buscarClientesPorFecha(fechaInicio, fechaFin);
         }catch (LeerException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+    }
+    
+    @PUT
+    @Path("recoverPassword")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public void recoverPassword(Cliente entity) {
+        try {
+            LOGGER.log(Level.INFO, "Updating client {0}", entity.getDni());
+            ejb.recuperarContrasena(entity);
+        } catch (ActualizarException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+    }
+    
+    @PUT
+    @Path("editPassword")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public void editPassword(Cliente entity) {
+        try {
+            LOGGER.log(Level.INFO, "cliente", entity.getDni());
+            ejb.actualizarContrasena(entity);
+        } catch (ActualizarException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+    }
+    
+    @GET
+    @Path("/{Clidni}/{contrasenaCli}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Cliente iniciarSesion(@PathParam("Clidni") String id, @PathParam("contrasenaCli") String passwd) {
+        try {
+            LOGGER.log(Level.INFO, "Intentando iniciar sesion");
+            Cliente cliente = ejb.iniciarSesion(id, passwd);
+            LOGGER.log(Level.INFO, "Buscando todos los trabajadores");
+            //usuario.setContrasenia(null);
+            return cliente;
+        } catch (LeerException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
         }

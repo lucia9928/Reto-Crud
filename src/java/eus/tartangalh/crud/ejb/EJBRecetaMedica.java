@@ -81,7 +81,7 @@ public class EJBRecetaMedica implements RecetaMedicaInterface{
             if (fechaInicio == null || fechaFin == null) {
                 throw new IllegalArgumentException("Las fechas no pueden ser nulas.");
             }
-            return em.createNamedQuery("buscarRecetasPorFecha", RecetaMedica.class)
+            return em.createNamedQuery("buscarRecetasPorFecha")
                      .setParameter("fechaInicio", fechaInicio)
                      .setParameter("fechaFin", fechaFin)
                      .getResultList();

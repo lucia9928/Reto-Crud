@@ -52,6 +52,7 @@ public class Proveedor implements Serializable {
     private String ciudad;
     
     private Date fechaContratacion;
+
     @OneToMany(mappedBy = "proveedor", cascade=CascadeType.REMOVE)
     private List<ProductoFarmaceutico> productoFarmaceutico;
 
