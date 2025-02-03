@@ -18,6 +18,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -28,15 +29,25 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "Trabajador", schema = "farmaciabd")
 @NamedQueries({
     @NamedQuery(
-        name = "encontrarTodosLosTrabajdores",
-        query = "SELECT t FROM Trabajador t ORDER BY t.dni DESC"
+            name = "encontrarTodosLosTrabajdores",
+            query = "SELECT t FROM Trabajador t ORDER BY t.dni DESC"
     )
+    ,
+    @NamedQuery(
+            name = "iniciarSesion", query = "SELECT u FROM Trabajador u WHERE u.dni = :Tradni AND contrasena = :contrasenaTra"
+    )
+    ,
+    @NamedQuery(
+            name = "buscarTrabajador",
+            query = "SELECT u from Trabajador u WHERE email = :userEmail "
+    )
+
 })
 @XmlRootElement
 public class Trabajador extends Usuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     private Date fechaContratacion;
     @Enumerated(EnumType.STRING)
     private TipoCargo tipoCargo;

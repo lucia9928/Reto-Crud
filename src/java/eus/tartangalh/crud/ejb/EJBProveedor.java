@@ -80,7 +80,7 @@ public class EJBProveedor implements ProveedorInterfaz {
 
         
         try {
-            return em.createNamedQuery("buscarTodosLosProveedores", Proveedor.class).getResultList();
+            return em.createNamedQuery("buscarTodosLosProveedores").getResultList();
         } catch (Exception e) {
             throw new LeerException(e.getMessage());
         }

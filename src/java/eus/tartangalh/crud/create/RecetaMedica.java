@@ -32,6 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(
             name = "encontrarTodasLasRecetas",
             query = "SELECT a FROM RecetaMedica a ORDER BY a.idReceta DESC"
+
     ), 
      @NamedQuery(
             name = "buscarRecetasPorFecha",
@@ -40,6 +41,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(
             name = "buscarListaProductosDeReceta",
             query = "SELECT p FROM RecetaMedica r JOIN r.productos p WHERE r.idReceta = :idReceta"
+
     )
 })
 @XmlRootElement
