@@ -21,7 +21,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -33,12 +32,12 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(
             name = "encontrarTodasLasRecetas",
             query = "SELECT a FROM RecetaMedica a ORDER BY a.idReceta DESC"
-    ),
+    ), 
      @NamedQuery(
-            name = "buscarRecetasMedicasPorDeFechas",
+            name = "buscarRecetasPorFecha",
             query = "SELECT r FROM RecetaMedica r WHERE r.fechaReceta BETWEEN :fechaInicio AND :fechaFin"
     ),
-     @NamedQuery(
+    @NamedQuery(
             name = "buscarListaProductosDeReceta",
             query = "SELECT p FROM RecetaMedica r JOIN r.productos p WHERE r.idReceta = :idReceta"
     )
@@ -50,27 +49,34 @@ public class RecetaMedica implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer idReceta;
     @ManyToOne
-   private Cliente cliente;
+    private Cliente cliente;
     private Date fechaReceta;
     private String descripcion;
     private Integer cantidad;
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "Producto_Receta", schema = "farmaciabd")
+    @ManyToMany(fetch = FetchType.EAGER )
+    @JoinTable(name = "producto_receta", schema = "farmaciabd")
     private List<ProductoFarmaceutico> productos;
 
     public RecetaMedica() {
 
     }
 
-    public RecetaMedica(Integer idReceta, Date fechaReceta, String descripcion, Integer cantidad) {
+    public RecetaMedica(Integer idReceta, Date fechaReceta, String descripcion, Integer cantidad, List<ProductoFarmaceutico> productos) {
         this.idReceta = idReceta;
         this.fechaReceta = fechaReceta;
         this.descripcion = descripcion;
         this.cantidad = cantidad;
+        this.productos=productos;
     }
 
     private static final long serialVersionUID = 1L;
-    @XmlTransient
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
     public List<ProductoFarmaceutico> getProductos() {
         return productos;
     }
@@ -106,7 +112,7 @@ public class RecetaMedica implements Serializable {
         return idReceta;
     }
 
-    public void setId(Integer idReceta) {
+    public void setIdReceta(Integer idReceta) {
         this.idReceta = idReceta;
     }
 
@@ -124,10 +130,7 @@ public class RecetaMedica implements Serializable {
             return false;
         }
         RecetaMedica other = (RecetaMedica) object;
-        if ((this.idReceta == null && other.idReceta != null) || (this.idReceta != null && !this.idReceta.equals(other.idReceta))) {
-            return false;
-        }
-        return true;
+        return (this.idReceta == null && other.idReceta != null) || (this.idReceta != null && !this.idReceta.equals(other.idReceta));  
     }
 
     @Override
