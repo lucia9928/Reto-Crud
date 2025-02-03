@@ -72,7 +72,7 @@ public class ClienteFacadeREST {
     }
     
     @GET
-    @Path("/busqueda/{userEmail}")
+    @Path("{userEmail}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Cliente buscar(@PathParam("userEmail") String email) {
         try {
@@ -149,11 +149,16 @@ public class ClienteFacadeREST {
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void recoverPassword(Cliente entity) {
         try {
-            LOGGER.log(Level.INFO, "Updating client {0}", entity.getDni());
+            if (entity == null || entity.getDni() == null) {
+                LOGGER.severe("El objeto Trabajador o su DNI es null.");
+                throw new InternalServerErrorException("El objeto Trabajador no puede ser null.");
+            }
+
+            LOGGER.log(Level.INFO, "Restableciendo contraseña para DNI: {0}", entity.getDni());
             ejb.recuperarContrasena(entity);
         } catch (ActualizarException ex) {
-            LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());
+            LOGGER.severe("Error al recuperar contraseña: " + ex.getMessage());
+            throw new InternalServerErrorException("Error al recuperar la contraseña: " + ex.getMessage());
         }
     }
     

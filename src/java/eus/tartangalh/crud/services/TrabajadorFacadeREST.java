@@ -114,7 +114,7 @@ public class TrabajadorFacadeREST {
     }
 
     @GET
-    @Path("/busqueda/{userEmail}")
+    @Path("{userEmail}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Trabajador buscar(@PathParam("userEmail") String email) {
         try {
@@ -132,11 +132,16 @@ public class TrabajadorFacadeREST {
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void recoverPassword(Trabajador entity) {
         try {
-            LOGGER.log(Level.INFO, "Updating client {0}", entity.getDni());
+            if (entity == null || entity.getDni() == null) {
+                LOGGER.severe("El objeto Trabajador o su DNI es null.");
+                throw new InternalServerErrorException("El objeto Trabajador no puede ser null.");
+            }
+
+            LOGGER.log(Level.INFO, "Restableciendo contraseña para DNI: {0}", entity.getDni());
             ejb.recuperarContrasena(entity);
         } catch (ActualizarException ex) {
-            LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());
+            LOGGER.severe("Error al recuperar contraseña: " + ex.getMessage());
+            throw new InternalServerErrorException("Error al recuperar la contraseña: " + ex.getMessage());
         }
     }
 
@@ -145,11 +150,20 @@ public class TrabajadorFacadeREST {
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void editPassword(Trabajador entity) {
         try {
-            LOGGER.log(Level.INFO, "cliente", entity.getDni());
+            if (entity == null) {
+                LOGGER.severe("El objeto Trabajador recibido es null.");
+                throw new InternalServerErrorException("El objeto Trabajador no puede ser null.");
+            }
+            if (entity.getDni() == null) {
+                LOGGER.severe("El DNI del trabajador es null.");
+                throw new InternalServerErrorException("El DNI del trabajador no puede ser null.");
+            }
+
+            LOGGER.log(Level.INFO, "Actualizando contraseña para DNI: {0}", entity.getDni());
             ejb.actualizarContrasena(entity);
         } catch (ActualizarException ex) {
-            LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());
+            LOGGER.severe("Error actualizando contraseña: " + ex.getMessage());
+            throw new InternalServerErrorException("Error al actualizar la contraseña: " + ex.getMessage());
         }
     }
 
