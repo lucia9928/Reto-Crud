@@ -5,6 +5,7 @@
  */
 package eus.tartangalh.crud.ejb;
 
+import eus.tartangalh.crud.create.ProductoFarmaceutico;
 import eus.tartangalh.crud.create.RecetaMedica;
 import excepciones.ActualizarException;
 import excepciones.BorrarException;
