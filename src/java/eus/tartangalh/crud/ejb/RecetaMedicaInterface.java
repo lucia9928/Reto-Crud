@@ -5,6 +5,7 @@
  */
 package eus.tartangalh.crud.ejb;
 
+import eus.tartangalh.crud.create.ProductoFarmaceutico;
 import eus.tartangalh.crud.create.RecetaMedica;
 import excepciones.ActualizarException;
 import excepciones.BorrarException;
@@ -27,4 +28,5 @@ public interface RecetaMedicaInterface {
     public void eliminarRecetaMedica(RecetaMedica receta) throws BorrarException;
     public void modificarRecetaMedica(RecetaMedica receta) throws ActualizarException;
     public List<RecetaMedica> encontrarRecetasPorFecha(Date fechaInicio, Date fechaFin) throws LeerException;
+     public List<ProductoFarmaceutico> obtenerProductosPorReceta (Integer recetaid)throws LeerException;
 }
