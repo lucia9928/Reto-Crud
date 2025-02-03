@@ -7,10 +7,10 @@ package eus.tartangalh.crud.create;
 
 import java.io.Serializable;
 import static java.sql.Date.valueOf;
-import java.time.LocalDate;
 import java.util.Date;
 import java.time.LocalDate;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -25,6 +25,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Entidad JPA que representa un producto farmacéutico. Define las propiedades,
@@ -90,12 +91,12 @@ public class ProductoFarmaceutico implements Serializable {
     /*
      * Descripción del producto.
      */
-    private String Description;
+    private String descripcion;
 
     /*
      * Categoría del producto farmacéutico (enum).
      */
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private CategoriaProducto categoria;
 
     /*
@@ -107,24 +108,28 @@ public class ProductoFarmaceutico implements Serializable {
      * Relación con el almacén al que pertenece el producto.
      */
     @ManyToOne
+    @XmlTransient
     private Almacen almacen;
 
     /*
      * Relación con las entidades de gestión del producto.
      */
-    @OneToMany(mappedBy = "productoFarmaceutico", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "productoFarmaceutico", fetch = FetchType.EAGER, cascade=CascadeType.REMOVE)
+    @XmlTransient
     private List<Gestiona> gestiona;
 
     /*
      * Relación con las recetas médicas que incluyen el producto.
      */
-    @ManyToMany(mappedBy = "productos", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "productos", fetch = FetchType.EAGER, cascade=CascadeType.REMOVE)
+    @XmlTransient
     private List<RecetaMedica> receta;
 
     /*
      * Relación con el proveedor del producto.
      */
     @ManyToOne
+    @XmlTransient
     private Proveedor proveedor;
 
     /*
@@ -141,7 +146,7 @@ public class ProductoFarmaceutico implements Serializable {
         this.nombreProducto = nombreProducto;
         this.loteProducto = loteProducto;
         this.fechaCaducidad = fechaCaducidad;
-        this.Description = Description;
+        this.descripcion = Description;
         this.categoria = categoria;
         this.precio = precio;
     }
@@ -172,7 +177,7 @@ public class ProductoFarmaceutico implements Serializable {
     public void setAlmacen(Almacen almacen) {
         this.almacen = almacen;
     }
-
+    
     public Proveedor getProveedor() {
         return proveedor;
     }
@@ -197,12 +202,12 @@ public class ProductoFarmaceutico implements Serializable {
         this.fechaCaducidad = fechaCaducidad;
     }
 
-    public String getDescription() {
-        return Description;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setDescription(String Description) {
-        this.Description = Description;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     public CategoriaProducto getCategoria() {
