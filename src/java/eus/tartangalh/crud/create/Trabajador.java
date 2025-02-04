@@ -7,9 +7,7 @@ package eus.tartangalh.crud.create;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -34,14 +32,14 @@ import javax.xml.bind.annotation.XmlRootElement;
     )
     ,
     @NamedQuery(
-            name = "iniciarSesion", query = "SELECT u FROM Trabajador u WHERE u.dni = :Tradni AND contrasena = :contrasenaTra"
+            name = "iniciarSesionTra", query = "SELECT u FROM Trabajador u WHERE u.dni = :Tradni AND u.contrasena = :contrasenaTra"
     )
     ,
     @NamedQuery(
             name = "buscarTrabajador",
-            query = "SELECT u from Trabajador u WHERE email = :userEmail "
+            query = "SELECT u from Trabajador u WHERE u.email = :userEmail "
     )
-
+        
 })
 @XmlRootElement
 public class Trabajador extends Usuario implements Serializable {

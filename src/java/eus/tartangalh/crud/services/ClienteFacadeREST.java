@@ -20,16 +20,20 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
+import javax.persistence.NoResultException;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.InternalServerErrorException;
+import javax.ws.rs.NotAuthorizedException;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -68,7 +72,7 @@ public class ClienteFacadeREST {
     }
     
     @GET
-    @Path("/busqueda/{userEmail}")
+    @Path("{userEmail}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Cliente buscar(@PathParam("userEmail") String email) {
         try {
@@ -98,7 +102,7 @@ public class ClienteFacadeREST {
     }
 
     @GET
-    @Path("{id}")
+    @Path("id/{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Cliente encontrarPorId(@PathParam("id") String id) {
    try {
@@ -145,11 +149,16 @@ public class ClienteFacadeREST {
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void recoverPassword(Cliente entity) {
         try {
-            LOGGER.log(Level.INFO, "Updating client {0}", entity.getDni());
+            if (entity == null || entity.getDni() == null) {
+                LOGGER.severe("El objeto Trabajador o su DNI es null.");
+                throw new InternalServerErrorException("El objeto Trabajador no puede ser null.");
+            }
+
+            LOGGER.log(Level.INFO, "Restableciendo contraseña para DNI: {0}", entity.getDni());
             ejb.recuperarContrasena(entity);
         } catch (ActualizarException ex) {
-            LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());
+            LOGGER.severe("Error al recuperar contraseña: " + ex.getMessage());
+            throw new InternalServerErrorException("Error al recuperar la contraseña: " + ex.getMessage());
         }
     }
     
@@ -167,18 +176,25 @@ public class ClienteFacadeREST {
     }
     
     @GET
-    @Path("/{Clidni}/{contrasenaCli}")
+    @Path("{Clidni}/{contrasenaCli}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Cliente iniciarSesion(@PathParam("Clidni") String id, @PathParam("contrasenaCli") String passwd) {
         try {
-            LOGGER.log(Level.INFO, "Intentando iniciar sesion");
+            LOGGER.log(Level.INFO, "Intentando iniciar sesión para usuario: {0}", id);
+
             Cliente cliente = ejb.iniciarSesion(id, passwd);
-            LOGGER.log(Level.INFO, "Buscando todos los trabajadores");
-            //usuario.setContrasenia(null);
+
+            LOGGER.log(Level.INFO, "Inicio de sesión exitoso para usuario: {0}", id);
             return cliente;
         } catch (LeerException ex) {
-            LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());
+            LOGGER.warning("Credenciales incorrectas para usuario: " + id);
+            throw new NotAuthorizedException("Usuario o contraseña incorrectos");
+        } catch (NoResultException ex) {
+            LOGGER.warning("Usuario no encontrado: " + id);
+            throw new NotFoundException("Usuario no encontrado");
+        } catch (Exception ex) {
+            LOGGER.severe("Error inesperado en autenticación: " + ex.getMessage());
+            throw new InternalServerErrorException("Error en el servidor");
         }
     }
 

@@ -7,8 +7,6 @@ package eus.tartangalh.crud.ejb;
 
 import static com.sun.xml.ws.spi.db.BindingContextFactory.LOGGER;
 import eus.tartangalh.crud.create.Cliente;
-import eus.tartangalh.crud.create.RecetaMedica;
-import eus.tartangalh.crud.create.Trabajador;
 import eus.tartangalh.crud.crypto.Asymmetric;
 import eus.tartangalh.crud.crypto.EmailServicio;
 import eus.tartangalh.crud.crypto.Hash;
@@ -137,21 +135,44 @@ public class EJBCliente implements ClienteInterface {
     @Override
     public void recuperarContrasena(Cliente cliente) throws ActualizarException {
         try {
-            if (!em.contains(cliente)) {
-                EmailServicio emailService = new EmailServicio();
-                String password = emailService.generateRandomPassword().toString();
-                String body = "Has solicitado una nueva contraseña:\n"
-                        + password;
-                String subject = "Recuperar contraseña";
-                emailService.sendEmail(cliente.getEmail(), password, body, subject);
-
-                cliente.setContrasena(Hash.hashText(password));
-                LOGGER.info(cliente.getContrasena());
-                em.merge(cliente);
+            if (cliente == null || cliente.getDni() == null) {
+                throw new ActualizarException("El objeto Trabajador o su DNI es nulo.");
             }
+
+            // Buscar el trabajador en la base de datos
+            Cliente clienteBD = em.find(Cliente.class, cliente.getDni());
+            if (clienteBD == null) {
+                throw new ActualizarException("El trabajador con DNI " + cliente.getDni() + " no existe en la base de datos.");
+            }
+
+            // Verificar que el email no sea nulo antes de enviar
+            if (clienteBD.getEmail() == null || clienteBD.getEmail().isEmpty()) {
+                throw new ActualizarException("El email del trabajador es nulo o vacío.");
+            }
+
+            // Generar nueva contraseña aleatoria
+            EmailServicio emailService = new EmailServicio();
+            String nuevaContrasena = emailService.generateRandomPassword().toString();
+
+            // Enviar correo de recuperación
+            String body = "Has solicitado una nueva contraseña:\n" + nuevaContrasena;
+            String subject = "Recuperación de contraseña";
+
+            try {
+                emailService.sendEmail(clienteBD.getEmail(), nuevaContrasena, body, subject);
+            } catch (Exception e) {
+                LOGGER.warning("Error enviando email: " + e.getMessage());
+            }
+
+            // Guardar la nueva contraseña hasheada en la base de datos
+            clienteBD.setContrasena(Hash.hashText(nuevaContrasena));
+            LOGGER.info("Nueva contraseña generada y hasheada correctamente.");
+
+            // Persistir cambios en la base de datos
+            em.merge(clienteBD);
             em.flush();
         } catch (Exception e) {
-            throw new ActualizarException(e.getMessage());
+            throw new ActualizarException("Error al recuperar la contraseña: " + e.getMessage());
         }
     }
 
@@ -183,7 +204,7 @@ public class EJBCliente implements ClienteInterface {
             LOGGER.info("Contraseña que llega: " + passwd);
             byte[] passwordBytes = new Asymmetric().decrypt(DatatypeConverter.parseHexBinary(passwd));
             LOGGER.info(Hash.hashText(new String(passwordBytes)));
-            cliente = (Cliente) em.createNamedQuery("iniciarSesion").setParameter("Clidni", id).setParameter("contrasenaCli", Hash.hashText(new String(passwordBytes))).getSingleResult();
+            cliente = (Cliente) em.createNamedQuery("iniciarSesionCli").setParameter("Clidni", id).setParameter("contrasenaCli", Hash.hashText(new String(passwordBytes))).getSingleResult();
         } catch (Exception e) {
             throw new LeerException(e.getMessage());
         }
