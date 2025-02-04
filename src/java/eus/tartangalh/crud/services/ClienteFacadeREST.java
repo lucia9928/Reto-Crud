@@ -102,7 +102,7 @@ public class ClienteFacadeREST {
     }
 
     @GET
-    @Path("{id}")
+    @Path("id/{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Cliente encontrarPorId(@PathParam("id") String id) {
    try {
@@ -178,7 +178,7 @@ public class ClienteFacadeREST {
     @GET
     @Path("{Clidni}/{contrasenaCli}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Cliente iniciarSesion(@QueryParam("Clidni") String id, @QueryParam("contrasenaCli") String passwd) {
+    public Cliente iniciarSesion(@PathParam("Clidni") String id, @PathParam("contrasenaCli") String passwd) {
         try {
             LOGGER.log(Level.INFO, "Intentando iniciar sesión para usuario: {0}", id);
 

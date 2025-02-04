@@ -8,12 +8,14 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.util.Arrays;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -53,8 +55,8 @@ public class Symmetric {
             c.init(Cipher.ENCRYPT_MODE, privateKey);
             byte[] encodedMessage = c.doFinal(data.getBytes());
             byte[] iv = c.getIV();
-            fileWriter("./java/archivos/Symmetric.key", iv);
-            fileWriter("./java/archivos/Credenciales.properties", encodedMessage);
+            fileWriter("./java/eus/tartangalh/crud/crypto/PrivateSymmetric.key", iv);
+            fileWriter("./java/eus/tartangalh/crud/crypto/Credenciales.properties", encodedMessage);
         } catch (InvalidKeyException | NoSuchAlgorithmException | InvalidKeySpecException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException e) {
             LOGGER.severe(e.getMessage());
         }
@@ -67,8 +69,8 @@ public class Symmetric {
     public byte[] decryptText(String nKey) {
         LOGGER.info("Decrypting the file.");
         byte[] decodedMessage = null;
-        byte[] contentIv = fileReader(Symmetric.class.getProtectionDomain().getCodeSource().getLocation().getPath() + "/archivos/PrivateSymmetric.key");
-        byte[] contentCredentials = fileReader(Symmetric.class.getProtectionDomain().getCodeSource().getLocation().getPath() + "/archivos/Credenciales.properties");
+        byte[] contentIv = fileReader(Symmetric.class.getProtectionDomain().getCodeSource().getLocation().getPath() + "/../PrivateSymmetric.key");
+        byte[] contentCredentials = fileReader(Symmetric.class.getProtectionDomain().getCodeSource().getLocation().getPath() + "/../Credenciales.properties");
         KeySpec keySpec = null;
         SecretKeyFactory secretKeyFactory = null;
         try {

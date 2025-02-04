@@ -89,7 +89,7 @@ public class TrabajadorFacadeREST {
     }
 
     @GET
-    @Path("{id}")
+    @Path("id/{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Trabajador encontrarPorId(@PathParam("id") String id) {
         try {
@@ -114,16 +114,22 @@ public class TrabajadorFacadeREST {
     }
 
     @GET
-    @Path("{userEmail}")
+    @Path("busqueda/{userEmail}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Trabajador buscar(@PathParam("userEmail") String email) {
         try {
-            LOGGER.info("entrando a buscar " + email);
+            LOGGER.info("Entrando a buscar trabajador con email: " + email);
             Trabajador trabajador = ejb.buscarTrabajador(email);
+
+            if (trabajador == null) {
+                LOGGER.warning("No se encontró un trabajador con el email: " + email);
+                throw new NotFoundException("No se encontró un trabajador con ese email.");
+            }
+
             return trabajador;
         } catch (LeerException e) {
-            LOGGER.severe(e.getMessage());
-            throw new InternalServerErrorException(e.getMessage());
+            LOGGER.severe("Error en la búsqueda: " + e.getMessage());
+            throw new InternalServerErrorException("Error en la búsqueda: " + e.getMessage());
         }
     }
 

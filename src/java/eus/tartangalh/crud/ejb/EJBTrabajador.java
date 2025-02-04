@@ -18,6 +18,7 @@ import excepciones.LeerException;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.xml.bind.DatatypeConverter;
 
@@ -115,18 +116,21 @@ public class EJBTrabajador implements TrabajadorInterface {
         return trabajador;
     }
 
-    @Override
-    public Trabajador buscarTrabajador(String email) throws LeerException {
-        Trabajador trabajador;
-        try {
-            trabajador = (Trabajador) em.createNamedQuery("buscarTrabajador").setParameter("userEmail", email).getSingleResult();
-            LOGGER.info("Cliente encontrado: " + trabajador.toString());
-        } catch (Exception e) {
-            throw new LeerException(e.getMessage());
-        }
+@Override
+public Trabajador buscarTrabajador(String email) throws LeerException {
+    try {
+        Trabajador trabajador = em.createNamedQuery("buscarTrabajador", Trabajador.class)
+                                  .setParameter("userEmail", email)
+                                  .getSingleResult();
+        LOGGER.info("Trabajador encontrado: " + trabajador.toString());
         return trabajador;
+    } catch (NoResultException e) {
+        LOGGER.warning("No se encontró un trabajador con el email: " + email);
+        return null; // Devuelve null en lugar de lanzar una excepción
+    } catch (Exception e) {
+        throw new LeerException("Error al buscar trabajador: " + e.getMessage());
     }
-
+}
     @Override
     public void recuperarContrasena(Trabajador trabajador) throws ActualizarException {
         try {
