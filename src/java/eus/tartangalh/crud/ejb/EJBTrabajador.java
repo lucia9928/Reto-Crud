@@ -116,21 +116,22 @@ public class EJBTrabajador implements TrabajadorInterface {
         return trabajador;
     }
 
-@Override
-public Trabajador buscarTrabajador(String email) throws LeerException {
-    try {
-        Trabajador trabajador = em.createNamedQuery("buscarTrabajador", Trabajador.class)
-                                  .setParameter("userEmail", email)
-                                  .getSingleResult();
-        LOGGER.info("Trabajador encontrado: " + trabajador.toString());
-        return trabajador;
-    } catch (NoResultException e) {
-        LOGGER.warning("No se encontró un trabajador con el email: " + email);
-        return null; // Devuelve null en lugar de lanzar una excepción
-    } catch (Exception e) {
-        throw new LeerException("Error al buscar trabajador: " + e.getMessage());
+    @Override
+    public Trabajador buscarTrabajador(String email) throws LeerException {
+        try {
+            Trabajador trabajador = em.createNamedQuery("buscarTrabajador", Trabajador.class)
+                    .setParameter("userEmail", email)
+                    .getSingleResult();
+            LOGGER.info("Trabajador encontrado: " + trabajador.toString());
+            return trabajador;
+        } catch (NoResultException e) {
+            LOGGER.warning("No se encontró un trabajador con el email: " + email);
+            return null; // Devuelve null en lugar de lanzar una excepción
+        } catch (Exception e) {
+            throw new LeerException("Error al buscar trabajador: " + e.getMessage());
+        }
     }
-}
+
     @Override
     public void recuperarContrasena(Trabajador trabajador) throws ActualizarException {
         try {
@@ -219,16 +220,46 @@ public Trabajador buscarTrabajador(String email) throws LeerException {
     }
 
     @Override
-    public Trabajador iniciarSesion(String id, String passwd) throws LeerException {
+    public Trabajador iniciarSesion(String Tradni, String contrasenaTra) throws LeerException {
         Trabajador trabajador;
 
         try {
-            LOGGER.info("Contraseña que llega: " + passwd);
-            byte[] passwordBytes = new Asymmetric().decrypt(DatatypeConverter.parseHexBinary(passwd));
-            LOGGER.info(Hash.hashText(new String(passwordBytes)));
-            trabajador = (Trabajador) em.createNamedQuery("iniciarSesionTra").setParameter("Tradni", id).setParameter("contrasenaTra", Hash.hashText(new String(passwordBytes))).getSingleResult();
+            LOGGER.info("Contraseña recibida: " + contrasenaTra);
+
+            String passwdHash;
+
+            // Si la contraseña está en formato hexadecimal (usando una expresión regular para validar)
+            if (contrasenaTra.matches("^[0-9A-Fa-f]+$") && contrasenaTra.length() % 2 == 0) {
+                LOGGER.info("La contraseña está en formato cifrado, procediendo a desencriptar.");
+
+                // Desencriptar la contraseña
+                Asymmetric asymmetric = new Asymmetric();
+                byte[] encryptedPassword = DatatypeConverter.parseHexBinary(contrasenaTra);
+                byte[] decryptedPassword = asymmetric.decrypt(encryptedPassword);
+
+                // Verificar si la desencriptación fue exitosa
+                if (decryptedPassword == null) {
+                    throw new LeerException("Error al desencriptar la contraseña.");
+                }
+
+                passwdHash = Hash.hashText(new String(decryptedPassword));
+            } else {
+                // Si no está en formato hexadecimal, asumimos que es una contraseña en texto plano y la hasheamos directamente
+                LOGGER.info("La contraseña no está en formato cifrado, se procederá a hashearla directamente.");
+                passwdHash = Hash.hashText(contrasenaTra);
+            }
+
+            LOGGER.info("Contraseña hasheada: " + passwdHash);
+
+            // Consulta en la base de datos
+            trabajador = (Trabajador) em.createNamedQuery("iniciarSesion")
+                    .setParameter("Tradni", Tradni)
+                    .setParameter("contrasenaTra", passwdHash)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            throw new LeerException("Usuario o contraseña incorrectos.");
         } catch (Exception e) {
-            throw new LeerException(e.getMessage());
+            throw new LeerException("Error al iniciar sesión: " + e.getMessage());
         }
         return trabajador;
     }
