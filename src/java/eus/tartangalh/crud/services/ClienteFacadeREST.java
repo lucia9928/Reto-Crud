@@ -70,9 +70,9 @@ public class ClienteFacadeREST {
             throw new InternalServerErrorException(ex.getMessage());        
         }
     }
-    
+
     @GET
-    @Path("{userEmail}")
+    @Path("busqueda/{userEmail}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Cliente buscar(@PathParam("userEmail") String email) {
         try {
@@ -84,6 +84,7 @@ public class ClienteFacadeREST {
             throw new InternalServerErrorException(e.getMessage());
         }
     }
+
 
     /**
      *
