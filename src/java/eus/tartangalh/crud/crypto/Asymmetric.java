@@ -18,7 +18,7 @@ public class Asymmetric {
     public byte[] cipher(String mensaje) {
         byte[] encodedMessage = null;
         try {
-            byte fileKey[] = fileReader("./src/archivo/Public.key");
+            byte fileKey[] = fileReader("Public.key");
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
             X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(fileKey);
             PublicKey publicKey = keyFactory.generatePublic(x509EncodedKeySpec);

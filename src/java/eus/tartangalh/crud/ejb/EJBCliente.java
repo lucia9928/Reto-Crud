@@ -1,13 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package eus.tartangalh.crud.ejb;
 
 import static com.sun.xml.ws.spi.db.BindingContextFactory.LOGGER;
 import eus.tartangalh.crud.create.Cliente;
-import eus.tartangalh.crud.create.Trabajador;
 import eus.tartangalh.crud.crypto.Asymmetric;
 import eus.tartangalh.crud.crypto.EmailServicio;
 import eus.tartangalh.crud.crypto.Hash;
@@ -19,7 +13,6 @@ import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.xml.bind.DatatypeConverter;
 
@@ -49,9 +42,11 @@ public class EJBCliente implements ClienteInterface {
             throw new CrearException("Failed to decrypt the password.");
         }
 
-        // Hash the decrypted password
-        String hashedPassword = Hash.hashText(new String(decryptedPassword));
-            cliente.setContrasena(Hash.hashText(new String(hashedPassword)));
+            // Hash the decrypted password
+            String hashedPassword = Hash.hashText(new String(decryptedPassword));
+
+            // Set the hashed password in the worker entity
+            cliente.setContrasena(hashedPassword);
             em.persist(cliente);
         } catch (Exception e) {
             throw new CrearException(e.getMessage());
@@ -82,18 +77,14 @@ public class EJBCliente implements ClienteInterface {
     
     @Override
     public Cliente buscarCliente(String email) throws LeerException {
+        Cliente cliente;
         try {
-            Cliente cliente = em.createNamedQuery("buscarCliente", Cliente.class)
-                    .setParameter("userEmail", email)
-                    .getSingleResult();
-            LOGGER.info("Trabajador encontrado: " + cliente.toString());
-            return cliente;
-        } catch (NoResultException e) {
-            LOGGER.warning("No se encontró un trabajador con el email: " + email);
-            return null; // Devuelve null en lugar de lanzar una excepción
+            cliente = (Cliente) em.createNamedQuery("buscarCliente").setParameter("userEmail", email).getSingleResult();
+            LOGGER.info("Cliente encontrado: " + cliente.toString());
         } catch (Exception e) {
-            throw new LeerException("Error al buscar trabajador: " + e.getMessage());
+            throw new LeerException(e.getMessage());
         }
+        return cliente;
     }
 
     /**

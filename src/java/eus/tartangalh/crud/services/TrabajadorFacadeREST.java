@@ -174,26 +174,17 @@ public class TrabajadorFacadeREST {
     }
 
     @GET
-    @Path("iniciarSesion")
+    @Path("{Tradni}/{contrasenaTra}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Trabajador iniciarSesion(@PathParam("Tradni") String id, @PathParam("contrasenaTra") String passwd) {
         try {
             LOGGER.log(Level.INFO, "Intentando iniciar sesión para usuario: {0}", id);
 
             Trabajador usuario = ejb.iniciarSesion(id, passwd);
-
             LOGGER.log(Level.INFO, "Inicio de sesión exitoso para usuario: {0}", id);
             return usuario;
         } catch (LeerException ex) {
-            LOGGER.warning("Credenciales incorrectas para usuario: " + id);
-            throw new NotAuthorizedException("Usuario o contraseña incorrectos");
-        } catch (NoResultException ex) {
-            LOGGER.warning("Usuario no encontrado: " + id);
-            throw new NotFoundException("Usuario no encontrado");
-        } catch (Exception ex) {
-            LOGGER.severe("Error inesperado en autenticación: " + ex.getMessage());
             throw new InternalServerErrorException("Error en el servidor");
         }
     }
-
 }

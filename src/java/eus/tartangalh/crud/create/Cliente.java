@@ -34,13 +34,13 @@ import javax.xml.bind.annotation.XmlTransient;
             query = "SELECT c FROM Cliente c WHERE c.fechaRegistro BETWEEN :fechaInicio AND :fechaFin ORDER BY c.fechaRegistro ASC"
     )
     ,
-        @NamedQuery(
+    @NamedQuery(
             name = "buscarCliente",
-            query = "SELECT u from Cliente u WHERE email = :userEmail "
-    )
-    ,
-            @NamedQuery(
-            name = "iniciarSesionCli", query = "SELECT u FROM Cliente u WHERE u.dni = :Clidni AND u.contrasena = :contrasenaCli"
+            query = "SELECT u from Cliente u WHERE u.email = :userEmail "
+    ),
+    @NamedQuery(
+            name ="iniciarSesionCli",
+            query = "SELECT u from Cliente u WHERE u.dni = :Clidni AND u.contrasena = :contrasenaCli"
     )
 })
 @XmlRootElement
