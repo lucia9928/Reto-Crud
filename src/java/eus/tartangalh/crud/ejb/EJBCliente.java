@@ -7,6 +7,7 @@ package eus.tartangalh.crud.ejb;
 
 import static com.sun.xml.ws.spi.db.BindingContextFactory.LOGGER;
 import eus.tartangalh.crud.create.Cliente;
+import eus.tartangalh.crud.create.Trabajador;
 import eus.tartangalh.crud.crypto.Asymmetric;
 import eus.tartangalh.crud.crypto.EmailServicio;
 import eus.tartangalh.crud.crypto.Hash;
@@ -18,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.xml.bind.DatatypeConverter;
 
@@ -80,14 +82,18 @@ public class EJBCliente implements ClienteInterface {
     
     @Override
     public Cliente buscarCliente(String email) throws LeerException {
-        Cliente cliente;
         try {
-            cliente = (Cliente) em.createNamedQuery("buscarCliente").setParameter("userEmail", email).getSingleResult();
-            LOGGER.info("Cliente encontrado: " + cliente.toString());
+            Cliente cliente = em.createNamedQuery("buscarCliente", Cliente.class)
+                    .setParameter("userEmail", email)
+                    .getSingleResult();
+            LOGGER.info("Trabajador encontrado: " + cliente.toString());
+            return cliente;
+        } catch (NoResultException e) {
+            LOGGER.warning("No se encontró un trabajador con el email: " + email);
+            return null; // Devuelve null en lugar de lanzar una excepción
         } catch (Exception e) {
-            throw new LeerException(e.getMessage());
+            throw new LeerException("Error al buscar trabajador: " + e.getMessage());
         }
-        return cliente;
     }
 
     /**
