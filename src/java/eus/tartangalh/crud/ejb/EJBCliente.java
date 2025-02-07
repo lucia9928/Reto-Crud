@@ -36,22 +36,24 @@ public class EJBCliente implements ClienteInterface {
 
     @Override
     public void crearCliente(Cliente cliente) throws CrearException {
-    try {
-        // Load the private key using the Asymmetric class
-        Asymmetric asymmetric = new Asymmetric();
-        
-        // Decrypt the password
-        byte[] encryptedPassword = DatatypeConverter.parseHexBinary(cliente.getContrasena());
-        byte[] decryptedPassword = asymmetric.decrypt(encryptedPassword);
+        try {
+            // Load the private key using the Asymmetric class
+            Asymmetric asymmetric = new Asymmetric();
 
-        // Check if decryption was successful
-        if (decryptedPassword == null) {
-            throw new CrearException("Failed to decrypt the password.");
-        }
+            // Decrypt the password
+            byte[] encryptedPassword = DatatypeConverter.parseHexBinary(cliente.getContrasena());
+            byte[] decryptedPassword = asymmetric.decrypt(encryptedPassword);
 
-        // Hash the decrypted password
-        String hashedPassword = Hash.hashText(new String(decryptedPassword));
-            cliente.setContrasena(Hash.hashText(new String(hashedPassword)));
+            // Check if decryption was successful
+            if (decryptedPassword == null) {
+                throw new CrearException("Failed to decrypt the password.");
+            }
+
+            // Hash the decrypted password
+            String hashedPassword = Hash.hashText(new String(decryptedPassword));
+
+            // Set the hashed password in the worker entity
+            cliente.setContrasena(hashedPassword);
             em.persist(cliente);
         } catch (Exception e) {
             throw new CrearException(e.getMessage());
@@ -79,7 +81,7 @@ public class EJBCliente implements ClienteInterface {
         }
         return cliente;
     }
-    
+
     @Override
     public Cliente buscarCliente(String email) throws LeerException {
         try {
@@ -201,18 +203,50 @@ public class EJBCliente implements ClienteInterface {
             throw new ActualizarException(e.getMessage());
         }
     }
-    
+
     @Override
     public Cliente iniciarSesion(String id, String passwd) throws LeerException {
-        Cliente cliente;
+        /*Cliente cliente;
 
         try {
             LOGGER.info("Contraseña que llega: " + passwd);
             byte[] passwordBytes = new Asymmetric().decrypt(DatatypeConverter.parseHexBinary(passwd));
-            LOGGER.info(Hash.hashText(new String(passwordBytes)));
+            //LOGGER.info(Hash.hashText(new String(passwordBytes)));
             cliente = (Cliente) em.createNamedQuery("iniciarSesionCli").setParameter("Clidni", id).setParameter("contrasenaCli", Hash.hashText(new String(passwordBytes))).getSingleResult();
         } catch (Exception e) {
             throw new LeerException(e.getMessage());
+        }
+        return cliente;*/
+
+        Cliente cliente;
+
+        try {
+            LOGGER.info("Contraseña recibida: " + passwd);
+
+                // Desencriptar la contraseña
+                Asymmetric asymmetric = new Asymmetric();
+                byte[] encryptedPassword = DatatypeConverter.parseHexBinary(passwd);
+                byte[] decryptedPassword = asymmetric.decrypt(encryptedPassword);
+
+                // Verificar si la desencriptación fue exitosa
+                if (decryptedPassword == null) {
+                    throw new LeerException("Error al desencriptar la contraseña.");
+                }
+
+                String hashedPassword = Hash.hashText(new String(decryptedPassword));
+
+            LOGGER.info("Contraseña hasheada: " + hashedPassword);
+
+            // Consulta en la base de datos
+            cliente = (Cliente) em.createNamedQuery("iniciarSesionCli")
+                    .setParameter("Clidni", id)
+                    .setParameter("contrasenaCli", hashedPassword)
+                    .getSingleResult();
+
+        } catch (NoResultException e) {
+            throw new LeerException("Usuario o contraseña incorrectos.");
+        } catch (Exception e) {
+            throw new LeerException("Error al iniciar sesión: " + e.getMessage());
         }
         return cliente;
     }

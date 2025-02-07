@@ -252,7 +252,7 @@ public class EJBTrabajador implements TrabajadorInterface {
             LOGGER.info("Contraseña hasheada: " + passwdHash);
 
             // Consulta en la base de datos
-            trabajador = (Trabajador) em.createNamedQuery("iniciarSesion")
+            trabajador = (Trabajador) em.createNamedQuery("iniciarSesionTra")
                     .setParameter("Tradni", Tradni)
                     .setParameter("contrasenaTra", passwdHash)
                     .getSingleResult();

@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -36,7 +37,7 @@ import javax.xml.bind.annotation.XmlTransient;
     ,
         @NamedQuery(
             name = "buscarCliente",
-            query = "SELECT u from Cliente u WHERE email = :userEmail "
+            query = "SELECT u from Cliente u WHERE u.email = :userEmail"
     )
     ,
             @NamedQuery(
@@ -48,7 +49,7 @@ public class Cliente extends Usuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private Date fechaRegistro;
-    @OneToMany(mappedBy = "cliente")
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.EAGER)
     private List<RecetaMedica> recetas;
 
     public Cliente() {

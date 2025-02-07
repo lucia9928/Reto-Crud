@@ -48,7 +48,6 @@ import javax.ws.rs.core.MediaType;
      * @param receta
      */
     @POST
-    @Path ("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void crearRecetaMedica(RecetaMedica receta) {
          try {

@@ -174,7 +174,7 @@ public class TrabajadorFacadeREST {
     }
 
     @GET
-    @Path("iniciarSesion")
+    @Path("{Tradni}/{contrasenaTra}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Trabajador iniciarSesion(@PathParam("Tradni") String id, @PathParam("contrasenaTra") String passwd) {
         try {
